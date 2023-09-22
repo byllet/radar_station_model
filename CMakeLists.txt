@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
-project(radar_station_model VERSION 0.1.0 LANGUAGES C CXX)
 
-include(CTest)
-enable_testing()
+set(PROJECT_NAME radar_station_model)
+project(${PROJECT_NAME} LANGUAGES CXX)
 
-add_executable(radar_station_model main.cpp)
+file(GLOB_RECURSE source_list "src/*.cpp" "src/*.hpp")
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+set(SOURCES main.cpp)
+
+add_executable(${PROJECT_NAME} ${source_list} ${SOURCES})

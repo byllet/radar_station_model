@@ -1,5 +1,9 @@
 #include <iostream>
+#include "src/Manager.hpp"
 
-int main(int, char**){
-    std::cout << "Hello\n";
+int main() 
+{
+    Manager m;
+    m.StartSimulation(4);
+    return 0;
 }

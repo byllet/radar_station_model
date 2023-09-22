@@ -1,6 +1,25 @@
 #pragma once
 
-class Manger {
-    void update(float dt);
-    void check_collisions();
+#include <vector>
+#include "signal.hpp"
+#include "rls/RadioDetectionAndRangingModel.hpp"
+#include "air_models/AbstractAirObject.hpp"
+
+class Manager {
+public:
+    Manager();
+    ~Manager();
+
+    void Update(double dt);
+    void StartSimulation(double time);
+
+    RadioDetectionAndRangingModel& GetRadar();
+    std::vector<AbstractAirObject*>& GetFlyingObjects();
+    std::vector<Signal>& GetSignals();
+
+private:
+    RadioDetectionAndRangingModel radar;
+    std::vector<AbstractAirObject*> flying_objs;
+    std::vector<Signal> signals;
+    std::vector<AbstractAirModelPattern> patterns; 
 };

@@ -1,6 +1,13 @@
 #pragma once
 
+#include "../Manager.hpp"
+
 class Solver {
-    void update(float dt);
-    void check_collisions();
+public:
+    Solver(Manager* m);
+    void Start(double time);
+
+private:
+    void Update(double dt);
+    Manager* manager;
 };

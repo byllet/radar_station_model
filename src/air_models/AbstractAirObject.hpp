@@ -1,19 +1,19 @@
 #pragma once
 
 #include <vector>
+#include "../Vec3.hpp"
+#include "../patterns/AbstractAirModelPattern.hpp"
 
-class Vec3{
-    Vec3();
-};
-
-class AbstactAirObject {
+class AbstractAirObject {
 public:
-    AbstactAirObject(Vec3 start_pos, Vec3 v, Vec3 a, Vec3 dir);
-    virtual void update(float dt);
+    AbstractAirObject(Vec3 start_pos, Vec3 v, Vec3 a);
+    virtual void update(float dt) = 0;
+    void SetPattern(AbstractAirModelPattern* p);
+    virtual ~AbstractAirObject() {};
 
-private:
+protected:
     Vec3 position;
     Vec3 velocity;
     Vec3 acceleration;
-    Vec3 directon;
+    AbstractAirModelPattern* pattern = nullptr;
 };

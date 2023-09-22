@@ -1,6 +1,7 @@
 #pragma once
 
-class Solver {
+class CollisionHandler {
+public:
     void update(float dt);
     void check_collisions();
 };
