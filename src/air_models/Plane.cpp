@@ -5,7 +5,7 @@
 
 Plane::Plane(Vec3 start_pos, Vec3 v, Vec3 a) : AbstractAirObject{start_pos, v, a} {} 
 
-void Plane::Update(float dt)
+void Plane::Update(double dt)
 {
     position += pattern->ChangePosition(velocity, acceleration, dt);
     velocity += pattern->ChangeVelocity(acceleration, dt);

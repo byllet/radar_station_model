@@ -2,16 +2,18 @@
 
 #include "utils/Vec3.hpp"
 
+const double SIGNALSPEED = 3000.;
+
 class Signal {
 public:
+    Signal(Vec3 start_position, Vec3 direction);
     Signal();
     void Reflection();
-    void Update(float dt);
+    void Update(double dt);
     
 private:
     unsigned int power;
-    Vec3 direction;
+    unsigned int duration_time;
     Vec3 position;
-    int time;
-    int duration_time;
+    Vec3 direction; 
 };

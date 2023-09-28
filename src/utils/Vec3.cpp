@@ -1,4 +1,5 @@
 #include "Vec3.hpp"
+#include <cmath>
 #include <iostream>
 #include <ostream>
 
@@ -27,21 +28,41 @@ Vec3& Vec3::operator*= (double k)
     return *this;
 }
 
-void Vec3::operator= (const Vec3& lhs)
+Vec3& Vec3::operator= (const Vec3& rhs)
 {
-    x = lhs.x;
-    y = lhs.y;
-    z = lhs.z;
-    return;
+    if (this == &rhs) {
+        return *this;
+    }
+
+    x = rhs.x;
+    y = rhs.y;
+    z = rhs.z;
+
+    return *this;
 }
 
-Vec3 operator* (Vec3& vec, double k)
+Vec3& Vec3::Normalization()
+{
+    double length = Length();
+    if (length != 0) {
+        double inv_length = 1. / Length();
+        return (*this * inv_length);
+    }
+    return *this;
+}
+
+double Vec3::Length()
+{
+    return std::sqrt(x*x + y*y + z*z);
+}
+
+Vec3& operator* (Vec3& vec, double k)
 {
     vec *= k;
     return vec;
 }
 
-Vec3 operator* (double k, Vec3& vec)
+Vec3& operator* (double k, Vec3& vec)
 {
     vec *= k;
     return vec;
