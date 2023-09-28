@@ -10,7 +10,8 @@ public:
 private:
     void Update(double time, double dt);
     void UpdateAirObjects(double dt);
-    void UpdateSignals();
-    void UpdateRadar();
+    void UpdateSignals(double dt);
+    void UpdateRadar(double dt);
+    void SolveCollisions();
     Manager* manager;
 };

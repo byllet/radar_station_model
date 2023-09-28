@@ -10,10 +10,10 @@ void Plane::Update(float dt)
     position += pattern->ChangePosition(velocity, acceleration, dt);
     velocity += pattern->ChangeVelocity(acceleration, dt);
     acceleration += pattern->ChangeAcceleration(dt);
-
+    
     std::cout << "Plane position::" << position;
-    std::cout << " speed::" << velocity;
-    std::cout << " acceleration::" << acceleration << std::endl;
+    std::cout << "speed::" << velocity;
+    std::cout << "acceleration::" << acceleration << std::endl;
 
     return;
 }
