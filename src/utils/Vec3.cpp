@@ -7,7 +7,7 @@ Vec3::Vec3(): x{0.}, y{0.}, z{0.} {}
 
 std::ostream& operator<< (std::ostream& os, Vec3& v)
 {
-    os << "{" <<v.x <<  ", " << v.y << ", " << v.z << "} ";  
+    os << "{" << v.x <<  ", " << v.y << ", " << v.z << "} ";  
     return os;
 }
 
@@ -27,12 +27,12 @@ Vec3& Vec3::operator*= (double k)
     return *this;
 }
 
-Vec3 Vec3::operator= (Vec3& lhs)
+void Vec3::operator= (const Vec3& lhs)
 {
     x = lhs.x;
     y = lhs.y;
     z = lhs.z;
-    return *this;
+    return;
 }
 
 Vec3 operator* (Vec3& vec, double k)
@@ -47,7 +47,7 @@ Vec3 operator* (double k, Vec3& vec)
     return vec;
 }
 
-Vec3 operator+ (Vec3& lhs, Vec3& rhs)
+Vec3 operator+ (const Vec3& lhs, const Vec3& rhs)
 {
     Vec3 res = lhs;
     res += rhs;

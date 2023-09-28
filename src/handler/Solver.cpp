@@ -5,14 +5,20 @@ Solver::Solver(Manager* m) : manager{m} {}
 void Solver::Start(double time)
 {
     double dt = 0.1;
-    for (double t = 0.; t < time; t += 0.1) {
-        Update(dt);
+    Update(time, dt);
+}
+
+void Solver::Update(double time, double dt)
+{
+    for (double t = 0; t < time; t += dt) {
+        UpdateAirObjects(dt);
     }
 }
 
-void Solver::Update(double dt)
+void Solver::UpdateAirObjects(double dt)
 {
-    for (auto r: manager->GetFlyingObjects()) {
-        r->update(0.1);
+     for (auto flyingObject: manager->GetFlyingObjects()) {
+        flyingObject->SetPattern(manager->GetChosedPattern());
+        flyingObject->Update(dt);
     }
 }

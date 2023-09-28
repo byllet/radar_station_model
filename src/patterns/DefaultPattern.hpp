@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Vec3.hpp"
+#include "../utils/Vec3.hpp"
 #include "AbstractAirModelPattern.hpp"
 
 class DefaultPattern: public AbstractAirModelPattern {

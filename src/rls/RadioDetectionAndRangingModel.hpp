@@ -2,12 +2,13 @@
 
 #include "Emitter.hpp"
 #include "Reciever.hpp"
-#include "../Vec3.hpp"
+#include "../utils/Vec3.hpp"
 
 class RadioDetectionAndRangingModel {
 public:
-    RadioDetectionAndRangingModel() {}
+    RadioDetectionAndRangingModel();
     void Update(float dt);
+
 private:
     Emitter emitter;
     Reciever reciever;

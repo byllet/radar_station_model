@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../Vec3.hpp"
+#include "../utils/Vec3.hpp"
 #include "../Signal.hpp"
 
 class Emitter {
