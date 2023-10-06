@@ -6,12 +6,13 @@ class AbstractAirObject;
 
 class AbstractAirModelPattern {
 public:
-    AbstractAirModelPattern() {}
-    virtual Vec3 ChangePosition(Vec3 velocity, Vec3 acceleration, double dt) = 0;
-    virtual Vec3 ChangeVelocity(Vec3 acceleration, double dt) = 0;
-    virtual Vec3 ChangeAcceleration(double dt) = 0;
+    AbstractAirModelPattern() {};
+    virtual void ApplyPattern(Vec3& position, Vec3& velocity, Vec3& acceleration, double dt) = 0;
     virtual ~AbstractAirModelPattern() {};
     
 protected:
-    int time;
+    virtual Vec3 ChangePosition(Vec3 position, Vec3 velocity, Vec3 acceleration, double dt) = 0;
+    virtual Vec3 ChangeVelocity(Vec3 velocity, Vec3 acceleration, double dt) = 0;
+    virtual Vec3 ChangeAcceleration(Vec3 velocity, Vec3 acceleration, double dt) = 0;
+    double duration;
 };

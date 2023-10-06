@@ -2,23 +2,25 @@
 
 #include "air_models/Plane.hpp"
 #include "handler/Solver.hpp"
-#include "patterns/DefaultPattern.hpp"
+#include "patterns/LinearPattern.hpp"
+#include "patterns/ChangeHeightPattern.hpp"
 
 Manager::Manager()
 {
-    flying_objs.push_back(new Plane({10, 10, 10}, {10, 0, 0}, {0, 0, 0}));
-    patterns.push_back(new DefaultPattern());
+    flying_objs.push_back(new Plane({0, 0, 0}, {2, 2, 0}, {0, 0, 0}));
+    patterns.push_back(new LinearPattern());
+    patterns.push_back(new ChangeHeightPattern(10));
     chosed_pattern = patterns[0];
 }
 
 Manager::~Manager()
 {
-    for (unsigned int i = 0; i < flying_objs.size(); ++i) {
-        delete flying_objs[i];
+    for (auto fo: flying_objs) {
+        delete fo;
     }
     
-    for (unsigned int i = 0; i < patterns.size(); ++i) {
-        delete patterns[i];
+    for (auto p: patterns) {
+        delete p;
     }
 }
 

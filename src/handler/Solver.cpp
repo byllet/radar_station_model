@@ -4,7 +4,7 @@ Solver::Solver(Manager* m) : manager{m} {}
 
 void Solver::Start(double time)
 {
-    double dt = 0.01;
+    double dt = 1;
     Update(time, dt);
 }
 

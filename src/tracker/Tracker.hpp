@@ -7,7 +7,7 @@
 class Tracker {
 public:
     Tracker() {}
-    void TakeSignal(Signal* s);
+    void TakeSignal(Signal* s, double time);
     
 private:
     std::vector<Aim> aims;

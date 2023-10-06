@@ -1,16 +1,16 @@
 #pragma once
 
+#include "../utils/Vec3.hpp"
 #include "AbstractAirModelPattern.hpp"
 
-class ChangeHeightPattern: public AbstractAirModelPattern {
+class LinearPattern: public AbstractAirModelPattern {
 public:
-    ChangeHeightPattern(double h);
+    LinearPattern();
     void ApplyPattern(Vec3& position, Vec3& velocity, Vec3& acceleration, double dt) override;
-    ~ChangeHeightPattern();
+    ~LinearPattern();
 
 private:
     Vec3 ChangePosition(Vec3 position, Vec3 velocity, Vec3 acceleration, double dt) override;
     Vec3 ChangeVelocity(Vec3 velocity, Vec3 acceleration, double dt) override;
     Vec3 ChangeAcceleration(Vec3 velocity, Vec3 acceleration, double dt) override;
-    double height;
 };

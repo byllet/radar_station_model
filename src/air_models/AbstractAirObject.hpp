@@ -10,6 +10,7 @@ public:
     virtual ~AbstractAirObject() = default;
     virtual void Update(double dt) = 0;
     void SetPattern(AbstractAirModelPattern* p);
+    Vec3 GetVelocity();
 
 protected:
     Vec3 position;

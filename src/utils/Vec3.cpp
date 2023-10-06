@@ -3,8 +3,9 @@
 #include <iostream>
 #include <ostream>
 
-Vec3::Vec3(double x0, double y0, double z0): x{x0}, y{y0}, z{z0} {}
-Vec3::Vec3(): x{0.}, y{0.}, z{0.} {}
+Vec3::Vec3(double x0, double y0, double z0) : x{x0}, y{y0}, z{z0} {}
+
+Vec3::Vec3() : x{0.}, y{0.}, z{0.} {}
 
 std::ostream& operator<< (std::ostream& os, Vec3& v)
 {

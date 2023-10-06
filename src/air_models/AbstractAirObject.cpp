@@ -6,3 +6,8 @@ void AbstractAirObject::SetPattern(AbstractAirModelPattern* p)
 {
     pattern = p;
 }
+
+Vec3 AbstractAirObject::GetVelocity()
+{
+    return velocity;
+}
