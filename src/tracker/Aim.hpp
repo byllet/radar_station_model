@@ -9,6 +9,6 @@ public:
 
 private:
     Vec3 ExpectedPosition;
-    Vec3 ExpectedVecolcity;
+    Vec3 ExpectedVelocity;
     Vec3 ExpectedAcceleration;
 };

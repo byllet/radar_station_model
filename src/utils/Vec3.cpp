@@ -1,18 +1,84 @@
 #include "Vec3.hpp"
-#include <cmath>
-#include <iostream>
-#include <ostream>
 
-Vec3::Vec3(double x0, double y0, double z0): x{x0}, y{y0}, z{z0} {}
-Vec3::Vec3(): x{0.}, y{0.}, z{0.} {}
-
-std::ostream& operator<< (std::ostream& os, Vec3& v)
+Vec3::Vec3()
 {
-    os << "{" << v.x <<  ", " << v.y << ", " << v.z << "} ";  
-    return os;
+    x = 0.0;
+    y = 0.0;
+    z = 0.0;
 }
 
-Vec3& Vec3::operator+= (const Vec3& vec)  
+Vec3::Vec3(double xx, double yy, double zz)
+{
+    x = xx;
+    y = yy;
+    z = zz;
+}
+Vec3::Vec3(const Vec3& vec)
+{
+    x = vec.x;
+    y = vec.y;
+    z = vec.z;
+}
+
+void Vec3::setCoord(double x, double y, double z)
+{
+    this->x = x;
+    this->y = y;
+    this->z = z;
+}
+
+double Vec3::length()
+{
+    return std::sqrt(x*x + y*y + z*z);
+}
+
+Vec3& Vec3::normalize()
+{
+    int len = length();
+    if (len != 0)
+    {
+        return (*this * (1/len));
+    }
+    return *this;
+}
+
+double Vec3::X() const {return x;}
+double Vec3::Y() const {return y;}
+double Vec3::Z() const {return z;}
+
+bool Vec3::operator== (const Vec3& vec)
+{
+    if (x == vec.X() && y == vec.Y() && z == vec.Z())
+        return true;
+    return false;
+}
+
+bool Vec3::operator !=(const Vec3& vec)
+{ return !(*this == vec); }
+
+Vec3& Vec3::operator*= (double a)
+{
+    x *= a;
+    y *= a;
+    z *= a;
+    return *this;
+}
+
+Vec3 operator* (const Vec3& vec, double a)
+{
+    Vec3 copy = vec;
+    copy *= a;
+    return copy;
+}
+
+Vec3 operator* (double a, const Vec3& vec)
+{
+    Vec3 copy = vec;
+    copy *= a;
+    return copy;
+}
+
+Vec3& Vec3::operator+= (const Vec3& vec)
 {
     x += vec.x;
     y += vec.y;
@@ -20,57 +86,44 @@ Vec3& Vec3::operator+= (const Vec3& vec)
     return *this;
 }
 
-Vec3& Vec3::operator*= (double k)
+Vec3 Vec3::operator+ (const Vec3& vec)
 {
-    x *= k;
-    y *= k;
-    z *= k;
+    Vec3 copy = *this;
+    copy += vec;
+    return copy;
+}
+
+Vec3& Vec3::operator-= (const Vec3& vec)
+{
+    x -= vec.x;
+    y -= vec.y;
+    z -= vec.z;
     return *this;
 }
 
-Vec3& Vec3::operator= (const Vec3& rhs)
+Vec3 Vec3::operator- (const Vec3& vec)
 {
-    if (this == &rhs) {
-        return *this;
-    }
-
-    x = rhs.x;
-    y = rhs.y;
-    z = rhs.z;
-
-    return *this;
+    Vec3 copy = *this;
+    copy += vec;
+    return copy;
 }
 
-Vec3& Vec3::Normalization()
+Vec3& Vec3::operator*= (const Vec3& vec)
 {
-    double length = Length();
-    if (length != 0) {
-        double inv_length = 1. / Length();
-        return (*this * inv_length);
-    }
-    return *this;
+    x *= vec.x;
+    y *= vec.y;
+    z *= vec.z;
 }
 
-double Vec3::Length()
+Vec3 Vec3::operator* (const Vec3& vec)
 {
-    return std::sqrt(x*x + y*y + z*z);
+    Vec3 copy = *this;
+    copy *= vec;
+    return copy;
 }
 
-Vec3& operator* (Vec3& vec, double k)
+std::ostream& operator<< (std::ostream& os, const Vec3& vec)
 {
-    vec *= k;
-    return vec;
-}
-
-Vec3& operator* (double k, Vec3& vec)
-{
-    vec *= k;
-    return vec;
-}
-
-Vec3 operator+ (const Vec3& lhs, const Vec3& rhs)
-{
-    Vec3 res = lhs;
-    res += rhs;
-    return res;
+    os << "{" << vec.X() <<  ", " << vec.Y() << ", " << vec.Z() << "} ";  
+    return os;
 }

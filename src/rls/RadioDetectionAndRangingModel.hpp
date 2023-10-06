@@ -7,12 +7,13 @@
 
 class RadioDetectionAndRangingModel {
 public:
+    RadioDetectionAndRangingModel(Vec3 position);
     RadioDetectionAndRangingModel();
     void Start();
     void Update(double dt);
 
 private:
+    Vec3 position;
     Emitter emitter;
     Reciever reciever;
-    Vec3 position;
 };

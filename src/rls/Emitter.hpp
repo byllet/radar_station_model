@@ -7,5 +7,5 @@
 class Emitter {
 public:
     Emitter() {}
-    std::vector<Signal*> SendSignals(size_t count, Vec3 direction);
+    std::vector<Signal*> SendSignals(size_t beams_count, Vec3 direction, size_t duration);
 };
