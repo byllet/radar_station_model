@@ -8,7 +8,7 @@
 
 class Vec3
 {
-private:
+public:
     double x;
     double y;
     double z;
@@ -19,11 +19,12 @@ public:
 
     void setCoord(double x, double y, double z);  // установка координат
     double length();                                // длина вектора
-    Vec3& normalize();                            // 
 
     double X() const;                             // x
     double Y() const;                             // y
     double Z() const;                             // z
+
+    Vec3& operator= (const Vec3& vec);
 
     Vec3& operator*= (double a);               // умножение вектора 3D на число *=
 

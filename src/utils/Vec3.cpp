@@ -32,19 +32,17 @@ double Vec3::length()
     return std::sqrt(x*x + y*y + z*z);
 }
 
-Vec3& Vec3::normalize()
-{
-    int len = length();
-    if (len != 0)
-    {
-        return (*this * (1/len));
-    }
-    return *this;
-}
-
 double Vec3::X() const {return x;}
 double Vec3::Y() const {return y;}
 double Vec3::Z() const {return z;}
+
+Vec3& Vec3::operator= (const Vec3& vec)
+{
+    x = vec.x;
+    y = vec.y;
+    z = vec.z;
+    return *this;
+}
 
 bool Vec3::operator== (const Vec3& vec)
 {

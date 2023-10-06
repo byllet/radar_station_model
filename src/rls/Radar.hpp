@@ -5,14 +5,15 @@
 #include "../utils/Vec3.hpp"
 #include <vector>
 
-class RadioDetectionAndRangingModel {
+class Radar {
 public:
-    RadioDetectionAndRangingModel(Vec3 position);
-    RadioDetectionAndRangingModel();
+    Radar();
+    Radar(Vec3 position);
+    Radar(Radar& radar);
     void Start();
     void Update(double dt);
 
-private:
+public:
     Vec3 position;
     Emitter emitter;
     Reciever reciever;
