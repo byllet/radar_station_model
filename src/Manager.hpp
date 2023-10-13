@@ -1,6 +1,8 @@
 #pragma once
 
+#include <queue>
 #include <vector>
+#include <algorithm>
 #include "signal.hpp"
 #include "rls/RadioDetectionAndRangingModel.hpp"
 #include "air_models/AbstractAirObject.hpp"
@@ -22,5 +24,5 @@ private:
     std::vector<AbstractAirObject*> flying_objs;
     std::vector<Signal*> signals;
     std::vector<AbstractAirModelPattern*> patterns; 
-    AbstractAirModelPattern* chosed_pattern;
+    std::queue<AbstractAirModelPattern*> q_patterns;
 };

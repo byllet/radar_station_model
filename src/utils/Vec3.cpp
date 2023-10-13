@@ -9,7 +9,7 @@ Vec3::Vec3() : x{0.}, y{0.}, z{0.} {}
 
 std::ostream& operator<< (std::ostream& os, Vec3& v)
 {
-    os << "{" << v.x <<  ", " << v.y << ", " << v.z << "} ";  
+    os << v.x << " " << v.y << " " << v.z;  
     return os;
 }
 

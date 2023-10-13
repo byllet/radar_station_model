@@ -4,7 +4,7 @@ Solver::Solver(Manager* m) : manager{m} {}
 
 void Solver::Start(double time)
 {
-    double dt = 1;
+    double dt = 0.1;
     Update(time, dt);
 }
 
@@ -20,9 +20,10 @@ void Solver::Update(double time, double dt)
 
 void Solver::UpdateAirObjects(double dt)
 {
-     for (auto flyingObject: manager->GetFlyingObjects()) {
+    for (auto flyingObject: manager->GetFlyingObjects()) {
         flyingObject->SetPattern(manager->GetChosedPattern());
         flyingObject->Update(dt);
+        manager->GetChosedPattern()->SetDuration(manager->GetChosedPattern()->GetDuration() - dt);
     }
 }
 

@@ -5,19 +5,9 @@ LinearPattern::LinearPattern() : AbstractAirModelPattern() {}
 
 LinearPattern::~LinearPattern() {}
 
-void LinearPattern::ApplyPattern(Vec3& position, Vec3& velocity, Vec3& acceleration, double dt)
-{
-    position = ChangePosition(position, velocity, acceleration, dt);
-    velocity = ChangeVelocity(velocity, acceleration, dt);
-    acceleration = ChangeAcceleration(velocity, acceleration, dt);
-}
+void LinearPattern::UpdateAcceleration(Vec3& acceleration, double dt) {}
 
-Vec3 LinearPattern::ChangePosition(Vec3 position, Vec3 velocity, Vec3 acceleration, double dt) 
-{
-    return position + velocity * dt;
-}
-
-Vec3 LinearPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration, double dt) 
+Vec3 LinearPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 {
     if (velocity.z == 0) {
         return velocity;
@@ -29,7 +19,7 @@ Vec3 LinearPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration, double dt)
     }
 }
 
-Vec3 LinearPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration, double dt) 
+Vec3 LinearPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
 {
     return {0., 0., 0.};
 }

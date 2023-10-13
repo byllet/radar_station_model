@@ -1,28 +1,27 @@
+#include <cmath>
+
 #include "ChangeSpeedPattern.hpp"
 
-ChangeSpeedPattern::ChangeSpeedPattern(Vec3 a) : AbstractAirModelPattern(), acceleration{a} {}
+ChangeSpeedPattern::ChangeSpeedPattern(Vec3 a) : AbstractAirModelPattern(), new_acceleration{a} {}
 
 ChangeSpeedPattern::~ChangeSpeedPattern() {}
 
-void ChangeSpeedPattern::ApplyPattern(Vec3& position, Vec3& velocity, Vec3& acceleration, double dt)
+void ChangeSpeedPattern::UpdateAcceleration(Vec3& acceleration, double dt) {}
+
+Vec3 ChangeSpeedPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 {
-    position = ChangePosition(position, velocity, acceleration, dt);
-    velocity = ChangeVelocity(velocity, acceleration, dt);
-    acceleration = ChangeAcceleration(velocity, acceleration, dt);
+    if (velocity.z == 0) {
+        return velocity;
+    } else {
+        double alpha = std::atan(velocity.y / velocity.x);
+        double length = velocity.Length();
+        Vec3 new_velocity(length * std::cos(alpha), length * std::sin(alpha), 0);
+        return new_velocity;
+    }
 }
 
-Vec3 ChangeSpeedPattern::ChangePosition(Vec3 position, Vec3 velocity, Vec3 acceleration, double dt) 
+Vec3 ChangeSpeedPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
 {
-    return position + velocity * dt + acceleration * (dt * dt / 2);
-}
-
-Vec3 ChangeSpeedPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration, double dt) 
-{
-    return velocity + acceleration * dt;
-}
-
-Vec3 ChangeSpeedPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration, double dt) 
-{
-    return {0, 0, 0};
+    return new_acceleration;
 }
  

@@ -5,21 +5,11 @@ ChangeHeightPattern::ChangeHeightPattern(double h) : AbstractAirModelPattern(), 
 
 ChangeHeightPattern::~ChangeHeightPattern() {}
 
-void ChangeHeightPattern::ApplyPattern(Vec3& position, Vec3& velocity, Vec3& acceleration, double dt)
-{
-    position = ChangePosition(position, velocity, acceleration, dt);
-    velocity = ChangeVelocity(velocity, acceleration, dt);
-    acceleration = ChangeAcceleration(velocity, acceleration, dt);
-}
+void ChangeHeightPattern::UpdateAcceleration(Vec3& acceleration, double dt) {}
 
-Vec3 ChangeHeightPattern::ChangePosition(Vec3 position, Vec3 velocity, Vec3 acceleration, double dt) 
+Vec3 ChangeHeightPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 {
-    return position + velocity * dt;
-}
-
-Vec3 ChangeHeightPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration, double dt) 
-{
-    if (velocity.z == 0) {
+   if (velocity.z == 0) {
         Vec3 new_velocity{velocity};
         new_velocity.z =  velocity.Length();
         new_velocity = new_velocity * (1 / std::sqrt(2));
@@ -29,7 +19,7 @@ Vec3 ChangeHeightPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration, doubl
     }
 }
 
-Vec3 ChangeHeightPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration, double dt)
+Vec3 ChangeHeightPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
 {
     return {0., 0., 0.};
 }

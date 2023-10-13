@@ -4,6 +4,6 @@
 int main() 
 {
     Manager m;
-    m.StartSimulation(20);
+    m.StartSimulation(13);
     return 0;
 }
