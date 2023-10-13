@@ -12,6 +12,7 @@ public:
     void Update(double dt);
     
 public:
+    bool alive = true;
     double lifetime = 0;
     unsigned int power;
     unsigned int duration;

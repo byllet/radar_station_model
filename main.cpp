@@ -1,9 +1,15 @@
 #include <iostream>
-#include "src/Manager.hpp"
+#include "src/modeling/Scene.hpp"
 
-int main() 
+int main()
 {
-    Manager m;
-    m.StartSimulation(4);
-    return 0;
+    int time = 0;
+    RadioDetectionAndRangingModel radar(Vec3{0., 0., 0.});
+    Signal signal(Vec3{0.,0.,0.}, Vec3{0., 1., 0.}, 1., 20);
+
+    Scene scene(time, radar, signal);
+
+    scene.create_barrier(Vec3{0., 15., 0.});
+
+    scene.show(25);
 }

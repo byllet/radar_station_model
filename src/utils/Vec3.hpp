@@ -44,6 +44,8 @@ public:
 Vec3 operator* (const Vec3& vec, double a); // умножение вектора 3D на число *
 Vec3 operator* (double a, const Vec3& vec); // умножение числа на вектор 3D *
 
-std::ostream& operator<< (std::ostream& os, Vec3& v);
+std::ostream& operator<< (std::ostream& os, const Vec3& v);
+
+std::ostream& operator<< (std::ostream& os, const std::vector<char> vec);
 
 #endif // VEC_H

@@ -5,7 +5,7 @@
 
 class Reciever {
 public:
-    Reciever() {}
+    Reciever();
     void TakeSignal(Signal* s);
     
 private:

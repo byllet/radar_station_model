@@ -111,6 +111,7 @@ Vec3& Vec3::operator*= (const Vec3& vec)
     x *= vec.x;
     y *= vec.y;
     z *= vec.z;
+    return *this;
 }
 
 Vec3 Vec3::operator* (const Vec3& vec)
@@ -123,5 +124,16 @@ Vec3 Vec3::operator* (const Vec3& vec)
 std::ostream& operator<< (std::ostream& os, const Vec3& vec)
 {
     os << "{" << vec.X() <<  ", " << vec.Y() << ", " << vec.Z() << "} ";  
+    return os;
+}
+
+std::ostream& operator<< (std::ostream& os, const std::vector<char> vec)
+{
+    os << "[";
+    for(int i = 0; i < vec.size(); ++i)
+    {
+        os << vec[i] << "";
+    }
+    os << "]";
     return os;
 }
