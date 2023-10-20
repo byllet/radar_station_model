@@ -21,6 +21,14 @@ Vec3& Vec3::operator+= (const Vec3& vec)
     return *this;
 }
 
+Vec3& Vec3::operator-= (const Vec3& vec)  
+{
+    x -= vec.x;
+    y -= vec.y;
+    z -= vec.z;
+    return *this;
+}
+
 Vec3& Vec3::operator*= (double k)
 {
     x *= k;
@@ -73,5 +81,12 @@ Vec3 operator+ (const Vec3& lhs, const Vec3& rhs)
 {
     Vec3 res = lhs;
     res += rhs;
+    return res;
+}
+
+Vec3 operator- (const Vec3& lhs, const Vec3& rhs)
+{
+    Vec3 res = lhs;
+    res -= rhs;
     return res;
 }
