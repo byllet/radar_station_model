@@ -7,9 +7,12 @@
 class AbstractAirObject {
 public:
     AbstractAirObject(Vec3 start_pos, Vec3 v, Vec3 a);
-    virtual ~AbstractAirObject();
-    virtual void Update(double dt) = 0;
     void SetPattern(AbstractAirModelPattern* p);
+    Vec3& GetPosition();
+    Vec3& GetVelocity();
+    Vec3& GetAcceleretion();
+    virtual void Update(double dt) = 0;
+    virtual ~AbstractAirObject();
 
 protected:
     AbstractAirModelPattern* pattern = nullptr;

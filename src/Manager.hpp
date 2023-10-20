@@ -2,7 +2,6 @@
 
 #include <queue>
 #include <vector>
-#include <algorithm>
 #include "signal.hpp"
 #include "rls/RadioDetectionAndRangingModel.hpp"
 #include "air_models/AbstractAirObject.hpp"
@@ -17,7 +16,10 @@ public:
     RadioDetectionAndRangingModel& GetRadar();
     std::vector<AbstractAirObject*>& GetFlyingObjects();
     std::vector<Signal*>& GetSignals();
+
     AbstractAirModelPattern* GetChosedPattern();
+
+    void AddNewFlyingObject(AbstractAirObject* obj);
 
 private:
     RadioDetectionAndRangingModel radar;

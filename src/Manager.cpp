@@ -21,8 +21,6 @@ Manager::Manager()
     q_patterns.push(patterns[1]);
     patterns[0]->SetDuration(2);
     q_patterns.push(patterns[0]);
-
-    
 }
 
 Manager::~Manager()
@@ -67,4 +65,9 @@ AbstractAirModelPattern* Manager::GetChosedPattern()
         return patterns[0];
     }
     return q_patterns.front();
+}
+
+void Manager::AddNewFlyingObject(AbstractAirObject* obj) 
+{
+    flying_objs.push_back(obj);
 }

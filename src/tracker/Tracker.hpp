@@ -1,15 +1,17 @@
 #pragma once
 
+#include <unordered_map>
 #include <vector>
 #include "Aim.hpp"
 
 class Tracker {
 public:
     Tracker();
-    void TakeRawData(std::vector<Vec3> positions, double time);
+    void TakeRawData(std::vector<Vec3> positions, double dt);
     
 private:
     std::vector<Aim> aims;
+    std::vector<Aim> archive;
     double time;
     void HandleExpectedPositions(std::vector<Vec3>& positions);
     void HandleRemainsPositions(std::vector<Vec3>& positions);
