@@ -2,6 +2,7 @@
 #define OBJECT_PARAMETERS_H
 
 #include <QDialog>
+#include <object.h>
 
 namespace Ui {
 class object_parameters;
@@ -17,6 +18,9 @@ public:
 
 private slots:
     void on_pushButton_2_clicked();
+
+signals:
+    void obj_parameters_changed(Object, size_t index = -1);
 
 private:
     Ui::object_parameters *ui;
