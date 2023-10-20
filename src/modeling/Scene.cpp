@@ -18,7 +18,7 @@ Scene::Scene(int time, RadioDetectionAndRangingModel radar, Signal signal)
 
 void Scene::update()
 {
-    time += 1;
+    ++time;
     signal.lifetime += 1;
     if (signal.alive)
     {

@@ -6,6 +6,13 @@
 
 class Emitter {
 public:
-    Emitter() {}
-    std::vector<Signal*> SendSignals(size_t beams_count, Vec3 direction, size_t duration);
+    Emitter();
+    Emitter(Vec3 position);
+    std::vector<Signal> SendSignals(size_t beams_count, 
+                                    Vec3 start_position, 
+                                    Vec3 direction, 
+                                    double solid_angle, 
+                                    double duration);
+private:
+    Vec3 position;
 };
