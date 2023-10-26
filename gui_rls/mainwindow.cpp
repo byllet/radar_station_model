@@ -12,8 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     glwidget = new GLWidget(this);
     ui->verticalLayout_5->addWidget(glwidget);
-    glwidget->drawCircle(0.5, 0.5, 0.3);
-    glwidget->update();
 }
 
 MainWindow::~MainWindow()
