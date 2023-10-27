@@ -21,18 +21,17 @@ void Tracker::HandleExpectedPositions(std::vector<Vec3>& positions)
 {
     std::vector<std::vector<Vec3>> nearest_positions(aims.size());
 
-    for (int j = 0; j < aims.size(); ++j) {
-        for (int i = 0; i < positions.size(); ++i) {    
+    for (int j = aims.size() - 1; j > - 1; --j) {
+        for (int i = positions.size() - 1; i > -1; --i) {    
             double delta = (aims[j].filtered_position - positions[i]).Length();
             if (delta <= EPSILON) {
                 nearest_positions[j].push_back(positions[i]);
                 positions.erase(positions.begin() + i);
-                --i;
             }
         }
     }
 
-    for (unsigned int i = 0; i < aims.size(); ++i) {
+    for (size_t i = 0; i < aims.size(); ++i) {
         if (!nearest_positions[i].empty()) {
             Vec3 avg_pos = GetAvg(nearest_positions[i]);
             UpdateAim(aims[i], avg_pos);
@@ -57,11 +56,12 @@ void Tracker::UpdateAim(Aim& aim, Vec3 measured_position) //realization of alpha
         return;
     }
 
-    double alpha = (2.0 * (2.0 * k - 1.0)) / (k * (k + 1.0));
-    double beta = 6.0 / (k * (k + 1));
-    beta = 0.29999999999999999;
-    alpha = 0.69999999999999996;
-
+    double alpha = 0.52380952380952384;
+    double beta = 0.14285714285714285;
+    if (k <= 6) {
+        alpha = (2.0 * (2.0 * k - 1.0)) / (k * (k + 1.0));
+        beta = 6.0 / (k * (k + 1));
+    }
 
     Vec3 pre_calc = measured_position - aim.extrapolated_position;
     aim.filtered_position = aim.extrapolated_position;
@@ -98,7 +98,7 @@ void Tracker::CreateNewAim(Vec3 position)
 
 void Tracker::HandleUntrackedAims()
 {
-    for (unsigned int i = 0; i < aims.size(); ++i) {
+    for (size_t i = 0; i < aims.size(); ++i) {
         if (time - aims[i].update_time > 3) {
             archive.push_back(aims[i]);
             aims.erase(aims.begin() + i);

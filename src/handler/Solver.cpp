@@ -5,17 +5,17 @@ Solver::Solver(Manager* m) : manager{m} {}
 void Solver::Start(double time)
 {
     double dt = 0.1;
-    Update(time, dt);
+    for (double t = 0; t < time; t += dt) {
+        Update(dt);
+    }
 }
 
-void Solver::Update(double time, double dt)
+void Solver::Update(double dt)
 {
-    for (double t = 0; t < time; t += dt) {
-        SolveCollisions();
-        UpdateAirObjects(dt);
-        UpdateSignals(dt);
-        UpdateRadar(dt);
-    }
+    SolveCollisions();
+    UpdateAirObjects(dt);
+    UpdateSignals(dt);
+    UpdateRadar(dt);
 }
 
 void Solver::UpdateAirObjects(double dt)

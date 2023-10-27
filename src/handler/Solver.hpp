@@ -8,7 +8,7 @@ public:
     void Start(double time);
 
 private:
-    void Update(double time, double dt);
+    void Update(double dt);
     void UpdateAirObjects(double dt);
     void UpdateSignals(double dt);
     void UpdateRadar(double dt);
