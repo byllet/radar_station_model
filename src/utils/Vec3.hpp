@@ -19,6 +19,7 @@ public:
 
     void setCoord(double x, double y, double z);  // установка координат
     double length();                                // длина вектора
+    Vec3& normalize();
 
     double X() const;                             // x
     double Y() const;                             // y

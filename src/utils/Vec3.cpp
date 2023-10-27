@@ -36,6 +36,18 @@ double Vec3::X() const {return x;}
 double Vec3::Y() const {return y;}
 double Vec3::Z() const {return z;}
 
+Vec3& Vec3::normalize()
+{
+    double len = length();
+
+    if (len != 0 )
+    {
+        double coef = 1./len;
+        return *this * coef;
+    }
+    return *this;
+}
+
 Vec3& Vec3::operator= (const Vec3& vec)
 {
     x = vec.x;
