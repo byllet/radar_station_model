@@ -13,14 +13,12 @@ Manager::Manager()
     patterns.push_back(new ChangeHeightPattern(10));
     patterns.push_back(new ReversalPattern(4));
 
-    patterns[0]->SetDuration(2);
+
+    patterns[0]->SetDuration(1);
     q_patterns.push(patterns[0]);
-    patterns[2]->SetDuration(6);
+    patterns[2]->SetDuration(5);
     q_patterns.push(patterns[2]);
-    patterns[1]->SetDuration(2);
-    q_patterns.push(patterns[1]);
-    patterns[0]->SetDuration(2);
-    q_patterns.push(patterns[0]);
+
 }
 
 Manager::~Manager()
@@ -57,13 +55,15 @@ std::vector<Signal*>& Manager::GetSignals()
 
 AbstractAirModelPattern* Manager::GetChosedPattern()
 {
-    if (q_patterns.front()->GetDuration() <= 0) {
-        q_patterns.pop();
-    }
-    
     if (q_patterns.empty()) {
         return patterns[0];
     }
+    
+    if (q_patterns.front()->GetDuration() <= 0) {
+        q_patterns.pop();
+        return GetChosedPattern();
+    }
+
     return q_patterns.front();
 }
 

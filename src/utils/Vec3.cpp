@@ -37,6 +37,14 @@ Vec3& Vec3::operator*= (double k)
     return *this;
 }
 
+Vec3& Vec3::operator/= (double k)
+{
+    x /= k;
+    y /= k;
+    z /= k;
+    return *this;
+}
+
 Vec3& Vec3::operator= (const Vec3& rhs)
 {
     if (this == &rhs) {
@@ -55,7 +63,7 @@ Vec3& Vec3::Normalization()
     double length = Length();
     if (length != 0) {
         double inv_length = 1. / Length();
-        return (*this * inv_length);
+        *this *= inv_length;
     }
     return *this;
 }
@@ -65,16 +73,32 @@ double Vec3::Length()
     return std::sqrt(x*x + y*y + z*z);
 }
 
-Vec3& operator* (Vec3& vec, double k)
+Vec3 operator* (const Vec3& vec, double k)
 {
-    vec *= k;
-    return vec;
+    Vec3 res = vec; 
+    res *= k;
+    return res;
 }
 
-Vec3& operator* (double k, Vec3& vec)
+Vec3 operator* (double k, const Vec3& vec)
 {
-    vec *= k;
-    return vec;
+    Vec3 res = vec; 
+    res *= k;
+    return res;
+}
+
+Vec3 operator/ (const Vec3& vec, double k)
+{
+    Vec3 res = vec; 
+    res /= k;
+    return res;
+}
+
+Vec3 operator/ (double k, const Vec3& vec)
+{
+    Vec3 res = vec; 
+    res /= k;
+    return res;
 }
 
 Vec3 operator+ (const Vec3& lhs, const Vec3& rhs)

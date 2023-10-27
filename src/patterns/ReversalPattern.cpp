@@ -33,7 +33,8 @@ Vec3 ReversalPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 Vec3 ReversalPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
 {
     Vec3 new_acceleration = {velocity.y, -velocity.x, 0};
-    new_acceleration = new_acceleration * (1 / new_acceleration.Length());
-    new_acceleration *= (velocity.Length() / radius);
+    new_acceleration = new_acceleration  / new_acceleration.Length();
+    double v = velocity.Length();
+    new_acceleration *= (v * v / radius);
     return new_acceleration;
 }

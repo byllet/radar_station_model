@@ -4,14 +4,15 @@
 #include <vector>
 
 double EPSILON = 1;
-double dtime;
+double T0;
 
 Tracker::Tracker() : time{0} {}
 
 void Tracker::TakeRawData(std::vector<Vec3> positions, double dt)
 {
     time += dt;
-    dtime = dt; 
+    T0 = dt; 
+    std::vector<Vec3> p = positions;
     HandleExpectedPositions(positions);
     HandleRemainsPositions(positions);
     HandleUntrackedAims();
@@ -39,39 +40,31 @@ void Tracker::HandleExpectedPositions(std::vector<Vec3>& positions)
     }
 }
 
-void Tracker::UpdateAim(Aim& aim, Vec3 measured_position) //realization of alpha-beta filter
+//realization of alpha-beta filter
+void Tracker::UpdateAim(Aim& aim, Vec3 measured_position) 
 {
     double k = aim.k++;
+    aim.update_time = time;
 
     if (k == 1) {
         aim.filtered_position = measured_position;
         return;
     } else if (k == 2) {
-        aim.filtered_velocity = (measured_position - aim.filtered_position);
-        aim.filtered_velocity = aim.filtered_velocity * (1./ dtime);
+        aim.filtered_velocity = (measured_position - aim.filtered_position) / T0;
         aim.filtered_position = measured_position;
 
-        aim.extrapolated_position = aim.filtered_position + (aim.filtered_velocity * dtime);
+        aim.extrapolated_position = aim.filtered_position + (aim.filtered_velocity * T0);
         aim.extrapolated_velocity = aim.filtered_velocity;
         return;
     }
 
-    double alpha = 0.52380952380952384;
-    double beta = 0.14285714285714285;
-    if (k <= 6) {
-        alpha = (2.0 * (2.0 * k - 1.0)) / (k * (k + 1.0));
-        beta = 6.0 / (k * (k + 1));
-    }
+    double alpha = 6.0 / (k * (k + 1));
+    double beta = (2.0 * (2.0 * k - 1.0)) / (k * (k + 1.0));
 
-    Vec3 pre_calc = measured_position - aim.extrapolated_position;
-    aim.filtered_position = aim.extrapolated_position;
-    aim.filtered_position += (pre_calc * alpha);
+    aim.filtered_position = aim.extrapolated_position + (alpha * (measured_position - aim.extrapolated_position));
+    aim.filtered_velocity = aim.extrapolated_velocity + (beta / T0 * (measured_position - aim.extrapolated_position));
 
-    aim.filtered_velocity = aim.extrapolated_velocity;
-    aim.filtered_velocity += (beta / dtime * pre_calc);
-
-    aim.extrapolated_position = aim.filtered_position;
-    aim.extrapolated_position += aim.filtered_velocity * dtime;
+    aim.extrapolated_position = aim.filtered_position + (aim.filtered_velocity * T0);
     aim.extrapolated_velocity = aim.filtered_velocity;
 }
 
@@ -80,8 +73,9 @@ void Tracker::HandleRemainsPositions(std::vector<Vec3>& positions)
     for (auto position: positions) {
         bool should_create_new = true;
         for (auto aim: aims) {
-            if ((position - aim.filtered_position).Length() < EPSILON * 2) {
+            if ((position - aim.filtered_position).Length() < EPSILON) {
                 should_create_new = false;
+                break;
             }
         }
         if (should_create_new) {
@@ -99,7 +93,7 @@ void Tracker::CreateNewAim(Vec3 position)
 void Tracker::HandleUntrackedAims()
 {
     for (size_t i = 0; i < aims.size(); ++i) {
-        if (time - aims[i].update_time > 3) {
+        if (time - aims[i].update_time > T0 * 3) {
             archive.push_back(aims[i]);
             aims.erase(aims.begin() + i);
         }

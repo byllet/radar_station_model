@@ -20,7 +20,7 @@ void Solver::Update(double dt)
 
 void Solver::UpdateAirObjects(double dt)
 {
-    for (auto flyingObject: manager->GetFlyingObjects()) {
+    for (auto& flyingObject: manager->GetFlyingObjects()) {
         flyingObject->SetPattern(manager->GetChosedPattern());
         flyingObject->Update(dt);
         manager->GetChosedPattern()->SetDuration(manager->GetChosedPattern()->GetDuration() - dt);
