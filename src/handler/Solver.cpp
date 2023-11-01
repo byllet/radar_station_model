@@ -2,27 +2,20 @@
 
 Solver::Solver(Manager* m) : manager{m} {}
 
-void Solver::Start(double time)
+void Solver::Update(double dt)
 {
-    double dt = 0.01;
-    Update(time, dt);
-}
-
-void Solver::Update(double time, double dt)
-{
-    for (double t = 0; t < time; t += dt) {
-        SolveCollisions();
-        UpdateAirObjects(dt);
-        UpdateSignals(dt);
-        UpdateRadar(dt);
-    }
+    SolveCollisions();
+    UpdateAirObjects(dt);
+    UpdateSignals(dt);
+    UpdateRadar(dt);
 }
 
 void Solver::UpdateAirObjects(double dt)
 {
-     for (auto flyingObject: manager->GetFlyingObjects()) {
+    for (auto flyingObject: manager->GetFlyingObjects()) {
         flyingObject->SetPattern(manager->GetChosedPattern());
         flyingObject->Update(dt);
+        //manager->GetChosedPattern()->SetDuration(manager->GetChosedPattern()->GetDuration() - dt);
     }
 }
 

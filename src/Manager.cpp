@@ -1,31 +1,45 @@
-#include "Manager.hpp"
+#pragma once
 
+#include "Manager.hpp"
+#include "handler/Solver.hpp"
 #include "air_models/Plane.hpp"
 #include "handler/Solver.hpp"
-#include "patterns/DefaultPattern.hpp"
+#include "patterns/LinearPattern.hpp"
+#include "patterns/ChangeHeightPattern.hpp"
+#include "patterns/ReversalPattern.hpp"
 
 Manager::Manager()
 {
-    flying_objs.push_back(new Plane({10, 10, 10}, {10, 0, 0}, {0, 0, 0}));
-    patterns.push_back(new DefaultPattern());
-    chosed_pattern = patterns[0];
+//    flying_objs.push_back(new Plane({0, 0, -1.5}, {0.001, -0.003, -0.007}, {0, 0, 0}));
+    patterns.push_back(new LinearPattern());
+    patterns.push_back(new ChangeHeightPattern(10));
+    patterns.push_back(new ReversalPattern(4));
+
+    patterns[0]->SetDuration(2);
+    q_patterns.push(patterns[0]);
+
 }
 
 Manager::~Manager()
 {
-    for (unsigned int i = 0; i < flying_objs.size(); ++i) {
-        delete flying_objs[i];
+    for (auto f_o: flying_objs) {
+        delete f_o;
     }
     
-    for (unsigned int i = 0; i < patterns.size(); ++i) {
-        delete patterns[i];
+    for (auto p: patterns) {
+        delete p;
     }
 }
 
-void Manager::StartSimulation(double time)
+void Manager::AddFlyingObject(Plane* new_object)
+{
+    flying_objs.push_back(static_cast<AbstractAirObject*>(new_object));
+}
+
+void Manager::Update(double dt)
 {
     Solver solver(this);
-    solver.Start(time);
+    solver.Update(dt);
 }
 
 RadioDetectionAndRangingModel& Manager::GetRadar()
@@ -38,12 +52,19 @@ std::vector<AbstractAirObject*>& Manager::GetFlyingObjects()
     return flying_objs;
 }
 
-std::vector<Signal*>& Manager::GetSignals()
-{
-    return signals;
-}
+//std::vector<Signal*>& Manager::GetSignals()
+//{
+//    return signals;
+//}
 
 AbstractAirModelPattern* Manager::GetChosedPattern()
 {
-    return chosed_pattern;
+    if (q_patterns.front()->GetDuration() <= 0) {
+        q_patterns.pop();
+    }
+    
+    if (q_patterns.empty()) {
+        return patterns[0];
+    }
+    return q_patterns.front();
 }

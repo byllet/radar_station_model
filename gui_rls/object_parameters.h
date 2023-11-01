@@ -2,7 +2,8 @@
 #define OBJECT_PARAMETERS_H
 
 #include <QDialog>
-#include <object.h>
+#include "../src/air_models/Plane.hpp"
+
 
 namespace Ui {
 class object_parameters;
@@ -17,10 +18,10 @@ public:
     ~object_parameters();
 
 private slots:
-    void on_pushButton_2_clicked();
+    void on_create_new_obj_clicked();
 
 signals:
-    void obj_parameters_changed(Object, size_t index = -1);
+    void obj_parameters_changed(Plane*, size_t index = -1);
 
 private:
     Ui::object_parameters *ui;

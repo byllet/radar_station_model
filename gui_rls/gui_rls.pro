@@ -13,18 +13,52 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     object_parameters.cpp \
+    ../src/Manager.cpp \
+    ../src/air_models/AbstractAirObject.cpp \
+    ../src/air_models/Plane.cpp \
+    ../src/handler/Solver.cpp \
+    ../src/patterns/AbstractAirModelPattern.cpp \
+    ../src/patterns/ChangeHeightPattern.cpp \
+    ../src/patterns/ChangeSpeedPattern.cpp \
+    ../src/patterns/LinearPattern.cpp \
+    ../src/patterns/ReversalPattern.cpp \
+    ../src/rls/Emitter.cpp \
+    ../src/rls/RadioDetectionAndRangingModel.cpp \
+    ../src/rls/Reciever.cpp \
+    ../src/Signal.cpp \
+    ../src/tracker/Aim.cpp \
+    ../src/tracker/Tracker.cpp \
+    ../src/utils/Vec3.cpp \
 
 HEADERS += \
     glwidget.h \
     mainwindow.h \
-    object.h \
     object_parameters.h \
     stb_image.h \
-    texture_struct.h
+    texture_struct.h \
+    ../src/Manager.hpp \
+    ../src/air_models/AbstractAirObject.hpp \
+    ../src/air_models/Plane.hpp \
+    ../src/handler/Solver.hpp \
+    ../src/math/ErrorHandler.hpp \
+    ../src/math/ReflectiveErrorSignalHandler.hpp \
+    ../src/patterns/AbstractAirModelPattern.hpp \
+    ../src/patterns/ChangeHeightPattern.hpp \
+    ../src/patterns/ChangeSpeedPattern.hpp \
+    ../src/patterns/LinearPattern.hpp \
+    ../src/patterns/ReversalPattern.hpp \
+    ../src/rls/Emitter.hpp \
+    ../src/rls/RadioDetectionAndRangingModel.hpp \
+    ../src/rls/Reciever.hpp \
+    ../src/Signal.hpp \
+    ../src/tracker/Aim.hpp \
+    ../src/tracker/Tracker.hpp \
+    ../src/utils/Vec3.hpp \
 
 FORMS += \
     mainwindow.ui \
     object_parameters.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

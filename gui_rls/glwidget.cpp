@@ -5,7 +5,7 @@
 
 GLWidget::GLWidget(QWidget *parent): QOpenGLWidget(parent)
 {
-    connect(&tmr, SIGNAL(timeout()), this, SLOT(change_obj_position()));
+    connect(&tmr, SIGNAL(timeout()), this, SLOT(nextFrame()));
 }
 
 void GLWidget::initializeGL()
@@ -20,8 +20,8 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     drawRay(-0.6, -0.55, 0, 0);
-    for (size_t i = 0; i < obj_array.size(); ++i) {
-        drawCircle(obj_array[i].coord_x, obj_array[i].coord_y, obj_array[i].coord_z, 0.1);
+    for (auto flyingObject: manager.GetFlyingObjects()) {
+        drawCircle(flyingObject->position.x, flyingObject->position.y, flyingObject->position.z, 0.1);
     }
     drawRLS(-0.9, -1, -1.5, -0.9, -0.6, -1.5, -0.65, -0.6, -1.5, -0.65, -1, -1.5);
 }
@@ -34,21 +34,14 @@ void GLWidget::resizeGL(int w, int h)
     glFrustum(-1, 1, -1, 1, 1, 3);
 }
 
-void GLWidget::change_obj_position() {
-    for (size_t i = 0; i < obj_array.size(); ++i) {
-        obj_array[i].coord_x += obj_array[i].speed_x;
-        obj_array[i].coord_y += obj_array[i].speed_y;
-        obj_array[i].coord_z += obj_array[i].speed_z;
-    }
+void GLWidget::addNewObj(Plane* new_obj) {
+    manager.AddFlyingObject(new_obj);
     update();
 }
 
-void GLWidget::change_obj_parameters(Object new_obj, size_t index = -1) {
-    if (index == -1) {
-        obj_array.push_back(new_obj);
-    } else {
-        obj_array[index] = new_obj;
-    }
+void GLWidget::nextFrame()
+{
+    manager.Update(0.033);
     update();
 }
 

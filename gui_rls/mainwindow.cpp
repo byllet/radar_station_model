@@ -25,11 +25,11 @@ void MainWindow::on_add_object_clicked()
 {
     new_object_window = new object_parameters(this);
     new_object_window->show();
-    connect(new_object_window, &object_parameters::obj_parameters_changed, glwidget, &GLWidget::change_obj_parameters);
+    connect(new_object_window, &object_parameters::obj_parameters_changed, glwidget, &GLWidget::addNewObj);
     connect(new_object_window, &object_parameters::obj_parameters_changed, this, &MainWindow::add_obj_to_combobox);
 }
 
-void MainWindow::add_obj_to_combobox(Object new_obj, size_t index)
+void MainWindow::add_obj_to_combobox()
 {
     QString item_text = "Aircraft №" + QString::number(ui->comboBox->count());
     ui->comboBox->addItem(item_text);
@@ -39,7 +39,7 @@ void MainWindow::on_delete_object_clicked()
 {
     size_t current_index = ui->comboBox->currentIndex();
     ui->comboBox->removeItem(current_index);
-    glwidget->obj_array.erase(glwidget->obj_array.begin() + current_index);
+    glwidget->manager.GetFlyingObjects().erase(glwidget->manager.GetFlyingObjects().begin() + current_index);
     glwidget->update();
 }
 

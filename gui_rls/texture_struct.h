@@ -19,7 +19,7 @@ struct Texture
     }
 
     unsigned int texture;
-    float textureCoords[8];
+    float textureCoords[12];
 };
 
 #endif // TEXTURE_STRUCT_H

@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "object.h"
+#include "../src/Manager.hpp"
 #include "object_parameters.h"
 #include "glwidget.h"
 
@@ -20,7 +20,7 @@ public:
 
 private slots:
     void on_add_object_clicked();
-    void add_obj_to_combobox(Object new_obj, size_t index = -1);
+    void add_obj_to_combobox();
     void on_delete_object_clicked();
     void on_start_modeling_clicked();
     void on_stop_modeling_clicked();

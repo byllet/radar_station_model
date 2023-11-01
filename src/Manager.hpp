@@ -1,16 +1,20 @@
 #pragma once
 
+#include <queue>
 #include <vector>
-#include "signal.hpp"
+#include <algorithm>
+//#include "signal.hpp"
 #include "rls/RadioDetectionAndRangingModel.hpp"
-#include "air_models/AbstractAirObject.hpp"
+#include "air_models/Plane.hpp"
 
 class Manager {
+
 public:
     Manager();
     ~Manager();
 
-    void StartSimulation(double time);
+    void AddFlyingObject(Plane*);
+    void Update(double dt);
 
     RadioDetectionAndRangingModel& GetRadar();
     std::vector<AbstractAirObject*>& GetFlyingObjects();
@@ -20,7 +24,7 @@ public:
 private:
     RadioDetectionAndRangingModel radar;
     std::vector<AbstractAirObject*> flying_objs;
-    std::vector<Signal*> signals;
-    std::vector<AbstractAirModelPattern*> patterns; 
-    AbstractAirModelPattern* chosed_pattern;
+//    std::vector<Signal*> signals;
+    std::vector<AbstractAirModelPattern*> patterns;
+    std::queue<AbstractAirModelPattern*> q_patterns;
 };

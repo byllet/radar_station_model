@@ -6,10 +6,10 @@
 #include <QOpenGLWidget>
 #include <QtOpenGL>
 #include <vector>
-#include "object.h"
 #include "object_parameters.h"
 #include "texture_struct.h"
-
+#include "../src/Manager.hpp"
+#include "../src/air_models/Plane.hpp"
 
 class GLWidget : public QOpenGLWidget
 {
@@ -23,9 +23,8 @@ public:
     void drawRay(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
     void RLStextureInit();
 
-    object_parameters obj_window;
-    std::vector <Object> obj_array;
     QTimer tmr;
+    Manager manager;
 
 private:
     Texture RLStex;
@@ -33,9 +32,11 @@ private:
     void paintGL();
     void resizeGL(int w, int h);
 
+
 public slots:
-    void change_obj_position();
-    void change_obj_parameters(Object, size_t);
+    void addNewObj(Plane*);
+    void nextFrame();
+
 };
 
 #endif // GLWIDGET_H
