@@ -6,8 +6,6 @@ ChangeSpeedPattern::ChangeSpeedPattern(Vec3 a) : AbstractAirModelPattern(), new_
 
 ChangeSpeedPattern::~ChangeSpeedPattern() {}
 
-void ChangeSpeedPattern::UpdateAcceleration(Vec3& acceleration, double dt) {}
-
 Vec3 ChangeSpeedPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 {
     if (velocity.z == 0) {

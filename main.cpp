@@ -1,10 +1,16 @@
 #include <iostream>
 #include "src/Manager.hpp"
+#include "src/patterns/ReversalPattern.hpp"
 
 int main() 
 {
     Manager m;
-    m.StartSimulation(7.);
+    m.AddNewPattern(m.GetFlyingObjects()[0], new ReversalPattern(4));
+    for (unsigned int i = 0; i < 3; ++i) {
+        m.Update(0.2);
+    }
+
+    
     return 0;
 }
 

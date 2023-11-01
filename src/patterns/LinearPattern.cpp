@@ -5,8 +5,6 @@ LinearPattern::LinearPattern() : AbstractAirModelPattern() {}
 
 LinearPattern::~LinearPattern() {}
 
-void LinearPattern::UpdateAcceleration(Vec3& acceleration, double dt) {}
-
 Vec3 LinearPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 {
     if (velocity.z == 0) {

@@ -1,14 +1,7 @@
 #include "Solver.hpp"
+#include "../Manager.hpp"
 
 Solver::Solver(Manager* m) : manager{m} {}
-
-void Solver::Start(double time)
-{
-    double dt = 0.1;
-    for (double t = 0; t < time; t += dt) {
-        Update(dt);
-    }
-}
 
 void Solver::Update(double dt)
 {
@@ -21,9 +14,9 @@ void Solver::Update(double dt)
 void Solver::UpdateAirObjects(double dt)
 {
     for (auto& flyingObject: manager->GetFlyingObjects()) {
-        flyingObject->SetPattern(manager->GetChosedPattern());
+        flyingObject->SetPattern(manager->GetChosedPattern(flyingObject));
         flyingObject->Update(dt);
-        manager->GetChosedPattern()->SetDuration(manager->GetChosedPattern()->GetDuration() - dt);
+        manager->GetChosedPattern(flyingObject)->SetDuration(manager->GetChosedPattern(flyingObject)->GetDuration() - dt);
     }
 }
 

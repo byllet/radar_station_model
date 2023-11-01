@@ -5,8 +5,6 @@ ChangeHeightPattern::ChangeHeightPattern(double h) : AbstractAirModelPattern(), 
 
 ChangeHeightPattern::~ChangeHeightPattern() {}
 
-void ChangeHeightPattern::UpdateAcceleration(Vec3& acceleration, double dt) {}
-
 Vec3 ChangeHeightPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 {
    if (velocity.z == 0) {

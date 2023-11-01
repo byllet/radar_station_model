@@ -1,14 +1,13 @@
 #pragma once
 
-#include "../Manager.hpp"
+class Manager;
 
 class Solver {
 public:
     Solver(Manager* m);
-    void Start(double time);
+    void Update(double dt);
 
 private:
-    void Update(double dt);
     void UpdateAirObjects(double dt);
     void UpdateSignals(double dt);
     void UpdateRadar(double dt);

@@ -8,6 +8,7 @@ class AbstractAirObject {
 public:
     AbstractAirObject(Vec3 start_pos, Vec3 v, Vec3 a);
     void SetPattern(AbstractAirModelPattern* p);
+    AbstractAirModelPattern* GetPattern();
     Vec3& GetPosition();
     Vec3& GetVelocity();
     Vec3& GetAcceleretion();

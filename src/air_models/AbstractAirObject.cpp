@@ -24,3 +24,8 @@ void AbstractAirObject::SetPattern(AbstractAirModelPattern* p)
     pattern = p;
     pattern->ApplyPattern(position, velocity, acceleration);
 }
+
+AbstractAirModelPattern* AbstractAirObject::GetPattern()
+{
+    return pattern;
+}

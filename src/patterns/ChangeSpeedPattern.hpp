@@ -6,7 +6,6 @@ class ChangeSpeedPattern: public AbstractAirModelPattern {
 public:
     ChangeSpeedPattern(Vec3 acceleration);
     ~ChangeSpeedPattern();
-    void UpdateAcceleration(Vec3& acceleration, double dt) override; 
 
 private:
     Vec3 ChangeVelocity(Vec3 velocity, Vec3 acceleration) override;

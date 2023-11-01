@@ -8,7 +8,6 @@ class AbstractAirModelPattern {
 public:
     AbstractAirModelPattern();
     virtual ~AbstractAirModelPattern();
-    virtual void UpdateAcceleration(Vec3& acceleration, double dt) = 0; 
 
     void ApplyPattern(Vec3& position, Vec3& velocity, Vec3& acceleration);
     void SetDuration(double duration);

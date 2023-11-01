@@ -1,24 +1,15 @@
 #include "Manager.hpp"
 
 #include "air_models/Plane.hpp"
-#include "handler/Solver.hpp"
 #include "patterns/LinearPattern.hpp"
 #include "patterns/ChangeHeightPattern.hpp"
 #include "patterns/ReversalPattern.hpp"
 
-Manager::Manager()
+Manager::Manager() : solver{this}
 {
     flying_objs.push_back(new Plane({0, 0, 0}, {2, 2, 0}, {0, 0, 0}));
+    flying_objs.push_back(new Plane({0, 0, 0}, {1, 1, 1}, {0, 0, 0}));
     patterns.push_back(new LinearPattern());
-    patterns.push_back(new ChangeHeightPattern(10));
-    patterns.push_back(new ReversalPattern(4));
-
-
-    patterns[0]->SetDuration(1);
-    q_patterns.push(patterns[0]);
-    patterns[2]->SetDuration(5);
-    q_patterns.push(patterns[2]);
-
 }
 
 Manager::~Manager()
@@ -32,10 +23,9 @@ Manager::~Manager()
     }
 }
 
-void Manager::StartSimulation(double time)
+void Manager::Update(double time)
 {
-    Solver solver(this);
-    solver.Start(time);
+    solver.Update(time);
 }
 
 RadioDetectionAndRangingModel& Manager::GetRadar()
@@ -53,21 +43,27 @@ std::vector<Signal*>& Manager::GetSignals()
     return signals;
 }
 
-AbstractAirModelPattern* Manager::GetChosedPattern()
+AbstractAirModelPattern* Manager::GetChosedPattern(AbstractAirObject* air_object)
 {
-    if (q_patterns.empty()) {
+    if (air_object_patterns[air_object].empty()) {
         return patterns[0];
     }
     
-    if (q_patterns.front()->GetDuration() <= 0) {
-        q_patterns.pop();
-        return GetChosedPattern();
+    if (air_object_patterns[air_object].front()->GetDuration() <= 0) {
+        air_object_patterns[air_object].pop();
+        return GetChosedPattern(air_object);
     }
 
-    return q_patterns.front();
+    return air_object_patterns[air_object].front();
 }
 
 void Manager::AddNewFlyingObject(AbstractAirObject* obj) 
 {
     flying_objs.push_back(obj);
+}
+
+void Manager::AddNewPattern(AbstractAirObject* obj, AbstractAirModelPattern* new_pattern)
+{
+    air_object_patterns[obj].push(new_pattern);
+    patterns.push_back(new_pattern);
 }
