@@ -21,3 +21,10 @@ Vec3 ChangeHeightPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
 {
     return {0., 0., 0.};
 }
+
+void ChangeHeightPattern::CalculateDuration(Vec3 velocity, Vec3 acceleration) 
+{
+    if (duration == SHOULD_BE_CALC) {
+        duration = height / velocity.z;
+    }
+}

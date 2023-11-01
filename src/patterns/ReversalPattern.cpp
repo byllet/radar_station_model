@@ -34,3 +34,10 @@ Vec3 ReversalPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
     new_acceleration *= (v * v / radius);
     return new_acceleration;
 }
+
+void ReversalPattern::CalculateDuration(Vec3 velocity, Vec3 acceleration) 
+{
+    if (duration == SHOULD_BE_CALC) {
+        duration = std::acos(-1) * radius / velocity.Length();
+    }
+}

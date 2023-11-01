@@ -2,13 +2,11 @@
 
 #include "air_models/Plane.hpp"
 #include "patterns/LinearPattern.hpp"
-#include "patterns/ChangeHeightPattern.hpp"
-#include "patterns/ReversalPattern.hpp"
 
 Manager::Manager() : solver{this}
 {
     flying_objs.push_back(new Plane({0, 0, 0}, {2, 2, 0}, {0, 0, 0}));
-    flying_objs.push_back(new Plane({0, 0, 0}, {1, 1, 1}, {0, 0, 0}));
+    //flying_objs.push_back(new Plane({0, 0, 0}, {1, 1, 1}, {0, 0, 0}));
     patterns.push_back(new LinearPattern());
 }
 

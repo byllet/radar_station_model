@@ -3,6 +3,11 @@
 
 LinearPattern::LinearPattern() : AbstractAirModelPattern() {}
 
+LinearPattern::LinearPattern(double time) : AbstractAirModelPattern{}
+{
+    SetDuration(time);
+}
+
 LinearPattern::~LinearPattern() {}
 
 Vec3 LinearPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
@@ -21,3 +26,5 @@ Vec3 LinearPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
 {
     return {0., 0., 0.};
 }
+
+void LinearPattern::CalculateDuration(Vec3 velocity, Vec3 acceleration) {}

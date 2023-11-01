@@ -8,6 +8,7 @@ void AbstractAirModelPattern::ApplyPattern(Vec3 &position, Vec3 &velocity, Vec3 
 {
     velocity = ChangeVelocity(velocity, acceleration);
     acceleration = ChangeAcceleration(velocity, acceleration);
+    CalculateDuration(velocity, acceleration);
 }
 
 void AbstractAirModelPattern::SetDuration(double d) {

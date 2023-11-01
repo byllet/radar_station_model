@@ -11,5 +11,4 @@ void Plane::Update(double dt)
 {
     velocity += acceleration * dt;
     position +=  velocity * dt + acceleration * dt * dt / 2.; 
-    std::cout << position << " p1\n";
 }
