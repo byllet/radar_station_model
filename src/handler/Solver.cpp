@@ -16,7 +16,9 @@ void Solver::UpdateAirObjects(double dt)
     for (auto& flyingObject: manager->GetFlyingObjects()) {
         flyingObject->SetPattern(manager->GetChosedPattern(flyingObject));
         flyingObject->Update(dt);
-        manager->GetChosedPattern(flyingObject)->SetDuration(manager->GetChosedPattern(flyingObject)->GetDuration() - dt);
+        double duration = flyingObject->GetPattern()->GetDuration();
+        flyingObject->GetPattern()->SetDuration(duration - dt);
+        //manager->GetChosedPattern(flyingObject)->SetDuration(manager->GetChosedPattern(flyingObject)->GetDuration() - dt);
     }
 }
 

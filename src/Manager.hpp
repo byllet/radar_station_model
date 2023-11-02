@@ -30,6 +30,6 @@ private:
     RadioDetectionAndRangingModel radar;
     std::vector<AbstractAirObject*> flying_objs;
     std::vector<Signal*> signals;
-    std::vector<AbstractAirModelPattern*> patterns; 
+    std::vector<AbstractAirModelPattern*> patterns;
     std::unordered_map<AbstractAirObject*, std::queue<AbstractAirModelPattern*>> air_object_patterns;
 };
