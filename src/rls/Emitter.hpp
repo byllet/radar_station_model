@@ -9,7 +9,7 @@ class Emitter {
 public:
     Emitter();
     Emitter(Vec3 position);
-    Vec3& VectorRotation(Vec3 vec, double alpha, double beta, double gamma);
+    Vec3 VectorRotation(Vec3 vec, double alpha, double beta, double gamma);
     std::vector<Signal> SendSignals(size_t beams_count,
                                     Vec3 direction, 
                                     double solid_angle, 
