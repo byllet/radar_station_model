@@ -42,6 +42,7 @@ void RadioDetectionAndRangingModel::Update(double dt)
             else
                 signal.alive = false;
             detector.CheckCollision(signal, plane);
+            reciever.TakeSignal(signal);
         }
 }
 
