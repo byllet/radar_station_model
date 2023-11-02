@@ -2,12 +2,13 @@
 
 #include "air_models/Plane.hpp"
 #include "patterns/LinearPattern.hpp"
+#include <vector>
 
-Manager::Manager() : solver{this}
+Manager::Manager() : solver{this}, radar{{Vec3()}}
 {
-    flying_objs.push_back(new Plane({0, 0, 0}, {2, 2, 0}, {0, 0, 0}));
-    //flying_objs.push_back(new Plane({0, 0, 0}, {1, 1, 1}, {0, 0, 0}));
     patterns.push_back(new LinearPattern());
+    flying_objs.push_back(new Plane({0, 0, 0}, {2, 2, 0}, {0, 0, 0}));
+    signals.push_back(radar.Start());
 }
 
 Manager::~Manager()
@@ -21,9 +22,9 @@ Manager::~Manager()
     }
 }
 
-void Manager::Update(double time)
+void Manager::Update(double dt)
 {
-    solver.Update(time);
+    solver.Update(dt);
 }
 
 RadioDetectionAndRangingModel& Manager::GetRadar()
@@ -36,7 +37,7 @@ std::vector<AbstractAirObject*>& Manager::GetFlyingObjects()
     return flying_objs;
 }
 
-std::vector<Signal*>& Manager::GetSignals()
+std::vector<std::vector<Signal>>& Manager::GetSignals()
 {
     return signals;
 }

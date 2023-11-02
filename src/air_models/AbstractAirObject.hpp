@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include "../utils/Vec3.hpp"
 #include "../patterns/AbstractAirModelPattern.hpp"
 
@@ -12,6 +13,7 @@ public:
     Vec3& GetPosition();
     Vec3& GetVelocity();
     Vec3& GetAcceleretion();
+    double GetDetectionSize();
     virtual void Update(double dt) = 0;
     virtual ~AbstractAirObject();
 
@@ -20,4 +22,5 @@ protected:
     Vec3 position;
     Vec3 velocity;
     Vec3 acceleration;
+    double detection_size = 10.;
 };

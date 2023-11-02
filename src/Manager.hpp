@@ -14,13 +14,13 @@ public:
     Manager();
     ~Manager();
 
-    void Update(double time);
+    void Update(double dt);
 
     RadioDetectionAndRangingModel& GetRadar();
     std::vector<AbstractAirObject*>& GetFlyingObjects();
-    std::vector<Signal*>& GetSignals();
+    std::vector<std::vector<Signal>>& GetSignals();
 
-    AbstractAirModelPattern* GetChosedPattern(AbstractAirObject* air_object);
+    AbstractAirModelPattern* GetChosedPattern(AbstractAirObject* air_object); //pattern manager??
 
     void AddNewFlyingObject(AbstractAirObject* obj);
     void AddNewPattern(AbstractAirObject* obj, AbstractAirModelPattern* pattern);
@@ -29,7 +29,7 @@ private:
     Solver solver;
     RadioDetectionAndRangingModel radar;
     std::vector<AbstractAirObject*> flying_objs;
-    std::vector<Signal*> signals;
-    std::vector<AbstractAirModelPattern*> patterns; 
+    std::vector<std::vector<Signal>> signals;
+    std::vector<AbstractAirModelPattern*> patterns; //used patterns, what should be free 
     std::unordered_map<AbstractAirObject*, std::queue<AbstractAirModelPattern*>> air_object_patterns;
 };

@@ -7,7 +7,7 @@
 class Tracker {
 public:
     Tracker();
-    void TakeRawData(std::vector<Vec3> positions, double dt);
+    void TakeRawData(std::vector<Vec3> positions);
     
 private:
     std::vector<Aim> aims;

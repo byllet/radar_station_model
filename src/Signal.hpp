@@ -10,13 +10,13 @@ public:
     Signal();
     void Reflection();
     void Update(double dt);
-    
+    Vec3& GetPosition(); 
+
 public:
     bool alive = true;
     double lifetime = 0;
-    unsigned int power;
-    double duration;
     Vec3 position;
     Vec3 direction;
+    double duration;
     double velocity;
 };

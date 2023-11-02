@@ -4,15 +4,13 @@
 #include <vector>
 
 double EPSILON = 1;
-double T0;
+const double T0 = 0.1;
 
 Tracker::Tracker() : time{0} {}
 
-void Tracker::TakeRawData(std::vector<Vec3> positions, double dt)
+void Tracker::TakeRawData(std::vector<Vec3> positions)
 {
-    time += dt;
-    T0 = dt; 
-    std::vector<Vec3> p = positions;
+    time += T0;
     HandleExpectedPositions(positions);
     HandleRemainsPositions(positions);
     HandleUntrackedAims();
@@ -70,9 +68,9 @@ void Tracker::UpdateAim(Aim& aim, Vec3 measured_position)
 
 void Tracker::HandleRemainsPositions(std::vector<Vec3>& positions)
 {
-    for (auto position: positions) {
+    for (auto& position: positions) {
         bool should_create_new = true;
-        for (auto aim: aims) {
+        for (auto& aim: aims) {
             if ((position - aim.filtered_position).Length() < EPSILON) {
                 should_create_new = false;
                 break;

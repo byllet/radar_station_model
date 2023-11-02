@@ -29,3 +29,8 @@ AbstractAirModelPattern* AbstractAirObject::GetPattern()
 {
     return pattern;
 }
+
+double AbstractAirObject::GetDetectionSize()
+{
+    return detection_size;
+}

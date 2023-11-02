@@ -2,8 +2,8 @@
 
 #include "Emitter.hpp"
 #include "Reciever.hpp"
-#include "CollisionDetector.hpp"
 #include "../utils/Vec3.hpp"
+
 #include <vector>
 
 class RadioDetectionAndRangingModel {
@@ -11,13 +11,16 @@ public:
     RadioDetectionAndRangingModel();
     RadioDetectionAndRangingModel(Vec3 position);
     RadioDetectionAndRangingModel(RadioDetectionAndRangingModel& radar);
-    void Start();
+
+    std::vector<Signal> Start();
     void Update(double dt);
 
-public:
+    Reciever& GetReciever();
+    Emitter& GetEmitter();
+    Vec3 GetPosition();
+
+private:
     Vec3 position;
     Emitter emitter;
     Reciever reciever;
-    CollisionDetector detector;
-    std::vector<std::vector<Signal>> vec_vec;
 };

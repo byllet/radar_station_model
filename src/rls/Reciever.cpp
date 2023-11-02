@@ -1,28 +1,22 @@
 #include "Reciever.hpp"
 
 #include <math.h>
-
-double const EPS = 1.;
+#include <vector>
 
 Reciever::Reciever() {}
 
 Reciever::Reciever(Vec3 position) : position{position} {}
 
-void Reciever::TakeSignal(Signal signal)
+void Reciever::TakeSignal(std::vector<Signal>& signals)
 {
-    if (std::sqrt(
-    std::pow((signal.position.x - position.x), 2) +
-    std::pow((signal.position.y - position.y), 2) + 
-    std::pow((signal.position.z - position.z), 2)
-    ) < EPS)
-    {
-       SendSignalToTracker(signal);
-    }
+    SendSignalToTracker(signals);
 }
 
-void Reciever::SendSignalToTracker(Signal signal)
+void Reciever::SendSignalToTracker(std::vector<Signal>& signals)
 {
-    Vec3 predict_position;
-    predict_position = (-1) * signal.direction * (signal.duration / 2);
-    //send to tracker 
+    std::vector<Vec3> predicted_positions;
+    for (auto signal : signals) {
+        predicted_positions.push_back((-1) * signal.direction * (signal.duration / 2));
+    }
+    tracker.TakeRawData(predicted_positions);
 }
