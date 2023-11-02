@@ -1,5 +1,4 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#pragma once
 
 #include <vector>
 #include <cstring>
@@ -35,4 +34,3 @@ public:
 
 Vec3 operator* (const Vec3& vec, const Matrix& matr);       // Vec3 умножить на матрицу
 
-#endif // MATRIX_H

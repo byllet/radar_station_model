@@ -1,14 +1,12 @@
 #pragma once
 
 #include "../utils/Vec3.hpp"
+#include "../utils/Matrix.hpp"
 
 #include <vector>
+#include <cmath>
 
-Vec3 GetAvg(std::vector<Vec3>& vec)
-{
-    Vec3 avg;
-    for (auto v: vec) {
-        avg += v;
-    }
-    return avg * (1 / (double)vec.size());
-}
+Vec3 GetAvg(std::vector<Vec3>& vec);
+
+
+Vec3 VectorRotation(Vec3 vec, double alpha, double beta, double gamma);

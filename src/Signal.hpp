@@ -6,14 +6,17 @@ const double SIGNALSPEED = 3000.;
 
 class Signal {
 public:
-    Signal(Vec3 start_position, Vec3 direction);
+    Signal(Vec3 start_position, Vec3 direction, double velocity, double duration);
     Signal();
     void Reflection();
     void Update(double dt);
     
-private:
+public:
+    bool alive = true;
+    double lifetime = 0;
     unsigned int power;
-    unsigned int duration_time;
+    double duration;
     Vec3 position;
-    Vec3 direction; 
+    Vec3 direction;
+    double velocity;
 };

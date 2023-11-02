@@ -3,7 +3,7 @@
 #include "src/patterns/ChangeHeightPattern.hpp"
 #include "src/patterns/LinearPattern.hpp"
 
-int main() 
+int main()
 {
     Manager m;
     

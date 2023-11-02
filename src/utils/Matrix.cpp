@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Matrix.hpp"
 
 Matrix::Matrix()
@@ -100,18 +102,16 @@ void Matrix::operator =(const Matrix& matr)
 
 Vec3 Matrix::operator* (const Vec3& vec)
 {
-    Vec3 copy;
-    copy.setCoord((*this)[0][0] * vec.X() + (*this)[0][1] * vec.Y() + (*this)[0][2] * vec.Z(),
-                  (*this)[1][0] * vec.X() + (*this)[1][1] * vec.Y() + (*this)[1][2] * vec.Z(),
-                  (*this)[2][0] * vec.X() + (*this)[2][1] * vec.Y() + (*this)[2][2] * vec.Z());
+    Vec3 copy((*this)[0][0] * vec.x + (*this)[0][1] * vec.y + (*this)[0][2] * vec.z,
+                  (*this)[1][0] * vec.x + (*this)[1][1] * vec.y + (*this)[1][2] * vec.z,
+                  (*this)[2][0] * vec.x + (*this)[2][1] * vec.y + (*this)[2][2] * vec.z);
     return copy;
 }
 
 Vec3 operator* (const Vec3& vec, const Matrix& matr)
 {
-    Vec3 copy;
-    copy.setCoord(matr[0][0] * vec.X() + matr[0][1] * vec.Y() + matr[0][2] * vec.Z(),
-                  matr[1][0] * vec.X() + matr[1][1] * vec.Y() + matr[1][2] * vec.Z(),
-                  matr[2][0] * vec.X() + matr[2][1] * vec.Y() + matr[2][2] * vec.Z());
+    Vec3 copy(matr[0][0] * vec.x + matr[0][1] * vec.y + matr[0][2] * vec.z,
+                  matr[1][0] * vec.x + matr[1][1] * vec.y + matr[1][2] * vec.z,
+                  matr[2][0] * vec.x + matr[2][1] * vec.y + matr[2][2] * vec.z);
     return copy;
 }
