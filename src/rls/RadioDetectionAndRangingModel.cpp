@@ -24,9 +24,9 @@ RadioDetectionAndRangingModel::RadioDetectionAndRangingModel(RadioDetectionAndRa
     reciever = radar.reciever;
 }
 
-std::vector<Signal> RadioDetectionAndRangingModel::Start()
+std::vector<Signal> RadioDetectionAndRangingModel::Start(size_t beams)
 {
-    return emitter.SendSignals(1000, Vec3{1.,1., 0.}, PI / 2, DURATION);
+    return emitter.SendSignals(beams, Vec3{1.,1., 0.}, PI / 2, DURATION);
 }
 
 void RadioDetectionAndRangingModel::Update(double dt) {}

@@ -7,8 +7,8 @@
 Manager::Manager() : solver{this}, radar{{Vec3()}}
 {
     patterns.push_back(new LinearPattern());
-    flying_objs.push_back(new Plane({0, 0, 0}, {-1, -1, 0}, {0, 0, 0}));
-    signals.push_back(radar.Start());
+    flying_objs.push_back(new Plane({30, 1500, 0}, {20, 20, 0}, {0, 0, 0}));
+    signals_vec.push_back(radar.Start(100));
 }
 
 Manager::~Manager()
@@ -39,7 +39,7 @@ std::vector<AbstractAirObject*>& Manager::GetFlyingObjects()
 
 std::vector<std::vector<Signal>>& Manager::GetSignals()
 {
-    return signals;
+    return signals_vec;
 }
 
 AbstractAirModelPattern* Manager::GetChosedPattern(AbstractAirObject* air_object)

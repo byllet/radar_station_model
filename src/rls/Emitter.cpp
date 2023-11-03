@@ -48,8 +48,9 @@ std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction
     double alpha = (direction.x / std::abs(direction.x)) * std::abs(std::acos((init_direction.x * 0. + init_direction.y * direction.y + init_direction.z * direction.z) / (init_direction.Length() * sqrt(std::pow(direction.y, 2) + std::pow(direction.z, 2)))));
     double beta = (direction.y / std::abs(direction.y)) * std::acos((init_direction.x * direction.x + init_direction.y * 0. + init_direction.z * direction.z) / (init_direction.Length() * sqrt(std::pow(direction.x, 2) + std::pow(direction.z, 2))));
     double gamma = (direction.z / std::abs(direction.z)) * std::acos((init_direction.x * direction.x + init_direction.y * direction.y + init_direction.z * 0.) / (init_direction.Length() * sqrt(std::pow(direction.x, 2) + std::pow(direction.y, 2))));
-
     //std::cout << alpha << ' ' << beta << ' ' << gamma << std::endl;
+
+    //double gamma = 0.5;
 
     double x_coord; // нужны для заполнения телесного угла лучами
     double y_coord; //

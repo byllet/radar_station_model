@@ -29,7 +29,7 @@ private:
     Solver solver;
     RadioDetectionAndRangingModel radar;
     std::vector<AbstractAirObject*> flying_objs;
-    std::vector<std::vector<Signal>> signals;
+    std::vector<std::vector<Signal>> signals_vec;
     std::vector<AbstractAirModelPattern*> patterns; //used patterns, what should be free 
     std::unordered_map<AbstractAirObject*, std::queue<AbstractAirModelPattern*>> air_object_patterns;
 };

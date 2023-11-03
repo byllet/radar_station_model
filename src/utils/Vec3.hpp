@@ -5,6 +5,7 @@
 class Vec3 {
 public:
     Vec3(double x0, double y0, double z0);
+    Vec3(const Vec3& another);
     Vec3();
     Vec3& operator+= (const Vec3& vec);
     Vec3& operator-= (const Vec3& vec);

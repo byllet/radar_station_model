@@ -8,10 +8,10 @@ class Reciever {
 public:
     Reciever();
     Reciever(Vec3 position);
-    void TakeSignal(std::vector<Signal>& signals);
+    void TakeSignal(std::vector<Signal>& signals_vec);
     
 private:
-    void SendSignalToTracker(std::vector<Signal>& signal);
+    void SendSignalToTracker(std::vector<Signal>& signals_vec);
     Vec3 position;
     Tracker tracker;
 };

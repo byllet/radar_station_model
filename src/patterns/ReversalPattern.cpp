@@ -9,6 +9,12 @@ ReversalPattern::~ReversalPattern() {}
 
 Vec3 ReversalPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 {
+    if (patter_speed == 0.) {
+        patter_speed = velocity.Length();
+    }
+    velocity.Normalization();
+    velocity *= patter_speed;
+
     return RotateVec3ForTheFlat(velocity);
 }
 
@@ -16,13 +22,8 @@ Vec3 ReversalPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 Vec3 ReversalPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
 {
     //TODO: fix problem with uncontrolled acceleration 
-    // if (constspeed == 0.) {
-    //     constspeed = velocity.Length();
-    // }
-    // velocity = velocity.Normalization() * constspeed;
-    // 
     Vec3 new_acceleration = {velocity.y, -velocity.x, 0};
-    new_acceleration = new_acceleration / new_acceleration.Length();
+    new_acceleration.Normalization();
     double v = velocity.Length();
     new_acceleration *= (v * v / radius);
     return new_acceleration;

@@ -12,7 +12,7 @@ public:
     RadioDetectionAndRangingModel(Vec3 position);
     RadioDetectionAndRangingModel(RadioDetectionAndRangingModel& radar);
 
-    std::vector<Signal> Start();
+    std::vector<Signal> Start(size_t beams);
     void Update(double dt);
 
     Reciever& GetReciever();
