@@ -7,7 +7,7 @@
 Manager::Manager() : solver{this}, radar{{Vec3()}}
 {
     patterns.push_back(new LinearPattern());
-    flying_objs.push_back(new Plane({0, 0, 0}, {2, 2, 0}, {0, 0, 0}));
+    flying_objs.push_back(new Plane({0, 0, 0}, {-1, -1, 0}, {0, 0, 0}));
     signals.push_back(radar.Start());
 }
 

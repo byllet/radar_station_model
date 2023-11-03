@@ -22,7 +22,7 @@ std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction
 
     double spiral_coefficient = (h/2*PI*spiral_step) * sqrt(solid_angle/PI) * (1./sqrt(1 - solid_angle/PI)); // коэффициент k в параметрической формуле спирали: x = k*cos(t); y = k*sin(t)
 
-    std::cout << "MY" << (1./sqrt(1 - solid_angle/PI)) << std::endl;
+    //std::cout << "MY" << (1./sqrt(1 - solid_angle/PI)) << std::endl;
 
     double spiral_length = spiral_coefficient*((log(std::abs(sqrt(pow(2*PI*spiral_step,2) + 1) + 2*PI*spiral_step)) + 2*PI*spiral_step*sqrt(pow(2*PI*spiral_step,2) + 1))/2); // длина дуги спирали
 
@@ -30,18 +30,18 @@ std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction
 
     Vec3 init_direction{0., 0., h};
 
-    std::cout << "coef" << spiral_coefficient << std::endl;
-    std::cout << "len" << spiral_length << std::endl;
-    std::cout << "step" << step_for_points << std::endl;
+    // std::cout << "coef" << spiral_coefficient << std::endl;
+    // std::cout << "len" << spiral_length << std::endl;
+    // std::cout << "step" << step_for_points << std::endl;
 
 
 
-    std::cout << (init_direction.x * 0. + init_direction.y * direction.y + init_direction.z * direction.z) << std::endl;
-    std::cout << (init_direction.Length() * sqrt(std::pow(direction.y, 2) + std::pow(direction.z, 2))) << std::endl;
+    // std::cout << (init_direction.x * 0. + init_direction.y * direction.y + init_direction.z * direction.z) << std::endl;
+    // std::cout << (init_direction.Length() * sqrt(std::pow(direction.y, 2) + std::pow(direction.z, 2))) << std::endl;
 
 
 
-    std::cout << std::abs(std::acos((init_direction.x * 0. + init_direction.y * direction.y + init_direction.z * direction.z) / (init_direction.Length() * sqrt(std::pow(direction.y, 2) + std::pow(direction.z, 2))))) << std::endl;
+    // std::cout << std::abs(std::acos((init_direction.x * 0. + init_direction.y * direction.y + init_direction.z * direction.z) / (init_direction.Length() * sqrt(std::pow(direction.y, 2) + std::pow(direction.z, 2))))) << std::endl;
 
 
 
@@ -49,7 +49,7 @@ std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction
     double beta = (direction.y / std::abs(direction.y)) * std::acos((init_direction.x * direction.x + init_direction.y * 0. + init_direction.z * direction.z) / (init_direction.Length() * sqrt(std::pow(direction.x, 2) + std::pow(direction.z, 2))));
     double gamma = (direction.z / std::abs(direction.z)) * std::acos((init_direction.x * direction.x + init_direction.y * direction.y + init_direction.z * 0.) / (init_direction.Length() * sqrt(std::pow(direction.x, 2) + std::pow(direction.y, 2))));
 
-    std::cout << alpha << ' ' << beta << ' ' << gamma << std::endl;
+    //std::cout << alpha << ' ' << beta << ' ' << gamma << std::endl;
 
     double x_coord; // нужны для заполнения телесного угла лучами
     double y_coord; //

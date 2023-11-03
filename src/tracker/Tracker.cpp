@@ -44,6 +44,8 @@ void Tracker::UpdateAim(Aim& aim, Vec3 measured_position)
     double k = aim.k++;
     aim.update_time = time;
 
+    //CalculatePosition(aim, measured_position)
+
     if (k == 1) {
         aim.filtered_position = measured_position;
         return;

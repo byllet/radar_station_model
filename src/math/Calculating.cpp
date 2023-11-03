@@ -18,5 +18,15 @@ Vec3 VectorRotation(Vec3 vec, double alpha, double beta, double gamma)
     Matrix matrix(vec_matrix, 3, 3);
     vec = matrix * vec;
     return vec;
+}
 
+Vec3 RotateVec3ForTheFlat(Vec3 vector)
+{
+    if (vector.z == 0) {
+        return vector;
+    } else {
+        Vec3 rotated = {vector.x, vector.y, 0};
+        rotated.Normalization();
+        return rotated * vector.Length();
+    }
 }
