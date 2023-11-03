@@ -9,6 +9,9 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    change_height_pattern_parameters.cpp \
+    change_speed_pattern_parameters.cpp \
+    rev_pattern_parameters.cpp \
     glwidget.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -17,6 +20,8 @@ SOURCES += \
     ../src/air_models/AbstractAirObject.cpp \
     ../src/air_models/Plane.cpp \
     ../src/handler/Solver.cpp \
+    ../src/handler/CollisionsHandling.cpp \
+    ../src/math/Calculating.cpp \
     ../src/patterns/AbstractAirModelPattern.cpp \
     ../src/patterns/ChangeHeightPattern.cpp \
     ../src/patterns/ChangeSpeedPattern.cpp \
@@ -29,8 +34,12 @@ SOURCES += \
     ../src/tracker/Aim.cpp \
     ../src/tracker/Tracker.cpp \
     ../src/utils/Vec3.cpp \
+    ../src/utils/Matrix.cpp \
 
 HEADERS += \
+    change_height_pattern_parameters.h \
+    change_speed_pattern_parameters.h \
+    rev_pattern_parameters.h \
     glwidget.h \
     mainwindow.h \
     object_parameters.h \
@@ -40,8 +49,10 @@ HEADERS += \
     ../src/air_models/AbstractAirObject.hpp \
     ../src/air_models/Plane.hpp \
     ../src/handler/Solver.hpp \
+    ../src/handler/CollisionsHandling.hpp \
     ../src/math/ErrorHandler.hpp \
     ../src/math/ReflectiveErrorSignalHandler.hpp \
+    ../src/math/Calculating.hpp \
     ../src/patterns/AbstractAirModelPattern.hpp \
     ../src/patterns/ChangeHeightPattern.hpp \
     ../src/patterns/ChangeSpeedPattern.hpp \
@@ -54,10 +65,14 @@ HEADERS += \
     ../src/tracker/Aim.hpp \
     ../src/tracker/Tracker.hpp \
     ../src/utils/Vec3.hpp \
+    ../src/utils/Matrix.hpp \
 
 FORMS += \
+    change_height_pattern_parameters.ui \
+    change_speed_pattern_parameters.ui \
     mainwindow.ui \
-    object_parameters.ui
+    object_parameters.ui \
+    rev_pattern_parameters.ui
 
 
 # Default rules for deployment.

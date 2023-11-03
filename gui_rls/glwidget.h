@@ -10,6 +10,8 @@
 #include "texture_struct.h"
 #include "../src/Manager.hpp"
 #include "../src/air_models/Plane.hpp"
+#include "../src/Signal.hpp"
+#include "../src/utils/Vec3.hpp"
 
 class GLWidget : public QOpenGLWidget
 {
@@ -18,15 +20,16 @@ class GLWidget : public QOpenGLWidget
 public:
     GLWidget(QWidget *parent = Q_NULLPTR);
 
-    void drawCircle(GLfloat x, GLfloat y, GLfloat z, GLfloat radius);
-    void drawRLS(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, GLfloat y2, GLfloat z2, GLfloat x3, GLfloat y3, GLfloat z3, GLfloat x4, GLfloat y4, GLfloat z4);
-    void drawRay(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
-    void RLStextureInit();
-
     QTimer tmr;
     Manager manager;
 
 private:
+    void drawCircle(Vec3 psotion, GLfloat radius);
+    void drawRLS(Vec3 vertex_1, Vec3 vertex_2, Vec3 vertex_3, Vec3 vertex_4);
+    void drawRay(Vec3 start_position, Vec3 direction);
+    void RLStextureInit();
+    Vec3 normalCoords(Vec3 coords);
+
     Texture RLStex;
     void initializeGL();
     void paintGL();

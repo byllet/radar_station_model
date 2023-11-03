@@ -1,39 +1,36 @@
-#include <atomic>
-#include <cmath>
-#include <regex>
-
 #include "ReversalPattern.hpp"
+#include "../math/Calculating.hpp"
+
+#include <cmath>
 
 ReversalPattern::ReversalPattern(double radius) : AbstractAirModelPattern(), radius{radius} {}
 
 ReversalPattern::~ReversalPattern() {}
 
-void ReversalPattern::UpdateAcceleration(Vec3& acceleration, double dt)
-{
-    Vec3 new_acceleration;
-    double cycle_speed = std::sqrt(acceleration.Length() * radius) / radius;
-    double angle = cycle_speed * dt;
-    new_acceleration.x = acceleration.x * std::cos(angle) - acceleration.y * std::sin(angle);
-    new_acceleration.y = acceleration.x * std::sin(angle) + acceleration.y * std::cos(angle);
-    acceleration = new_acceleration;
-}
-
 Vec3 ReversalPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 {
-    if (velocity.z == 0) {
-        return velocity;
-    } else {
-        double alpha = std::atan(velocity.y / velocity.x);
-        double length = velocity.Length();
-        Vec3 new_velocity(length * std::cos(alpha), length * std::sin(alpha), 0);
-        return new_velocity;
-    }
+    return RotateVec3ForTheFlat(velocity);
 }
+
 
 Vec3 ReversalPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
 {
+    //TODO: fix problem with uncontrolled acceleration 
+    // if (constspeed == 0.) {
+    //     constspeed = velocity.Length();
+    // }
+    // velocity = velocity.Normalization() * constspeed;
+    // 
     Vec3 new_acceleration = {velocity.y, -velocity.x, 0};
-    new_acceleration = new_acceleration * (1 / new_acceleration.Length());
-    new_acceleration *= (velocity.Length() / radius);
+    new_acceleration = new_acceleration / new_acceleration.Length();
+    double v = velocity.Length();
+    new_acceleration *= (v * v / radius);
     return new_acceleration;
+}
+
+void ReversalPattern::CalculateDuration(Vec3 velocity, Vec3 acceleration) 
+{
+    if (duration == SHOULD_BE_CALC) {
+        duration = std::acos(-1) * radius / velocity.Length();
+    }
 }

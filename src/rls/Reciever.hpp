@@ -2,12 +2,16 @@
 
 #include "../tracker/Tracker.hpp"
 #include "../Signal.hpp"
+#include <vector>
 
 class Reciever {
 public:
-    Reciever() {}
-    void TakeSignal(Signal* s);
+    Reciever();
+    Reciever(Vec3 position);
+    void TakeSignal(std::vector<Signal>& signals_vec);
     
 private:
+    void SendSignalToTracker(std::vector<Signal>& signal);
+    Vec3 position;
     Tracker tracker;
 };

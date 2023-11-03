@@ -19,11 +19,16 @@ void GLWidget::paintGL()
     glClearColor(1, 1, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
-    drawRay(-0.6, -0.55, 0, 0);
     for (auto flyingObject: manager.GetFlyingObjects()) {
-        drawCircle(flyingObject->position.x, flyingObject->position.y, flyingObject->position.z, 0.1);
+        drawCircle(flyingObject->GetPosition(), 100);
     }
-    drawRLS(-0.9, -1, -1.5, -0.9, -0.6, -1.5, -0.65, -0.6, -1.5, -0.65, -1, -1.5);
+//    for (auto signal_vec: manager.GetSignals()) {
+//        for (auto single_signal: signal_vec) {
+//            drawRay(single_signal.position, single_signal.direction);
+//        }
+//    }
+//    drawRay( {0, 0, 0}, {300, 200, 0} );
+    drawRLS({-900, 1500, -1000}, {-900, 1500, -600}, {-650, 1500, -600}, {-650, 1500, -1000});
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -31,11 +36,11 @@ void GLWidget::resizeGL(int w, int h)
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-1, 1, -1, 1, 1, 3);
+    glFrustum(-1000, 1000, -1000, 1000, 1000, 3000);
 }
 
 void GLWidget::addNewObj(Plane* new_obj) {
-    manager.AddFlyingObject(new_obj);
+    manager.AddNewFlyingObject(new_obj);
     update();
 }
 
@@ -45,17 +50,18 @@ void GLWidget::nextFrame()
     update();
 }
 
-void GLWidget::drawCircle(GLfloat x, GLfloat y, GLfloat z, GLfloat radius) {
+void GLWidget::drawCircle(Vec3 position, GLfloat radius) {
     int triangleAmount = 50;
     GLfloat arr[(triangleAmount + 2) * 3];
-    arr[0] = x;
-    arr[1] = y;
-    arr[2] = z;
+    Vec3 position_coords = normalCoords(position);
+    arr[0] = position_coords.x;
+    arr[1] = position_coords.y;
+    arr[2] = position_coords.z;
     GLfloat twicePi = 2 * M_PI;
     for (int i = 1; i <= triangleAmount + 1; ++i) {
-        arr[i * 3] = x + (radius * cos(i * twicePi / triangleAmount));
-        arr[i * 3 + 1] = y + (radius * sin(i * twicePi / triangleAmount));
-        arr[i * 3 + 2] = z;
+        arr[i * 3] = position_coords.x + (radius * cos(i * twicePi / triangleAmount));
+        arr[i * 3 + 1] = position_coords.y + (radius * sin(i * twicePi / triangleAmount));
+        arr[i * 3 + 2] = position_coords.z;
     }
     glColor3f(0, 0, 0);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -64,13 +70,28 @@ void GLWidget::drawCircle(GLfloat x, GLfloat y, GLfloat z, GLfloat radius) {
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-
-
-void GLWidget::drawRLS(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, GLfloat y2, GLfloat z2, GLfloat x3, GLfloat y3, GLfloat z3, GLfloat x4, GLfloat y4, GLfloat z4)
+void GLWidget::drawRLS(Vec3 vertex_1, Vec3 vertex_2, Vec3 vertex_3, Vec3 vertex_4 )
 {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, RLStex.texture);
-    GLfloat arr[12] = { x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4 };
+    Vec3 vertex_coords_1 = normalCoords(vertex_1);
+    Vec3 vertex_coords_2 = normalCoords(vertex_2);
+    Vec3 vertex_coords_3 = normalCoords(vertex_3);
+    Vec3 vertex_coords_4 = normalCoords(vertex_4);
+    GLfloat arr[12];
+    arr[0] = vertex_coords_1.x;
+    arr[1] = vertex_coords_1.y;
+    arr[2] = vertex_coords_1.z;
+    arr[3] = vertex_coords_2.x;
+    arr[4] = vertex_coords_2.y;
+    arr[5] = vertex_coords_2.z;
+    arr[6] = vertex_coords_3.x;
+    arr[7] = vertex_coords_3.y;
+    arr[8] = vertex_coords_3.z;
+    arr[9] = vertex_coords_4.x;
+    arr[10] = vertex_coords_4.y;
+    arr[11] = vertex_coords_4.z;
+
     glColor3f(1, 1, 1);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -83,21 +104,33 @@ void GLWidget::drawRLS(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, GLfloat y
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
-void GLWidget::drawRay(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
+void GLWidget::drawRay(Vec3 start_position, Vec3 direction)
 {
-
-
-
-    GLfloat arr[4] = { x1, y1, x2, y2 };
+    GLfloat arr[6];
+    Vec3 start_coords = normalCoords(start_position);
+    Vec3 end_coords = normalCoords(start_position + direction);
+    arr[0] = start_coords.x;
+    arr[1] = start_coords.y;
+    arr[2] = start_coords.z;
+    arr[3] = end_coords.x;
+    arr[4] = end_coords.y;
+    arr[5] = end_coords.z;
     glColor3f(1, 0, 0);
     glEnableClientState(GL_VERTEX_ARRAY);
-    glEnable(GL_LINE_STIPPLE);
-    glLineStipple(1, 0x00ff);
     glLineWidth(3);
-    glVertexPointer(2, GL_FLOAT, 0, &arr);
+    glVertexPointer(3, GL_FLOAT, 0, &arr);
     glDrawArrays(GL_LINES, 0, 2);
-
     glDisableClientState(GL_VERTEX_ARRAY);
+
+
+//    glColor3f(1, 0, 0);
+//    glEnableClientState(GL_VERTEX_ARRAY);
+//    glEnable(GL_LINE_STIPPLE);
+//    glLineStipple(1, 0x00ff);
+//    glLineWidth(3);
+//    glVertexPointer(3, GL_FLOAT, 0, &arr);
+//    glDrawArrays(GL_LINES, 0, 2);
+//    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void GLWidget::RLStextureInit()
@@ -113,4 +146,12 @@ void GLWidget::RLStextureInit()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, (cnt == 4) ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
     glBindTexture(GL_TEXTURE_2D, 0);
     stbi_image_free(data);
+}
+
+Vec3 GLWidget::normalCoords(Vec3 coords)
+{
+    double x = coords.x;
+    double y = coords.z;
+    double z = -coords.y;
+    return Vec3(x,y,z);
 }

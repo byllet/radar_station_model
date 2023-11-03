@@ -1,23 +1,13 @@
-#pragma once
-
 #include "Manager.hpp"
-#include "handler/Solver.hpp"
+
 #include "air_models/Plane.hpp"
-#include "handler/Solver.hpp"
 #include "patterns/LinearPattern.hpp"
-#include "patterns/ChangeHeightPattern.hpp"
-#include "patterns/ReversalPattern.hpp"
+#include <vector>
 
-Manager::Manager()
+Manager::Manager() : solver{this}, radar{{Vec3()}}
 {
-//    flying_objs.push_back(new Plane({0, 0, -1.5}, {0.001, -0.003, -0.007}, {0, 0, 0}));
     patterns.push_back(new LinearPattern());
-    patterns.push_back(new ChangeHeightPattern(10));
-    patterns.push_back(new ReversalPattern(4));
-
-    patterns[0]->SetDuration(2);
-    q_patterns.push(patterns[0]);
-
+//    signals_vec.push_back(radar.Start());
 }
 
 Manager::~Manager()
@@ -31,14 +21,8 @@ Manager::~Manager()
     }
 }
 
-void Manager::AddFlyingObject(Plane* new_object)
-{
-    flying_objs.push_back(static_cast<AbstractAirObject*>(new_object));
-}
-
 void Manager::Update(double dt)
 {
-    Solver solver(this);
     solver.Update(dt);
 }
 
@@ -52,19 +36,32 @@ std::vector<AbstractAirObject*>& Manager::GetFlyingObjects()
     return flying_objs;
 }
 
-//std::vector<Signal*>& Manager::GetSignals()
-//{
-//    return signals;
-//}
-
-AbstractAirModelPattern* Manager::GetChosedPattern()
+std::vector<std::vector<Signal>>& Manager::GetSignals()
 {
-    if (q_patterns.front()->GetDuration() <= 0) {
-        q_patterns.pop();
-    }
-    
-    if (q_patterns.empty()) {
+    return signals_vec;
+}
+
+AbstractAirModelPattern* Manager::GetChosedPattern(AbstractAirObject* air_object)
+{
+    if (air_object_patterns[air_object].empty()) {
         return patterns[0];
     }
-    return q_patterns.front();
+    
+    if (air_object_patterns[air_object].front()->GetDuration() <= 0) {
+        air_object_patterns[air_object].pop();
+        return GetChosedPattern(air_object);
+    }
+
+    return air_object_patterns[air_object].front();
+}
+
+void Manager::AddNewFlyingObject(AbstractAirObject* obj) 
+{
+    flying_objs.push_back(obj);
+}
+
+void Manager::AddNewPattern(AbstractAirObject* obj, AbstractAirModelPattern* new_pattern)
+{
+    air_object_patterns[obj].push(new_pattern);
+    patterns.push_back(new_pattern);
 }

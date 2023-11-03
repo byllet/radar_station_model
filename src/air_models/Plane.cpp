@@ -10,11 +10,5 @@ Plane::~Plane() {}
 void Plane::Update(double dt)
 {
     velocity += acceleration * dt;
-    position +=  velocity + acceleration * (dt * dt / 2.); 
-    pattern->UpdateAcceleration(acceleration, dt); 
-    
-    // std::cout << "Plane position:: " << position;
-    // std::cout << " speed:: " << velocity;
-    // std::cout << " acceleration:: " << acceleration << std::endl;
-    //std::cout << position << ' ';
+    position +=  velocity * dt + acceleration * dt * dt / 2.; 
 }

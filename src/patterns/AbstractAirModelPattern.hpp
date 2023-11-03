@@ -2,13 +2,12 @@
 
 #include "../utils/Vec3.hpp"
 
-class AbstractAirObject;
+const double SHOULD_BE_CALC = 1000031.1;
 
 class AbstractAirModelPattern {
 public:
     AbstractAirModelPattern();
     virtual ~AbstractAirModelPattern();
-    virtual void UpdateAcceleration(Vec3& acceleration, double dt) = 0; 
 
     void ApplyPattern(Vec3& position, Vec3& velocity, Vec3& acceleration);
     void SetDuration(double duration);
@@ -17,5 +16,6 @@ public:
 protected:
     virtual Vec3 ChangeVelocity(Vec3 velocity, Vec3 acceleration) = 0;
     virtual Vec3 ChangeAcceleration(Vec3 velocity, Vec3 acceleration) = 0;
-    double duration;
+    virtual void CalculateDuration(Vec3 velocity, Vec3 acceleration) = 0;
+    double duration = SHOULD_BE_CALC;
 };

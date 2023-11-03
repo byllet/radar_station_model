@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../src/Manager.hpp"
+class Manager;
 
 class Solver {
 public:
@@ -12,5 +12,5 @@ private:
     void UpdateSignals(double dt);
     void UpdateRadar(double dt);
     void SolveCollisions();
-    Manager* manager = nullptr;
+    Manager* manager;
 };
