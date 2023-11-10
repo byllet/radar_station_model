@@ -4,7 +4,7 @@ Signal::Signal(Vec3 start_position, Vec3 direction, double speed, double duratio
                                                                                      direction{direction}, 
                                                                                      duration{duration} {}
 
-Signal::Signal() : position{Vec3{0., 0., 0.}} , direction{1., 1., 1} {}
+Signal::Signal() : position{Vec3{0., 0., 0.}} , direction{1., 1., 1}, duration{30.} {}
 
 void Signal::Reflection()
 {

@@ -22,5 +22,5 @@ protected:
     Vec3 position;
     Vec3 velocity;
     Vec3 acceleration;
-    double detection_size = 10.;
+    double detection_size = 40.;
 };
