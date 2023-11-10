@@ -37,6 +37,7 @@ SOURCES += \
     ../src/utils/Matrix.cpp \
 
 HEADERS += \
+    Camera.h \
     change_height_pattern_parameters.h \
     change_speed_pattern_parameters.h \
     rev_pattern_parameters.h \
@@ -44,7 +45,6 @@ HEADERS += \
     mainwindow.h \
     object_parameters.h \
     stb_image.h \
-    texture_struct.h \
     ../src/Manager.hpp \
     ../src/air_models/AbstractAirObject.hpp \
     ../src/air_models/Plane.hpp \
