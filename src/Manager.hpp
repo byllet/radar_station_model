@@ -25,6 +25,8 @@ public:
     void AddNewFlyingObject(AbstractAirObject* obj);
     void AddNewPattern(AbstractAirObject* obj, AbstractAirModelPattern* pattern);
 
+    void TakeNewSignals(std::vector<Signal>& signals_vec);
+
 private:
     Solver solver;
     RadioDetectionAndRangingModel radar;

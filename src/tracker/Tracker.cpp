@@ -3,7 +3,7 @@
 
 #include <vector>
 
-double EPSILON = 1;
+double EPSILON = 10;
 const double T0 = 0.1;
 
 Tracker::Tracker() : time{0} {}

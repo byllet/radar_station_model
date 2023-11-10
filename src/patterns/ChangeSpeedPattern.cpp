@@ -14,14 +14,15 @@ Vec3 ChangeSpeedPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 
 Vec3 ChangeSpeedPattern::ChangeAcceleration(Vec3 velocity, Vec3 acceleration)
 {
-    Vec3 new_acceleration {1.2 * 9.81, 1.2 * 9.81, 0};
+    double a = 9.81 * 1.2;
+    Vec3 new_acceleration = velocity.Normalization() * a * (velocity.Length() < desired_speed ? 1 : -1);
     return new_acceleration;
 }
 
 void ChangeSpeedPattern::CalculateDuration(Vec3 velocity, Vec3 acceleration) 
 {
     if (duration == SHOULD_BE_CALC) {
-        duration = (desired_speed - velocity.Length()) / acceleration.Length();
+        duration = std::abs(desired_speed - velocity.Length()) / acceleration.Length();
     }
 }
  

@@ -1,15 +1,16 @@
 #include "Solver.hpp"
 #include "../Manager.hpp"
 #include "CollisionsHandling.hpp"
+#include <vector>
 
 Solver::Solver(Manager* m) : manager{m} {}
 
 void Solver::Update(double dt)
 {
+    SolveCollisions();
     UpdateAirObjects(dt);
     UpdateSignals(dt);
     UpdateRadar(dt);
-    SolveCollisions();
 }
 
 void Solver::UpdateAirObjects(double dt)
@@ -35,7 +36,8 @@ void Solver::UpdateSignals(double dt)
 
 void Solver::UpdateRadar(double dt) 
 {
-    manager->GetRadar().Update(dt);
+    std::vector<Signal> s = manager->GetRadar().Update(dt);
+    manager->TakeNewSignals(s);
 }
 
 void Solver::SolveCollisions() 

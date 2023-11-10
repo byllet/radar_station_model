@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include "../utils/Vec3.hpp"
 #include "../Signal.hpp"
 

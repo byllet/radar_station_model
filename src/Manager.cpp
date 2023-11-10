@@ -7,8 +7,8 @@
 Manager::Manager() : solver{this}, radar{{Vec3()}}
 {
     patterns.push_back(new LinearPattern());
-    flying_objs.push_back(new Plane({30, 1500, 0}, {20, 20, 0}, {0, 0, 0}));
-    signals_vec.push_back(radar.Start(100));
+    //flying_objs.push_back(new Plane({0, 0, 0}, {100, 100, 100}, {0, 0, 0}));
+    signals_vec.push_back(radar.Start(1000));
 }
 
 Manager::~Manager()
@@ -65,4 +65,9 @@ void Manager::AddNewPattern(AbstractAirObject* obj, AbstractAirModelPattern* new
 {
     air_object_patterns[obj].push(new_pattern);
     patterns.push_back(new_pattern);
+}
+
+void Manager::TakeNewSignals(std::vector<Signal>& signals_v)
+{
+    signals_vec.push_back(signals_v);
 }
