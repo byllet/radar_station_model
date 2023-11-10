@@ -26,7 +26,7 @@ RadioDetectionAndRangingModel::RadioDetectionAndRangingModel(RadioDetectionAndRa
 
 std::vector<Signal> RadioDetectionAndRangingModel::Start()
 {
-    return emitter.SendSignals(1000, Vec3{1.,1., 0.}, PI / 2, DURATION);
+    return emitter.SendSignals(666, Vec3{0., 0., 1.}, PI * 7 / 6, DURATION);
 }
 
 void RadioDetectionAndRangingModel::Update(double dt) {}

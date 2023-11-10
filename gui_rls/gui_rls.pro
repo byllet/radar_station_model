@@ -37,7 +37,7 @@ SOURCES += \
     ../src/utils/Matrix.cpp \
 
 HEADERS += \
-    Camera.h \
+    camera.h \
     change_height_pattern_parameters.h \
     change_speed_pattern_parameters.h \
     rev_pattern_parameters.h \

@@ -24,17 +24,15 @@ void GLWidget::paintGL()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(cam.camera_position.x, cam.camera_position.y + cam.camera_height, cam.camera_position.z, cam.camera_position.x - sin(cam.camera_angleX / 180 * M_PI), cam.camera_position.y + cam.camera_height + (tan(cam.camera_angleY / 180 * M_PI)), cam.camera_position.z - cos(cam.camera_angleX / 180 * M_PI), 0, 1, 0);
-    drawRLS({-1900, 1500, -2000}, {-1900, 1500, -1300}, {-1400, 1500, -1300}, {-1400, 1500, -2000});
+    drawRLS({-2900, 1500, -3000}, {-2900, 1500, -2100}, {-2200, 1500, -2100}, {-2200, 1500, -3000});
     for (auto flyingObject: manager.GetFlyingObjects()) {
         drawObject(flyingObject->GetPosition(), flyingObject->GetVelocity());
     }
-//    for (auto signal_vec: manager.GetSignals()) {
-//        for (auto single_signal: signal_vec) {
-//            drawRay(single_signal.position, single_signal.direction);
-//        }
-//    }
-//    drawRay( {0, 0, 0}, {300, 200, 0} );
-
+    for (auto signal_vec: manager.GetSignals()) {
+        for (auto single_signal: signal_vec) {
+            drawRay(manager.GetRadar().GetPosition(), single_signal.position);
+        }
+    }
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -42,7 +40,7 @@ void GLWidget::resizeGL(int w, int h)
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-3000, 3000, -3000, 3000, 1000, 7000);
+    glFrustum(-5000, 5000, -5000, 5000, 1000, 11000);
 }
 
 void GLWidget::addNewObj(Plane* new_obj) {
@@ -195,7 +193,7 @@ void GLWidget::drawObject(Vec3 position, Vec3 velocity)
     } else if (V.x != 0 && V.y == 0 && V.z == 0) {
         n = Vec3(0, 0, abs(V.x)).Normalization() * objectSize.z;
     } else {
-        n = Vec3(1, V.y / V.x, -(V.x / V.z) - (V.y * V.y / V.x / V.z)).Normalization() * objectSize.z;
+        n = Vec3(1, -(V.y / V.x), -(V.x / V.z) - (V.y * V.y / V.x / V.z)).Normalization() * objectSize.z;
     }
 
     Vec3 shift = Vec3(n.y * V.z - n.z * V.y, - n.x * V.z + n.z * V.x, n.x * V.y - n.y * V.x).Normalization() * objectSize.y;
@@ -312,20 +310,23 @@ void GLWidget::drawObject(Vec3 position, Vec3 velocity)
     glutSwapBuffers();
 }
 
-void GLWidget::drawRay(Vec3 start_position, Vec3 direction)
+void GLWidget::drawRay(Vec3 start_position, Vec3 end_position)
 {
     GLfloat arr[6];
     Vec3 start_coords = openGLCoords(start_position);
-    Vec3 end_coords = openGLCoords(start_position + direction);
+    Vec3 end_coords = openGLCoords(end_position);
     arr[0] = start_coords.x;
     arr[1] = start_coords.y;
     arr[2] = start_coords.z;
     arr[3] = end_coords.x;
     arr[4] = end_coords.y;
     arr[5] = end_coords.z;
-    glColor3f(1, 0, 0);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_LINE_SMOOTH);
+    glColor4d(1, 0, 0, 0.99);
     glEnableClientState(GL_VERTEX_ARRAY);
-    glLineWidth(3);
+    glLineWidth(0.5);
     glVertexPointer(3, GL_FLOAT, 0, &arr);
     glDrawArrays(GL_LINES, 0, 2);
     glDisableClientState(GL_VERTEX_ARRAY);
@@ -335,7 +336,7 @@ void GLWidget::drawRay(Vec3 start_position, Vec3 direction)
 //    glEnableClientState(GL_VERTEX_ARRAY);
 //    glEnable(GL_LINE_STIPPLE);
 //    glLineStipple(1, 0x00ff);
-//    glLineWidth(3);
+//    glLineWidth(1);
 //    glVertexPointer(3, GL_FLOAT, 0, &arr);
 //    glDrawArrays(GL_LINES, 0, 2);
 //    glDisableClientState(GL_VERTEX_ARRAY);

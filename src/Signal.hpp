@@ -2,7 +2,7 @@
 
 #include "utils/Vec3.hpp"
 
-const double SIGNALSPEED = 3000.;
+const double SIGNALSPEED = 100.;
 
 class Signal {
 public:
@@ -17,6 +17,7 @@ public:
 
 public:
     bool alive = true;
+    bool is_reflected = false;
     double lifetime = 0;
     Vec3 position;
     Vec3 direction;

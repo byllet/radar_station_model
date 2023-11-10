@@ -14,6 +14,10 @@ public:
     Vec3& operator= (const Vec3& lhs);
     Vec3& Normalization();
     double Length();
+
+    double X();
+    double Y();
+    double Z();
     
 public:
     double x;

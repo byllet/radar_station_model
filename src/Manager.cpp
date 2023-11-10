@@ -4,10 +4,10 @@
 #include "patterns/LinearPattern.hpp"
 #include <vector>
 
-Manager::Manager() : solver{this}, radar{{Vec3()}}
+Manager::Manager() : solver{this}, radar{{Vec3(-2200, 1500, -2100)}}
 {
     patterns.push_back(new LinearPattern());
-//    signals_vec.push_back(radar.Start());
+    signals_vec.push_back(radar.Start());
 }
 
 Manager::~Manager()

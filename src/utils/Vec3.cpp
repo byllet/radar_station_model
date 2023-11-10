@@ -75,6 +75,21 @@ double Vec3::Length()
     return std::sqrt(x*x + y*y + z*z);
 }
 
+double Vec3::X()
+{
+    return x;
+}
+
+double Vec3::Y()
+{
+    return y;
+}
+
+double Vec3::Z()
+{
+    return z;
+}
+
 Vec3 operator* (const Vec3& vec, double k)
 {
     Vec3 res = vec; 

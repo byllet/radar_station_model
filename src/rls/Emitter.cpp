@@ -1,10 +1,9 @@
+#pragma once
+
 #include "Emitter.hpp"
-#include "../math/Calculating.hpp"
 
-#include <iostream>
-#include <cmath>
 
-const double PI = std::acos(-1);
+const double PI = 3.14159265359;
 
 Emitter::Emitter() {}
 
@@ -12,55 +11,81 @@ Emitter::Emitter(Vec3 position) : position{position} {}
 
 std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction, double solid_angle, double duration)
 {
-    solid_angle = solid_angle < 4*PI ? solid_angle : 4*PI;
+
+    direction.Normalization();
+
+    solid_angle = solid_angle < 1.9*PI ? solid_angle : 1.9*PI;
 
     std::vector<Signal> vec_signals(beams_count);
 
     double h = 1.;
 
-    int spiral_step = 100; // шаг спирали
+    int spiral_step = 2000; // шаг спирали
 
-    double spiral_coefficient = (h/2*PI*spiral_step) * sqrt(solid_angle/PI) * (1./sqrt(1 - solid_angle/PI)); // коэффициент k в параметрической формуле спирали: x = k*cos(t); y = k*sin(t)
+    double fi = acos(1. - solid_angle/(2*PI));
 
-    //std::cout << "MY" << (1./sqrt(1 - solid_angle/PI)) << std::endl;
+    double spiral_coefficient = (h * tan(fi))/(2 * PI * spiral_step); // коэффициент k в параметрической формуле спирали: x = k*cos(t); y = k*sin(t)
 
-    double spiral_length = spiral_coefficient*((log(std::abs(sqrt(pow(2*PI*spiral_step,2) + 1) + 2*PI*spiral_step)) + 2*PI*spiral_step*sqrt(pow(2*PI*spiral_step,2) + 1))/2); // длина дуги спирали
+    double spiral_length = spiral_coefficient*((log(abs(sqrt(pow(2*PI*spiral_step,2) + 1) + 2*PI*spiral_step)) + 2*PI*spiral_step*sqrt(pow(2*PI*spiral_step,2) + 1))/2); // длина дуги спирали
 
     double step_for_points = spiral_length / beams_count; // шаг, с которым точки будут расположены по спирали
 
-    Vec3 init_direction{0., 0., h};
-
-//     std::cout << "coef" << spiral_coefficient << std::endl;
-//     std::cout << "len" << spiral_length << std::endl;
-//     std::cout << "step" << step_for_points << std::endl;
-
-
-
-    // std::cout << (init_direction.x * 0. + init_direction.y * direction.y + init_direction.z * direction.z) << std::endl;
-    // std::cout << (init_direction.Length() * sqrt(std::pow(direction.y, 2) + std::pow(direction.z, 2))) << std::endl;
-
-
-
-    // std::cout << std::abs(std::acos((init_direction.x * 0. + init_direction.y * direction.y + init_direction.z * direction.z) / (init_direction.Length() * sqrt(std::pow(direction.y, 2) + std::pow(direction.z, 2))))) << std::endl;
-
-
-
-    double alpha = (direction.x / std::abs(direction.x)) * std::abs(std::acos((init_direction.x * 0. + init_direction.y * direction.y + init_direction.z * direction.z) / (init_direction.Length() * sqrt(std::pow(direction.y, 2) + std::pow(direction.z, 2)))));
-    double beta = (direction.y / std::abs(direction.y)) * std::acos((init_direction.x * direction.x + init_direction.y * 0. + init_direction.z * direction.z) / (init_direction.Length() * sqrt(std::pow(direction.x, 2) + std::pow(direction.z, 2))));
-    double gamma = (direction.z / std::abs(direction.z)) * std::acos((init_direction.x * direction.x + init_direction.y * direction.y + init_direction.z * 0.) / (init_direction.Length() * sqrt(std::pow(direction.x, 2) + std::pow(direction.y, 2))));
-
-    //std::cout << alpha << ' ' << beta << ' ' << gamma << std::endl;
-
-    double x_coord; // нужны для заполнения телесного угла лучами
-    double y_coord; //
-
-    for (std::size_t i = 0; i < beams_count; ++i) // строим спираль перпендикулярную плоскости XY в центре СК и затем переносим в местоположение радара
+    if (direction.X() == 0. && direction.Z() == 0.)
     {
-        x_coord = spiral_coefficient * i * step_for_points * std::cos(i * step_for_points);
-        y_coord = spiral_coefficient * i * step_for_points * std::sin(i * step_for_points);
+        double x_coord = 0.;
+        double z_coord = 0.;
 
-        vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, VectorRotation((Vec3{x_coord, y_coord ,1.}).Normalization(), alpha, beta, gamma) + position, SIGNALSPEED, duration);
+        for (size_t i = 0; i < beams_count; ++i) // строим спираль перпендикулярную плоскости XY в центре СК и затем переносим в местоположение радара
+        {
+            x_coord = spiral_coefficient * i * step_for_points * std::cos(i * step_for_points);
+            z_coord = spiral_coefficient * i * step_for_points * std::sin(i * step_for_points);
+
+            vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, Vec3{x_coord, h,  z_coord}.Normalization(), SIGNALSPEED, duration);
+
+            return vec_signals;
+
+        }
+    } else if (direction.Y() == 0. && direction.Z() == 0.)
+    {
+
+        double y_coord = 0.;
+        double z_coord = 0.;
+
+        for (size_t i = 0; i < beams_count; ++i) // строим спираль перпендикулярную плоскости XY в центре СК и затем переносим в местоположение радара
+        {
+            y_coord = spiral_coefficient * i * step_for_points * std::cos(i * step_for_points);
+            z_coord = spiral_coefficient * i * step_for_points * std::sin(i * step_for_points);
+
+            vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, Vec3{h, y_coord,  z_coord}.Normalization(), SIGNALSPEED, duration);
+        }
+
+        return vec_signals;
+
+    } else
+    {
+
+        Vec3 init_direction{0., 0., h};
+
+        double alpha = std::acos((init_direction.X() * 0. + init_direction.Y() * direction.Y() + init_direction.Z() * direction.Z()) / (init_direction.Length() * sqrt(std::pow(direction.Y(), 2) + std::pow(direction.Z(), 2))));
+        alpha = direction.Y() > 0 ? (2*PI - alpha) : alpha;
+
+        double beta = std::acos((init_direction.X() * direction.X() + init_direction.Y() * 0. + init_direction.Z() * direction.Z()) / (init_direction.Length() * sqrt(std::pow(direction.X(), 2) + std::pow(direction.Z(), 2))));
+        beta = direction.X() >= 0 ? beta : (2*PI - beta);
+
+        double gamma = 0;
+
+        double x_coord = 0.; // нужны для заполнения телесного угла лучами
+        double y_coord = 0.; //
+
+        for (size_t i = 0; i < beams_count; ++i) // строим спираль перпендикулярную плоскости XY в центре СК и затем переносим в местоположение радара
+        {
+            x_coord = spiral_coefficient * i * step_for_points * std::cos(i * step_for_points);
+            y_coord = spiral_coefficient * i * step_for_points * std::sin(i * step_for_points);
+
+            vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, VectorRotation((Vec3{x_coord, y_coord, h}), alpha, beta, gamma).Normalization(), SIGNALSPEED, duration);
+        }
+
+        return vec_signals;
+
     }
-
-    return vec_signals;
 }

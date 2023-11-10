@@ -6,8 +6,8 @@
 
 #include <vector>
 
-void CollisionSignalsWithPlanes(std::vector<std::vector<Signal>>& signals, 
+void CollisionSignalsWithPlanes(std::vector<std::vector<Signal>>& signals_vec,
                                  std::vector<AbstractAirObject*> flying_objects);
 
-void CollisionSignalWithReciever(std::vector<std::vector<Signal>>& signals, 
+void CollisionSignalWithReciever(std::vector<std::vector<Signal>>& signals_vec,
                                  RadioDetectionAndRangingModel& rls);

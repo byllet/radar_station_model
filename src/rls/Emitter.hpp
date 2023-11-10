@@ -1,8 +1,10 @@
 #pragma once
 
 #include <vector>
-#include "../utils/Vec3.hpp"
-#include "../Signal.hpp"
+#include "../src/Signal.hpp"
+#include "../src/utils/Matrix.hpp"
+#include <cmath>
+#include "../src/math/Calculating.hpp"
 
 class Emitter {
 public:
