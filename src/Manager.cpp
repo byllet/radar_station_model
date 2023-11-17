@@ -71,3 +71,13 @@ void Manager::TakeNewSignals(std::vector<Signal>& signals_v)
 {
     signals_vec.push_back(signals_v);
 }
+
+std::vector<Vec3> Manager::GetPositionsFromTracker()
+{
+    return radar.GetReciever().GetTracker().GetAimsPositions();
+}
+
+void Manager::SetTimeForRadar(double time)
+{
+    radar.SetDeparturePeriod(time);
+}

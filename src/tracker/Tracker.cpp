@@ -99,3 +99,12 @@ void Tracker::HandleUntrackedAims()
         }
     }
 }
+
+std::vector<Vec3> Tracker::GetAimsPositions()
+{
+    std::vector<Vec3> positions;
+    for (auto& aim : aims) {
+        positions.push_back(aim.extrapolated_position);
+    }
+    return positions;
+}

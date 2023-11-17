@@ -20,3 +20,8 @@ void Reciever::SendSignalToTracker(std::vector<Signal>& signals_vec)
     }
     tracker.TakeRawData(predicted_positions);
 }
+
+Tracker& Reciever::GetTracker()
+{
+    return tracker;
+}

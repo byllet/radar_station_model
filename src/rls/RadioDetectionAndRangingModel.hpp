@@ -13,14 +13,18 @@ public:
     RadioDetectionAndRangingModel(RadioDetectionAndRangingModel& radar);
 
     std::vector<Signal> Start(size_t beams);
-    std::vector<Signal> Update(double dt);
+    void Update(double dt, std::vector<Signal>& signal_vec);
 
     Reciever& GetReciever();
     Emitter& GetEmitter();
     Vec3 GetPosition();
 
+    void SetDeparturePeriod(double time);
+
 private:
     Vec3 position;
     Emitter emitter;
     Reciever reciever;
+    double departure_period = 3.;
+    double time = 0;
 };

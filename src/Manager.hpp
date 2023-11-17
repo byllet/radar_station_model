@@ -27,6 +27,10 @@ public:
 
     void TakeNewSignals(std::vector<Signal>& signals_vec);
 
+    std::vector<Vec3> GetPositionsFromTracker();
+
+    void SetTimeForRadar(double time); 
+
 private:
     Solver solver;
     RadioDetectionAndRangingModel radar;
