@@ -30,7 +30,12 @@ void GLWidget::paintGL()
     }
     for (auto signal_vec: manager.GetSignals()) {
         for (auto single_signal: signal_vec) {
-            drawRay(manager.GetRadar().GetPosition(), single_signal.position);
+            if (single_signal.IsReflected()) {
+                drawRay(single_signal.GetCollisionPosition(), single_signal.position, single_signal.IsReflected());
+            } else {
+                drawRay(manager.GetRadar().GetPosition(), single_signal.position, single_signal.IsReflected());
+            }
+
         }
     }
 }
@@ -217,100 +222,100 @@ void GLWidget::drawObject(Vec3 position, Vec3 velocity)
     Vec3 vertex_coords_24 = openGLCoords(vertex_24);
 
     //right
-//    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
     glBegin(GL_POLYGON);
-    glColor3f( 0, 1, 0 );
-//    glTexCoord2f(0, 1);
+//    glColor3f( 0, 1, 0 );
+    glTexCoord2f(0, 1);
     glVertex3f(  vertex_coords_11.x, vertex_coords_11.y, vertex_coords_11.z );
-//    glTexCoord2f(0, 0);
+    glTexCoord2f(0, 0);
     glVertex3f(  vertex_coords_12.x, vertex_coords_12.y, vertex_coords_12.z );
-//    glTexCoord2f(1, 0);
+    glTexCoord2f(1, 0);
     glVertex3f( vertex_coords_13.x, vertex_coords_13.y, vertex_coords_13.z );
-//    glTexCoord2f(1, 1);
+    glTexCoord2f(1, 1);
     glVertex3f( vertex_coords_14.x, vertex_coords_14.y, vertex_coords_14.z );
     glEnd();
-//    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     //front
-//    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glBindTexture(GL_TEXTURE_2D, texture[2]);
     glBegin(GL_POLYGON);
-    glColor3f( 1, 0, 0);
-//    glTexCoord2f(0, 1);
+//    glColor3f( 1, 0, 0);
+    glTexCoord2f(0, 1);
     glVertex3f(  vertex_coords_14.x, vertex_coords_14.y, vertex_coords_14.z );
-//    glTexCoord2f(0, 0);
+    glTexCoord2f(0, 0);
     glVertex3f(  vertex_coords_13.x, vertex_coords_13.y, vertex_coords_13.z );
-//    glTexCoord2f(1, 0);
+    glTexCoord2f(1, 0);
     glVertex3f( vertex_coords_23.x, vertex_coords_23.y, vertex_coords_23.z );
-//    glTexCoord2f(1, 1);
+    glTexCoord2f(1, 1);
     glVertex3f( vertex_coords_24.x, vertex_coords_24.y, vertex_coords_24.z );
     glEnd();
-//    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     //back
-//    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glBindTexture(GL_TEXTURE_2D, texture[2]);
     glBegin(GL_POLYGON);
-    glColor3f( 0, 0, 0 );
-//    glTexCoord2f(0, 1);
+//    glColor3f( 0, 0, 0 );
+    glTexCoord2f(0, 1);
     glVertex3f(  vertex_coords_21.x, vertex_coords_21.y, vertex_coords_21.z );
-//    glTexCoord2f(0, 0);
+    glTexCoord2f(0, 0);
     glVertex3f(  vertex_coords_22.x, vertex_coords_22.y, vertex_coords_22.z );
-//    glTexCoord2f(1, 0);
+    glTexCoord2f(1, 0);
     glVertex3f( vertex_coords_12.x, vertex_coords_12.y, vertex_coords_12.z );
-//    glTexCoord2f(1, 1);
+    glTexCoord2f(1, 1);
     glVertex3f( vertex_coords_11.x, vertex_coords_11.y, vertex_coords_11.z );
     glEnd();
-//    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     //top
-//    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
     glBegin(GL_POLYGON);
-    glColor3f( 1, 1, 0 );
-//    glTexCoord2f(1, 1);
+//    glColor3f( 1, 1, 0 );
+    glTexCoord2f(1, 1);
     glVertex3f(  vertex_coords_12.x, vertex_coords_12.y, vertex_coords_12.z );
-//    glTexCoord2f(0, 1);
+    glTexCoord2f(0, 1);
     glVertex3f(  vertex_coords_22.x, vertex_coords_22.y, vertex_coords_22.z );
-//    glTexCoord2f(0, 0);
+    glTexCoord2f(0, 0);
     glVertex3f( vertex_coords_23.x, vertex_coords_23.y, vertex_coords_23.z );
-//    glTexCoord2f(1, 0);
+    glTexCoord2f(1, 0);
     glVertex3f( vertex_coords_13.x, vertex_coords_13.y, vertex_coords_13.z );
     glEnd();
-//    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     //left
-//    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
     glBegin(GL_POLYGON);
-    glColor3f( 0, 0, 1 );
-//    glTexCoord2f(0, 1);
+//    glColor3f( 0, 0, 1 );
+    glTexCoord2f(0, 1);
     glVertex3f(  vertex_coords_21.x, vertex_coords_21.y, vertex_coords_21.z );
-//    glTexCoord2f(0, 0);
+    glTexCoord2f(0, 0);
     glVertex3f(  vertex_coords_22.x, vertex_coords_22.y, vertex_coords_22.z );
-//    glTexCoord2f(1, 0);
+    glTexCoord2f(1, 0);
     glVertex3f( vertex_coords_23.x, vertex_coords_23.y, vertex_coords_23.z );
-//    glTexCoord2f(1, 1);
+    glTexCoord2f(1, 1);
     glVertex3f( vertex_coords_24.x, vertex_coords_24.y, vertex_coords_24.z );
     glEnd();
-//    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     //bot
-//    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
     glBegin(GL_POLYGON);
-    glColor3f( 0, 1, 1 );
-//    glTexCoord2f(1, 1);
+//    glColor3f( 0, 1, 1 );
+    glTexCoord2f(1, 1);
     glVertex3f(  vertex_coords_11.x, vertex_coords_11.y, vertex_coords_11.z );
-//    glTexCoord2f(0, 1);
+    glTexCoord2f(0, 1);
     glVertex3f(  vertex_coords_21.x, vertex_coords_21.y, vertex_coords_21.z );
-//    glTexCoord2f(0, 0);
+    glTexCoord2f(0, 0);
     glVertex3f( vertex_coords_24.x, vertex_coords_24.y, vertex_coords_24.z );
-//    glTexCoord2f(1, 0);
+    glTexCoord2f(1, 0);
     glVertex3f( vertex_coords_14.x, vertex_coords_14.y, vertex_coords_14.z );
     glEnd();
-//    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     glFlush();
     glutSwapBuffers();
 }
 
-void GLWidget::drawRay(Vec3 start_position, Vec3 end_position)
+void GLWidget::drawRay(Vec3 start_position, Vec3 end_position, bool is_reflected)
 {
     GLfloat arr[6];
     Vec3 start_coords = openGLCoords(start_position);
@@ -324,7 +329,11 @@ void GLWidget::drawRay(Vec3 start_position, Vec3 end_position)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_LINE_SMOOTH);
-    glColor4d(1, 0, 0, 0.99);
+    if (is_reflected) {
+        glColor4d(0, 1, 0, 0.4);
+    } else {
+        glColor4d(1, 0, 0, 0.4);
+    }
     glEnableClientState(GL_VERTEX_ARRAY);
     glLineWidth(0.5);
     glVertexPointer(3, GL_FLOAT, 0, &arr);

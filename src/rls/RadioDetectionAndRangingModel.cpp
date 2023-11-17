@@ -1,7 +1,7 @@
 #include "RadioDetectionAndRangingModel.hpp"
 
 const double PI = 3.14159265359;
-const double DURATION = 30.;
+const double DURATION = 6.;
 
 RadioDetectionAndRangingModel::RadioDetectionAndRangingModel()
 {

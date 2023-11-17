@@ -24,12 +24,19 @@ void Solver::UpdateAirObjects(double dt)
 
 void Solver::UpdateSignals(double dt) 
 {
+    bool is_signals_alive = true;
     for (auto& signals_vector: manager->GetSignals())
-    for (auto signal = signals_vector.rbegin(); signal != signals_vector.rend(); ++signal) {
-        signal->Update(dt);
-        if (!signal->alive) {
-            signals_vector.erase(signal.base());
+        for (auto signal_iter = 0; signal_iter < signals_vector.size(); ++signal_iter) {
+        signals_vector[signal_iter].Update(dt);
+        if (!signals_vector[signal_iter].alive) {
+            is_signals_alive = false;
+//            signals_vector.erase(signals_vector.begin() + signal_iter);
+            break;
         }
+    }
+    if (!is_signals_alive) {
+        manager->GetSignals().erase(manager->GetSignals().begin());
+        manager->GetSignals().push_back(manager->GetRadar().Start());
     }
 }
 

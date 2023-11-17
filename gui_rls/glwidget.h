@@ -26,7 +26,7 @@ public:
 private:
     void drawCircle(Vec3 psotion, GLfloat radius);
     void drawRLS(Vec3 vertex_1, Vec3 vertex_2, Vec3 vertex_3, Vec3 vertex_4);
-    void drawRay(Vec3 start_position, Vec3 direction);
+    void drawRay(Vec3 start_position, Vec3 direction, bool is_reflected);
     void drawObject(Vec3 position, Vec3 velocity);
     void RLStextureInit();
     Vec3 openGLCoords(Vec3 coords);

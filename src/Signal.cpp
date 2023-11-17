@@ -9,6 +9,8 @@ Signal::Signal() : position{Vec3{0., 0., 0.}} , direction{1., 1., 1} {}
 void Signal::Reflection()
 {
     direction = -1 * direction;
+    is_reflected = true;
+    collision_position = position;
 }
 
 void Signal::Update(double dt)
@@ -20,4 +22,14 @@ void Signal::Update(double dt)
     } else {
         alive = false;
     }
+}
+
+Vec3& Signal::GetCollisionPosition()
+{
+    return collision_position;
+}
+
+bool Signal::IsReflected()
+{
+    return is_reflected;
 }

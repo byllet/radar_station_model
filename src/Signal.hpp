@@ -11,8 +11,10 @@ public:
     void Reflection();
     void Update(double dt);
     Vec3& GetPosition();
+    Vec3& GetCollisionPosition();
     Vec3& GetDirection();
     bool IsAlive();
+    bool IsReflected();
     
 
 public:
@@ -21,5 +23,6 @@ public:
     double lifetime = 0;
     Vec3 position;
     Vec3 direction;
+    Vec3 collision_position;
     double duration;
 };
