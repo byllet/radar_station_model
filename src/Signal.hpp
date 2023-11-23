@@ -6,10 +6,10 @@ const double SIGNALSPEED = 50.;
 
 class Signal {
 public:
-    Signal(Vec3 start_position, Vec3 direction, double velocity, double duration);
+    Signal(Vec3 start_position, Vec3 direction, double power);
     Signal();
     
-    void Reflection();
+    void Reflection(/*double EPR*/);
     void Update(double dt);
 
     Vec3& GetPosition();
@@ -20,6 +20,7 @@ public:
     bool alive = true;
     Vec3 position;
     Vec3 direction;
+    double velocity = SIGNALSPEED;
     double lifetime;
-    double duration;
+    double power;
 };

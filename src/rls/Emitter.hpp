@@ -12,7 +12,7 @@ public:
     std::vector<Signal> SendSignals(size_t beams_count,
                                     Vec3 direction, 
                                     double solid_angle, 
-                                    double duration);
+                                    double power);
 private:
     Vec3 position;
 };
