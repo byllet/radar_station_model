@@ -32,9 +32,13 @@ std::vector<Signal> RadioDetectionAndRangingModel::Start(size_t beams)
     return emitter.SendSignals(beams, Vec3{1., 1., 1.}, PI * 1.5, power);
 }
 
-std::vector<Signal> RadioDetectionAndRangingModel::Update(double dt)
+void RadioDetectionAndRangingModel::Update(double dt, std::vector<Signal>& signal_vec)
 {
-    return emitter.SendSignals(1000, Vec3{1., 1., 1.}, 1.5 * PI, power);
+    time += dt;
+    if (time > departure_period) {
+        signal_vec = emitter.SendSignals(1000, Vec3{1., 1., 1.}, 1.5 * PI, power);
+        time = 0;
+    }
 }
 
 Reciever& RadioDetectionAndRangingModel::GetReciever()
@@ -50,4 +54,9 @@ Emitter& RadioDetectionAndRangingModel::GetEmitter()
 Vec3 RadioDetectionAndRangingModel::GetPosition()
 {
     return position;
+}
+
+void RadioDetectionAndRangingModel::SetDeparturePeriod(double time)
+{
+    departure_period = time;
 }
