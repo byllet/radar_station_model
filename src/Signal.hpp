@@ -3,13 +3,14 @@
 #include "utils/Vec3.hpp"
 
 const double SIGNALSPEED = 50.;
+const double NU = 0.95;
 
 class Signal {
 public:
     Signal(Vec3 start_position, Vec3 direction, double power);
     Signal();
     
-    void Reflection(/*double EPR*/);
+    void Reflection(double EPR);
     void Update(double dt);
 
     Vec3& GetPosition();
@@ -23,4 +24,5 @@ public:
     double velocity = SIGNALSPEED;
     double lifetime;
     double power;
+    double nu = NU;
 };

@@ -4,7 +4,7 @@
 #include "patterns/LinearPattern.hpp"
 #include <vector>
 
-Manager::Manager() : solver{this}, radar{{Vec3()}, 1000.}
+Manager::Manager() : solver{this}, radar{{Vec3()}, 10000.}
 {
     patterns.push_back(new LinearPattern());
     //flying_objs.push_back(new Plane({0, 0, 0}, {100, 100, 100}, {0, 0, 0}));

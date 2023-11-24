@@ -1,6 +1,6 @@
 #include "Signal.hpp"
 
-const double MIN_POWER = 0.;
+const double MIN_POWER = 1.;
 
 Signal::Signal(Vec3 start_position, Vec3 direction, double power) : position{start_position}, 
                                                                     direction{direction}, 
@@ -8,16 +8,15 @@ Signal::Signal(Vec3 start_position, Vec3 direction, double power) : position{sta
 
 Signal::Signal() : position{Vec3{0., 0., 0.}} , direction{Vec3{1., 1., 1}}, power{30.} {}
 
-void Signal::Reflection(/*double EPR*/)
+void Signal::Reflection(double EPR)
 {
     direction = -1 * direction;
-    //power *= EPR;
+    power *= EPR;
 }
 
 void Signal::Update(double dt)
 {
-    power -= 1;
-
+    power *= nu;
     position += direction * SIGNALSPEED;
     lifetime += dt;
     if (power > MIN_POWER)
