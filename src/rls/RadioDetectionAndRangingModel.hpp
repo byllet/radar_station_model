@@ -9,7 +9,7 @@
 class RadioDetectionAndRangingModel {
 public:
     RadioDetectionAndRangingModel();
-    RadioDetectionAndRangingModel(Vec3 position);
+    RadioDetectionAndRangingModel(Vec3 position, double power);
     RadioDetectionAndRangingModel(RadioDetectionAndRangingModel& radar);
 
     std::vector<Signal> Start(size_t beams);
@@ -25,6 +25,7 @@ private:
     Vec3 position;
     Emitter emitter;
     Reciever reciever;
+    double power;
     double departure_period = 3.;
     double time = 0;
 };

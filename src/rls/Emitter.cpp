@@ -10,7 +10,7 @@ Emitter::Emitter() {}
 
 Emitter::Emitter(Vec3 position) : position{position} {}
 
-std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction, double solid_angle, double duration)
+std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction, double solid_angle, double power)
 {
 
     direction.Normalization();
@@ -39,7 +39,7 @@ std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction
             x_coord = spiral_coefficient * i * step_for_points * std::cos(i * step_for_points);
             z_coord = spiral_coefficient * i * step_for_points * std::sin(i * step_for_points);
 
-            vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, Vec3{x_coord, h,  z_coord}.Normalization(), SIGNALSPEED, duration);
+            vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, Vec3{x_coord, h,  z_coord}.Normalization(), power/beams_count);
 
             return vec_signals;
 
@@ -53,7 +53,7 @@ std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction
             y_coord = spiral_coefficient * i * step_for_points * std::cos(i * step_for_points);
             z_coord = spiral_coefficient * i * step_for_points * std::sin(i * step_for_points);
 
-            vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, Vec3{h, y_coord,  z_coord}.Normalization(), SIGNALSPEED, duration);
+            vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, Vec3{h, y_coord,  z_coord}.Normalization(), power/beams_count);
         }
 
         return vec_signals;
@@ -77,7 +77,7 @@ std::vector<Signal> Emitter::SendSignals(std::size_t beams_count, Vec3 direction
             x_coord = spiral_coefficient * i * step_for_points * std::cos(i * step_for_points);
             y_coord = spiral_coefficient * i * step_for_points * std::sin(i * step_for_points);
 
-            vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, VectorRotation((Vec3{x_coord, y_coord, h}), alpha, beta, gamma).Normalization(), SIGNALSPEED, duration);
+            vec_signals[i] = Signal(Vec3{0., 0., 0.} + position, VectorRotation((Vec3{x_coord, y_coord, h}), alpha, beta, gamma).Normalization(), power/beams_count);
         }
 
         return vec_signals;
