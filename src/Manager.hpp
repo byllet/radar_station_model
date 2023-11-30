@@ -28,6 +28,7 @@ public:
     void TakeNewSignals(std::vector<Signal>& signals_vec);
 
     std::vector<Vec3> GetPositionsFromTracker();
+    std::vector<Aim> GetAims();
 
     void SetTimeForRadar(double time); 
 

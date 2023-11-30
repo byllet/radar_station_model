@@ -11,6 +11,6 @@ private:
     void UpdateAirObjects(double dt);
     void UpdateSignals(double dt);
     void UpdateRadar(double dt);
-    void SolveCollisions();
+    void SolveCollisions(double dt);
     Manager* manager;
 };

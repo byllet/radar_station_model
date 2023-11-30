@@ -93,7 +93,7 @@ void Tracker::CreateNewAim(Vec3 position)
 void Tracker::HandleUntrackedAims()
 {
     for (size_t i = 0; i < aims.size(); ++i) {
-        if (time - aims[i].update_time > T0 * 3) {
+        if (time - aims[i].update_time > T0 * 10) {
             archive.push_back(aims[i]);
             aims.erase(aims.begin() + i);
         }
@@ -103,8 +103,11 @@ void Tracker::HandleUntrackedAims()
 std::vector<Vec3> Tracker::GetAimsPositions()
 {
     std::vector<Vec3> positions;
-    for (auto& aim : aims) {
-        positions.push_back(aim.extrapolated_position);
+    // for (auto& aim : aims) {
+    //     positions.push_back(aim.filtered_position);
+    // }
+    if (!aims.empty()) {
+        positions.push_back(aims[0].filtered_position);
     }
     return positions;
 }

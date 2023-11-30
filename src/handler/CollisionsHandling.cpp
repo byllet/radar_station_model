@@ -16,15 +16,15 @@ void CollisionSignalsWithPlanes(std::vector<std::vector<Signal>>& signals_vec,
 }
                                  
 void CollisionSignalWithReciever(std::vector<std::vector<Signal>>& signals_vec, 
-                                 RadioDetectionAndRangingModel& rls)
+                                 RadioDetectionAndRangingModel& rls, double dt)
 {
     std::vector<Signal> returned_signals;
     for (auto& signals_vector: signals_vec)
     for (auto& signal: signals_vector) {
-        if ((rls.GetPosition() - signal.position).Length() < EPSILON) {
+        if (((rls.GetPosition() - signal.position).Length() < EPSILON) && signal.reflected) {
             returned_signals.push_back(signal);
         }
     }
 
-    rls.GetReciever().TakeSignal(returned_signals);
+    rls.GetReciever().TakeSignal(returned_signals, dt);
 }

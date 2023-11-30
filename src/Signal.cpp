@@ -10,6 +10,7 @@ Signal::Signal() : position{Vec3{0., 0., 0.}} , direction{Vec3{1., 1., 1}}, powe
 
 void Signal::Reflection(/*double EPR*/)
 {
+    reflected = true;
     direction = -1 * direction;
     //power *= EPR;
 }
@@ -17,11 +18,15 @@ void Signal::Reflection(/*double EPR*/)
 void Signal::Update(double dt)
 {
     power -= 1;
-
-    position += direction * SIGNALSPEED;
     lifetime += dt;
-    if (power > MIN_POWER)
-        position += direction;
-    else
+    if (power > MIN_POWER) {
+        position += direction * SIGNALSPEED;
+    } else {
         alive = false;
+    }
+}
+
+bool Signal::IsReflected()
+{
+    return reflected;
 }

@@ -9,11 +9,11 @@ ReversalPattern::~ReversalPattern() {}
 
 Vec3 ReversalPattern::ChangeVelocity(Vec3 velocity, Vec3 acceleration)
 {
-    if (patter_speed == 0.) {
-        patter_speed = velocity.Length();
+    if (pattern_speed == 0.) {
+        pattern_speed = velocity.Length();
     }
     velocity.Normalization();
-    velocity *= patter_speed;
+    velocity *= pattern_speed;
 
     return RotateVec3ForTheFlat(velocity);
 }

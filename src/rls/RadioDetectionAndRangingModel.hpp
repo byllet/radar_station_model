@@ -26,6 +26,6 @@ private:
     Emitter emitter;
     Reciever reciever;
     double power;
-    double departure_period = 3.;
+    double departure_period = 1.;
     double time = 0;
 };

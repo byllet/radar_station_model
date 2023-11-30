@@ -7,7 +7,7 @@ Solver::Solver(Manager* m) : manager{m} {}
 
 void Solver::Update(double dt)
 {
-    SolveCollisions();
+    SolveCollisions(dt);
     UpdateAirObjects(dt);
     UpdateSignals(dt);
     UpdateRadar(dt);
@@ -48,8 +48,8 @@ void Solver::UpdateRadar(double dt)
     }
 }
 
-void Solver::SolveCollisions() 
+void Solver::SolveCollisions(double dt) 
 {
     CollisionSignalsWithPlanes(manager->GetSignals(), manager->GetFlyingObjects());
-    CollisionSignalWithReciever(manager->GetSignals(), manager->GetRadar());
+    CollisionSignalWithReciever(manager->GetSignals(), manager->GetRadar(), dt);
 }
