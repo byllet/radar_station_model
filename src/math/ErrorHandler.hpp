@@ -1,17 +1,27 @@
 #include <vector>
 #include <cmath>
+#include "../utils/Vec3.hpp"
 
 class ErrorHandler {
 public:
     ErrorHandler();
-    ErrorHandler(size_t dt, double sigma_0);
-    std::vector<double> GetAQE(double alpha, double beta);
-    
+    ErrorHandler(double sigma_0);
+    void CalculateAQE(double alpha, double beta);
+    void UpdateAverageSigma(double new_sigma_coord, double new_sigma_velocity);
+    double GetSigmaCoord();
+    double GetSigmaVelocity();
+    double GetDeltaCoord(Vec3 real_coord, Vec3 estimated_coord);
+    double GetDeltaVelocity(Vec3 real_velocity, Vec3 estimated_velocity);
 private:
     size_t dt = 0;
+    double K_exstr = 0;
+    double K;
     double sigma_0;
     double sigma_coord_prev;
-    double sigma_velocity_prev;
     double sigma_coord_curr;
+    double sigma_velocity_prev;
     double sigma_velocity_curr;
+    double sigma_exstr_coord;
+    double average_sigma_coord;
+    double average_sigma_velocity;
 };

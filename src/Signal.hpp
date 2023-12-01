@@ -16,9 +16,11 @@ public:
     Vec3& GetPosition();
     Vec3& GetDirection();
     bool IsAlive();
+    bool IsReflected();
 
 public:
     bool alive = true;
+    bool reflected = false;
     Vec3 position;
     Vec3 direction;
     double velocity = SIGNALSPEED;

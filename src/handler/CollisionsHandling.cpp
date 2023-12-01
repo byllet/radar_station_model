@@ -21,7 +21,7 @@ void CollisionSignalWithReciever(std::vector<std::vector<Signal>>& signals_vec,
     std::vector<Signal> returned_signals;
     for (auto& signals_vector: signals_vec)
     for (auto& signal: signals_vector) {
-        if ((rls.GetPosition() - signal.position).Length() < EPSILON) {
+        if (((rls.GetPosition() - signal.position).Length() < EPSILON) && (signal.reflected == true)) {
             returned_signals.push_back(signal);
         }
     }
