@@ -19,6 +19,11 @@ Vec3& AbstractAirObject::GetAcceleretion()
     return acceleration;
 }
 
+double AbstractAirObject::GetEPR()
+{
+    return EPR;
+}
+
 void AbstractAirObject::SetPattern(AbstractAirModelPattern* p)
 {
     pattern = p;

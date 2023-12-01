@@ -9,7 +9,7 @@ public:
     Signal(Vec3 start_position, Vec3 direction, double power);
     Signal();
     
-    void Reflection(/*double EPR*/);
+    void Reflection(double EPR);
     void Update(double dt);
 
     Vec3& GetPosition();

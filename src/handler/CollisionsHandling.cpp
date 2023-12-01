@@ -10,7 +10,7 @@ void CollisionSignalsWithPlanes(std::vector<std::vector<Signal>>& signals_vec,
     for (auto& signal: signals_vector)
     for (auto& flyingObject: flying_objects) {
         if ((flyingObject->GetPosition() - signal.position).Length() < flyingObject->GetDetectionSize()) {
-            signal.Reflection();
+            signal.Reflection(flyingObject->GetEPR());
         }
     }
 }
