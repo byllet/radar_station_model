@@ -13,6 +13,7 @@ public:
     Vec3& GetPosition();
     Vec3& GetVelocity();
     Vec3& GetAcceleretion();
+    double GetEPR();
     double GetDetectionSize();
     virtual void Update(double dt) = 0;
     virtual ~AbstractAirObject();
@@ -22,5 +23,6 @@ protected:
     Vec3 position;
     Vec3 velocity;
     Vec3 acceleration;
+    double EPR = 1.;
     double detection_size = 40.;
 };
