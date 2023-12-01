@@ -20,7 +20,7 @@ void Signal::Update(double dt)
     power -= 1;
     lifetime += dt;
     if (power > MIN_POWER) {
-        position += direction * SIGNALSPEED;
+        position += direction * SIGNALSPEED * dt;
     } else {
         alive = false;
     }

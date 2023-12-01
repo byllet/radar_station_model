@@ -3,8 +3,8 @@
 
 #include <vector>
 
-double EPSILON = 10;
-const double T0 = 0.1;
+double EPSILON = 100;
+const double T0 = 0.33;
 
 Tracker::Tracker() : time{0} {}
 
@@ -34,6 +34,8 @@ void Tracker::HandleExpectedPositions(std::vector<Vec3>& positions)
         if (!nearest_positions[i].empty()) {
             Vec3 avg_pos = GetAvg(nearest_positions[i]);
             UpdateAim(aims[i], avg_pos);
+        } else {
+            aims[i].filtered_position += aims[i].filtered_velocity * T0;
         }
     }
 }

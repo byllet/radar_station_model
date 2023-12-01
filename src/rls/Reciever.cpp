@@ -16,7 +16,7 @@ void Reciever::SendSignalToTracker(std::vector<Signal>& signals_vec, double dt)
 { 
     std::vector<Vec3> predicted_positions;
     for (auto signal : signals_vec) {
-        predicted_positions.push_back(-1 * signal.direction * (signal.lifetime / 2 / dt) * SIGNALSPEED);
+        predicted_positions.push_back(position + -1 * signal.direction * (signal.lifetime / 2) * SIGNALSPEED);
     }
     tracker.TakeRawData(predicted_positions);
 }

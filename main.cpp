@@ -28,24 +28,24 @@ int main()
     // }
     Manager m;
     Logger l(&m);
-    m.AddNewFlyingObject(new Plane({0, 0, 300}, {50, 50, 0}, {0, 0, 0}));
-    m.AddNewPattern(m.GetFlyingObjects()[0], new LinearPattern(1));
-    m.AddNewPattern(m.GetFlyingObjects()[0], new ReversalPattern(300));
+    m.AddNewFlyingObject(new Plane({0, 0, 1500}, {100, 0, 0}, {0, 0, 0}));
+    // m.AddNewPattern(m.GetFlyingObjects()[0], new LinearPattern(1));
+    // m.AddNewPattern(m.GetFlyingObjects()[0], new ReversalPattern(300));
     
     for (unsigned int i = 0; i < 300; ++i) {
         m.Update(0.33);
         l.Update();
-        if (i == 25) {
-            m.AddNewPattern(m.GetFlyingObjects()[0], new ChangeHeightPattern(300));
-            m.AddNewPattern(m.GetFlyingObjects()[0], new LinearPattern(5));
-            m.AddNewPattern(m.GetFlyingObjects()[0], new ReversalPattern(100));
-        }
-        if (i == 100) {
-            m.AddNewPattern(m.GetFlyingObjects()[0], new ChangeHeightPattern(-50));
-            m.AddNewPattern(m.GetFlyingObjects()[0], new ReversalPattern(1000));
-        }
-        std::cout << m.GetFlyingObjects()[0]->GetPosition() << " ";
-        //std::cout << m.GetFlyingObjects()[0]->GetVelocity().Length() <<  " ";
+        // if (i == 25) {
+        //     m.AddNewPattern(m.GetFlyingObjects()[0], new ChangeHeightPattern(300));
+        //     m.AddNewPattern(m.GetFlyingObjects()[0], new LinearPattern(5));
+        //     m.AddNewPattern(m.GetFlyingObjects()[0], new ReversalPattern(100));
+        // }
+        // if (i == 100) {
+        //     m.AddNewPattern(m.GetFlyingObjects()[0], new ChangeHeightPattern(-50));
+        //     m.AddNewPattern(m.GetFlyingObjects()[0], new ReversalPattern(1000));
+        // }
+        // std::cout << m.GetFlyingObjects()[0]->GetPosition() << " ";
+        // //std::cout << m.GetFlyingObjects()[0]->GetVelocity().Length() <<  " ";
     }
     return 0;
 }

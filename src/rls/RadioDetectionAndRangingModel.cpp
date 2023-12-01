@@ -29,14 +29,14 @@ RadioDetectionAndRangingModel::RadioDetectionAndRangingModel(RadioDetectionAndRa
 
 std::vector<Signal> RadioDetectionAndRangingModel::Start(size_t beams)
 {
-    return emitter.SendSignals(beams, Vec3{1., 1., 1.}, PI * 1.5, power);
+    return emitter.SendSignals(beams, Vec3{1., 0., 1.}, PI * 1.5, power);
 }
 
 void RadioDetectionAndRangingModel::Update(double dt, std::vector<Signal>& signal_vec)
 {
     time += dt;
     if (time > departure_period) {
-        signal_vec = emitter.SendSignals(1000, Vec3{1., 1., 1.}, 1.5 * PI, power);
+        signal_vec = emitter.SendSignals(1000, Vec3{1., 0., 1.}, 1.5 * PI, power);
         time = 0;
     }
 }
