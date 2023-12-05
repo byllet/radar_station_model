@@ -75,21 +75,6 @@ double Vec3::Length()
     return std::sqrt(x*x + y*y + z*z);
 }
 
-double Vec3::X()
-{
-    return x;
-}
-
-double Vec3::Y()
-{
-    return y;
-}
-
-double Vec3::Z()
-{
-    return z;
-}
-
 Vec3 operator* (const Vec3& vec, double k)
 {
     Vec3 res = vec; 
@@ -130,12 +115,4 @@ Vec3 operator- (const Vec3& lhs, const Vec3& rhs)
     Vec3 res = lhs;
     res -= rhs;
     return res;
-}
-
-bool operator==(const Vec3& lhs, const Vec3& rhs) {
-    return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
-}
-
-bool operator!=(const Vec3& lhs, const Vec3& rhs) {
-    return !(lhs == rhs);
 }

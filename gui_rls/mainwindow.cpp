@@ -1,9 +1,8 @@
 #include "mainwindow.h"
-#include "object_parameters.h"
+#include "FlyingObject/FlyingObjectParameters.h"
 #include "ui_mainwindow.h"
-#include "ui_object_parameters.h"
-#include "glwidget.h"
-#include <iostream>
+#include "ui_FlyingObjectParameters.h"
+#include "OpenGLWidget.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -43,7 +42,6 @@ void MainWindow::on_delete_object_clicked()
 {
     size_t current_index = ui->comboBox->currentIndex();
     ui->comboBox->removeItem(current_index);
-    std::cout << glwidget->manager.GetFlyingObjects().size() << '\n';
     delete glwidget->manager.GetFlyingObjects()[current_index];
     glwidget->manager.GetFlyingObjects().erase(glwidget->manager.GetFlyingObjects().begin() + current_index);
     glwidget->update();
@@ -53,12 +51,14 @@ void MainWindow::on_delete_object_clicked()
 void MainWindow::on_start_modeling_clicked()
 {
     glwidget->tmr.start(33);
+    glwidget->log_tmr.start(250);
 }
 
 
 void MainWindow::on_stop_modeling_clicked()
 {
     glwidget->tmr.stop();
+    glwidget->log_tmr.stop();
 }
 
 
@@ -101,6 +101,22 @@ void MainWindow::add_new_change_speed_pattern(double desired_speed)
     glwidget->manager.AddNewPattern(glwidget->manager.GetFlyingObjects()[current_index], new ChangeSpeedPattern(desired_speed));
 }
 
+void MainWindow::on_RLS_param_clicked()
+{
+    rls_param = new RLS(this);
+    rls_param->show();
+    connect(rls_param, &RLS::add_signals_timer, this, &MainWindow::add_new_signals_timer);
+}
+
+void MainWindow::add_new_signals_timer(double t)
+{
+    glwidget->manager.SetTimeForRadar(t);
+}
 
 
+void MainWindow::on_add_signals_clicked()
+{
+    std::vector<Signal> signals_v = glwidget->manager.GetRadar().Start(1000);
+    glwidget->manager.TakeNewSignals(signals_v);
+}
 

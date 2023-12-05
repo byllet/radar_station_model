@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../utils/Matrix.hpp"
+#include "../utils/Vec3.hpp"
+
 #include <vector>
 #include <cmath>
 

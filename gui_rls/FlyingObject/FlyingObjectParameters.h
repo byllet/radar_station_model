@@ -1,5 +1,5 @@
-#ifndef OBJECT_PARAMETERS_H
-#define OBJECT_PARAMETERS_H
+#ifndef FLYINGOBJECTPARAMETERS_H
+#define FLYINGOBJECTPARAMETERS_H
 
 #include <QDialog>
 #include "../src/air_models/Plane.hpp"
@@ -27,4 +27,4 @@ private:
     Ui::object_parameters *ui;
 };
 
-#endif // OBJECT_PARAMETERS_H
+#endif // FLYINGOBJECTPARAMETERS_H

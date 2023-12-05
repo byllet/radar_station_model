@@ -1,5 +1,5 @@
-#ifndef CHANGE_HEIGHT_PATTERN_PARAMETERS_H
-#define CHANGE_HEIGHT_PATTERN_PARAMETERS_H
+#ifndef HEIGHTPARAMETERWINDOW_H
+#define HEIGHTPARAMETERWINDOW_H
 
 #include <QDialog>
 
@@ -25,4 +25,4 @@ private:
     Ui::change_height_pattern_parameters *ui;
 };
 
-#endif // CHANGE_HEIGHT_PATTERN_PARAMETERS_H
+#endif // HEIGHTPARAMETERWINDOW_H

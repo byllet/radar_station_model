@@ -1,5 +1,5 @@
-#ifndef GLWIDGET_H
-#define GLWIDGET_H
+#ifndef OPENGLWIDGET_H
+#define OPENGLWIDGET_H
 
 #include <gl.h>
 #include <glu.h>
@@ -7,7 +7,7 @@
 #include <QtOpenGL>
 #include <vector>
 #include "Camera.h"
-#include "object_parameters.h"
+#include "FlyingObject/FlyingObjectParameters.h"
 #include "../src/Manager.hpp"
 #include "../src/air_models/Plane.hpp"
 #include "../src/Signal.hpp"
@@ -21,13 +21,17 @@ public:
     GLWidget(QWidget *parent = Q_NULLPTR);
 
     QTimer tmr;
+    QTimer log_tmr;
     Manager manager;
 
 private:
-    void drawCircle(Vec3 psotion, GLfloat radius);
+    void drawCircle(Vec3 position, GLfloat radius, bool is_reflected);
+    void drawSquare(Vec3 position, bool is_predicted);
     void drawRLS(Vec3 vertex_1, Vec3 vertex_2, Vec3 vertex_3, Vec3 vertex_4);
-    void drawRay(Vec3 start_position, Vec3 direction, bool is_reflected);
+    void drawRay(Vec3 position, bool is_reflected);
     void drawObject(Vec3 position, Vec3 velocity);
+    void drawEnvironment();
+    void drawTrajectory(Vec3 position, bool is_predicted);
     void RLStextureInit();
     Vec3 openGLCoords(Vec3 coords);
 
@@ -38,8 +42,12 @@ private:
     unsigned int texture[4];
     Camera cam;
 
+    std::vector<std::vector<Vec3>> objects_positions;
+    std::vector<Vec3> predicted_objects_positions;
+
 public slots:
     void addNewObj(Plane*);
+    void addObjectsPositions();
     void nextFrame();
 
 protected:
@@ -49,4 +57,4 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *event);
 };
 
-#endif // GLWIDGET_H
+#endif // OPENGLWIDGET_H

@@ -2,12 +2,14 @@
 
 #include <unordered_map>
 #include <vector>
+
 #include "Aim.hpp"
 
 class Tracker {
 public:
     Tracker();
     void TakeRawData(std::vector<Vec3> positions);
+    std::vector<Vec3> GetAimsPositions();
     
 private:
     std::vector<Aim> aims;

@@ -1,15 +1,16 @@
 #include "Solver.hpp"
 #include "../Manager.hpp"
 #include "CollisionsHandling.hpp"
+#include <vector>
 
 Solver::Solver(Manager* m) : manager{m} {}
 
 void Solver::Update(double dt)
 {
+    SolveCollisions(dt);
     UpdateAirObjects(dt);
     UpdateSignals(dt);
     UpdateRadar(dt);
-    SolveCollisions();
 }
 
 void Solver::UpdateAirObjects(double dt)
@@ -24,29 +25,31 @@ void Solver::UpdateAirObjects(double dt)
 
 void Solver::UpdateSignals(double dt) 
 {
-    bool is_signals_alive = true;
     for (auto& signals_vector: manager->GetSignals())
-        for (auto signal_iter = 0; signal_iter < signals_vector.size(); ++signal_iter) {
-        signals_vector[signal_iter].Update(dt);
-        if (!signals_vector[signal_iter].alive) {
-            is_signals_alive = false;
-//            signals_vector.erase(signals_vector.begin() + signal_iter);
-            break;
+    for (long long i = signals_vector.size() - 1; i > -1; --i) {
+        signals_vector[i].Update(dt);
+        if (!signals_vector[i].alive) {
+            signals_vector.erase(signals_vector.begin() + i);
         }
     }
-    if (!is_signals_alive) {
-        manager->GetSignals().erase(manager->GetSignals().begin());
-        manager->GetSignals().push_back(manager->GetRadar().Start());
+    for (long long i = manager->GetSignals().size() - 1; i > -1; --i) {
+        if (manager->GetSignals()[i].empty()) {
+            manager->GetSignals().erase(manager->GetSignals().begin() + i);
+        }
     }
 }
 
 void Solver::UpdateRadar(double dt) 
 {
-    manager->GetRadar().Update(dt);
+    std::vector<Signal> s;
+    manager->GetRadar().Update(dt, s);
+    if (!s.empty()) {
+        manager->TakeNewSignals(s);
+    }
 }
 
-void Solver::SolveCollisions() 
+void Solver::SolveCollisions(double dt) 
 {
     CollisionSignalsWithPlanes(manager->GetSignals(), manager->GetFlyingObjects());
-    CollisionSignalWithReciever(manager->GetSignals(), manager->GetRadar());
+    CollisionSignalWithReciever(manager->GetSignals(), manager->GetRadar(), dt);
 }

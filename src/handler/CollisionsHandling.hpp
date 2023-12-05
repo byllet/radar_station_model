@@ -7,7 +7,7 @@
 #include <vector>
 
 void CollisionSignalsWithPlanes(std::vector<std::vector<Signal>>& signals_vec,
-                                 std::vector<AbstractAirObject*> flying_objects);
+                                std::vector<AbstractAirObject*> flying_objects);
 
 void CollisionSignalWithReciever(std::vector<std::vector<Signal>>& signals_vec,
-                                 RadioDetectionAndRangingModel& rls);
+                                 RadioDetectionAndRangingModel& rls, double dt);

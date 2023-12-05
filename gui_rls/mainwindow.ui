@@ -148,7 +148,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="RLS_param">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -167,7 +167,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_9">
+      <widget class="QPushButton" name="add_signals">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -181,7 +181,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Параметры моделирования</string>
+        <string>Выпустить сигнал</string>
        </property>
       </widget>
      </item>

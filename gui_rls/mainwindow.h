@@ -3,11 +3,12 @@
 
 #include <QMainWindow>
 #include <QPalette>
-#include "object_parameters.h"
-#include "glwidget.h"
-#include "rev_pattern_parameters.h"
-#include "change_height_pattern_parameters.h"
-#include "change_speed_pattern_parameters.h"
+#include "FlyingObject/FlyingObjectParameters.h"
+#include "OpenGLWidget.h"
+#include "Patterns/ReverseParameterWindow.h"
+#include "Patterns/HeightParameterWindow.h"
+#include "Patterns/SpeedParameterWindow.h"
+#include "rls.h"
 #include "../src/Manager.hpp"
 #include "../src/patterns/ReversalPattern.hpp"
 #include "../src/patterns/ChangeHeightPattern.hpp"
@@ -37,9 +38,15 @@ private slots:
     void add_new_change_speed_pattern(double);
     void on_change_height_button_clicked();
     void add_new_change_height_pattern(double);
+    void on_RLS_param_clicked();
+    void add_new_signals_timer(double);
+
+
+    void on_add_signals_clicked();
 
 private:
     Ui::GUI *ui;
+    RLS *rls_param;
     object_parameters *new_object_window;
     rev_pattern_parameters *new_reversal_pattern_window;
     change_height_pattern_parameters *new_change_height_pattern_window;

@@ -1,4 +1,4 @@
-#include "object_parameters.h"
+#include "FlyingObjectParameters.h"
 #include "ui_object_parameters.h"
 
 object_parameters::object_parameters(QWidget *parent) :

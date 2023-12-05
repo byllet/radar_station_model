@@ -1,5 +1,5 @@
-#ifndef CHANGE_SPEED_PATTERN_PARAMETERS_H
-#define CHANGE_SPEED_PATTERN_PARAMETERS_H
+#ifndef SPEEDPARAMETERWINDOW_H
+#define SPEEDPARAMETERWINDOW_H
 
 #include <QDialog>
 
@@ -25,4 +25,4 @@ private:
     Ui::change_speed_pattern_parameters *ui;
 };
 
-#endif // CHANGE_SPEED_PATTERN_PARAMETERS_H
+#endif // SPEEDPARAMETERWINDOW_H

@@ -1,5 +1,5 @@
-#ifndef REV_PATTERN_PARAMETERS_H
-#define REV_PATTERN_PARAMETERS_H
+#ifndef REVERSEPARAMETERWINDOW_H
+#define REVERSEPARAMETERWINDOW_H
 
 #include <QDialog>
 
@@ -25,4 +25,4 @@ private:
     Ui::rev_pattern_parameters *ui;
 };
 
-#endif // REV_PATTERN_PARAMETERS_H
+#endif // REVERSEPARAMETERWINDOW_H

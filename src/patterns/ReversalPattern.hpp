@@ -12,5 +12,5 @@ private:
     Vec3 ChangeAcceleration(Vec3 velocity, Vec3 acceleration) override;
     void CalculateDuration(Vec3 velocity, Vec3 acceleration) override;
     double radius;
-    //double constspeed;
+    double pattern_speed = 0.;
 };

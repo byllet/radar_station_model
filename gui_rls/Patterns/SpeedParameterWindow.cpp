@@ -1,4 +1,4 @@
-#include "change_speed_pattern_parameters.h"
+#include "SpeedParameterWindow.h"
 #include "ui_change_speed_pattern_parameters.h"
 
 change_speed_pattern_parameters::change_speed_pattern_parameters(QWidget *parent) :

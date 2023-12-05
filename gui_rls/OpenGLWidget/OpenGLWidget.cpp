@@ -1,11 +1,12 @@
 #include <GLUT/glut.h>
-#include "glwidget.h"
+#include "OpenGLWidget.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 GLWidget::GLWidget(QWidget *parent): QOpenGLWidget(parent)
 {
     connect(&tmr, SIGNAL(timeout()), this, SLOT(nextFrame()));
+    connect(&log_tmr, SIGNAL(timeout()), this, SLOT(addObjectsPositions()));
     setFocusPolicy( Qt::StrongFocus );
     this->setMouseTracking(true);
 }
@@ -24,19 +25,24 @@ void GLWidget::paintGL()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(cam.camera_position.x, cam.camera_position.y + cam.camera_height, cam.camera_position.z, cam.camera_position.x - sin(cam.camera_angleX / 180 * M_PI), cam.camera_position.y + cam.camera_height + (tan(cam.camera_angleY / 180 * M_PI)), cam.camera_position.z - cos(cam.camera_angleX / 180 * M_PI), 0, 1, 0);
-    drawRLS({-2900, 1500, -3000}, {-2900, 1500, -2100}, {-2200, 1500, -2100}, {-2200, 1500, -3000});
-    for (auto flyingObject: manager.GetFlyingObjects()) {
+//    drawEnvironment();
+    drawRLS({-290, 150, -300}, {-290, 150, -210}, {-220, 150, -210}, {-220, 150, -300});
+    for (size_t i = 0; i < manager.GetFlyingObjects().size(); ++i) {
+        AbstractAirObject* flyingObject = manager.GetFlyingObjects()[i];
         drawObject(flyingObject->GetPosition(), flyingObject->GetVelocity());
+        if (objects_positions[i].size() > 1) {
+            for (auto objectPosition: objects_positions[i]) {
+                drawTrajectory(objectPosition, false);
+            }
+        }
     }
     for (auto signal_vec: manager.GetSignals()) {
         for (auto single_signal: signal_vec) {
-            if (single_signal.IsReflected()) {
-                drawRay(single_signal.GetCollisionPosition(), single_signal.position, single_signal.IsReflected());
-            } else {
-                drawRay(manager.GetRadar().GetPosition(), single_signal.position, single_signal.IsReflected());
-            }
-
+            drawRay(single_signal.position, single_signal.IsReflected());
         }
+    }
+    for (auto predictedPosition: predicted_objects_positions) {
+        drawTrajectory(predictedPosition, true);
     }
 }
 
@@ -45,18 +51,39 @@ void GLWidget::resizeGL(int w, int h)
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-5000, 5000, -5000, 5000, 1000, 11000);
+    glFrustum(-500, 500, -500, 500, 100, 900);
 }
 
 void GLWidget::addNewObj(Plane* new_obj) {
     manager.AddNewFlyingObject(new_obj);
+    objects_positions.push_back(std::vector{new_obj->GetPosition()});
     update();
 }
 
 void GLWidget::nextFrame()
 {
     manager.Update(0.033);
+    for (auto predictedPosition: manager.GetPositionsFromTracker()) {
+        predicted_objects_positions.push_back(predictedPosition);
+    }
     update();
+}
+
+void GLWidget::drawSquare(Vec3 position, bool is_predicted)
+{
+    Vec3 opengl_position = openGLCoords(position);
+    int square_size[2] = {3, 3};
+    if (is_predicted) {
+        glColor3f(0, 0, 0);
+    } else {
+        glColor3f(0.25, 0.87, 0.81);
+    }
+    glBegin(GL_QUADS);
+    glVertex3f(opengl_position.x - square_size[0], opengl_position.y - square_size[1], opengl_position.z);
+    glVertex3f(opengl_position.x - square_size[0], opengl_position.y + square_size[1], opengl_position.z);
+    glVertex3f(opengl_position.x + square_size[0], opengl_position.y + square_size[1], opengl_position.z);
+    glVertex3f(opengl_position.x + square_size[0], opengl_position.y - square_size[1], opengl_position.z);
+    glEnd();
 }
 
 void GLWidget::keyPressEvent(QKeyEvent *event)
@@ -114,7 +141,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-void GLWidget::drawCircle(Vec3 position, GLfloat radius) {
+void GLWidget::drawCircle(Vec3 position, GLfloat radius, bool is_reflected) {
     int triangleAmount = 50;
     GLfloat arr[(triangleAmount + 2) * 3];
     Vec3 position_coords = openGLCoords(position);
@@ -127,8 +154,12 @@ void GLWidget::drawCircle(Vec3 position, GLfloat radius) {
         arr[i * 3 + 1] = position_coords.y + (radius * sin(i * twicePi / triangleAmount));
         arr[i * 3 + 2] = position_coords.z;
     }
-    glColor3f(0, 0, 0);
     glEnableClientState(GL_VERTEX_ARRAY);
+    if (is_reflected) {
+        glColor3f(0.13, 0.56, 0.13);
+    } else {
+        glColor3f(1, 0, 0);
+    }
     glVertexPointer(3, GL_FLOAT, 0, &arr);
     glDrawArrays(GL_TRIANGLE_FAN, 0, triangleAmount + 2);
     glDisableClientState(GL_VERTEX_ARRAY);
@@ -179,7 +210,7 @@ void GLWidget::drawRLS(Vec3 vertex_1, Vec3 vertex_2, Vec3 vertex_3, Vec3 vertex_
 
 void GLWidget::drawObject(Vec3 position, Vec3 velocity)
 {
-    Vec3 objectSize(200, 200, 120);
+    Vec3 objectSize(20, 20, 12);
     Vec3 V = velocity.Normalization() * objectSize.x;
     Vec3 n;
     if (V.x == 0 && V.y == 0 && V.z == 0) {
@@ -221,6 +252,7 @@ void GLWidget::drawObject(Vec3 position, Vec3 velocity)
     Vec3 vertex_coords_23 = openGLCoords(vertex_23);
     Vec3 vertex_coords_24 = openGLCoords(vertex_24);
 
+    glColor3f(1, 1, 1);
     //right
     glBindTexture(GL_TEXTURE_2D, texture[3]);
     glBegin(GL_POLYGON);
@@ -315,30 +347,286 @@ void GLWidget::drawObject(Vec3 position, Vec3 velocity)
     glutSwapBuffers();
 }
 
-void GLWidget::drawRay(Vec3 start_position, Vec3 end_position, bool is_reflected)
+void GLWidget::drawEnvironment()
 {
-    GLfloat arr[6];
-    Vec3 start_coords = openGLCoords(start_position);
-    Vec3 end_coords = openGLCoords(end_position);
-    arr[0] = start_coords.x;
-    arr[1] = start_coords.y;
-    arr[2] = start_coords.z;
-    arr[3] = end_coords.x;
-    arr[4] = end_coords.y;
-    arr[5] = end_coords.z;
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_LINE_SMOOTH);
-    if (is_reflected) {
-        glColor4d(0, 1, 0, 0.4);
-    } else {
-        glColor4d(1, 0, 0, 0.4);
-    }
+    //ground
+    Vec3 vertex_coords_1 = openGLCoords(Vec3(-5000, 1000, -5000));
+    Vec3 vertex_coords_2 = openGLCoords(Vec3(-5000, 8000, -5000));
+    Vec3 vertex_coords_3 = openGLCoords(Vec3(5000, 8000, -5000));
+    Vec3 vertex_coords_4 = openGLCoords(Vec3(5000, 1000, -5000));
+    glBindTexture(GL_TEXTURE_2D, texture[4]);
+    glBegin(GL_POLYGON);
+    glColor3f( 1, 1, 1 );
+    glTexCoord2f(1, 1);
+    glVertex3f(  vertex_coords_1.x, vertex_coords_1.y, vertex_coords_1.z );
+    glTexCoord2f(0, 1);
+    glVertex3f(  vertex_coords_2.x, vertex_coords_2.y, vertex_coords_2.z );
+    glTexCoord2f(0, 0);
+    glVertex3f( vertex_coords_3.x, vertex_coords_3.y, vertex_coords_3.z );
+    glTexCoord2f(1, 0);
+    glVertex3f( vertex_coords_4.x, vertex_coords_4.y, vertex_coords_4.z );
+    glEnd();
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    //left
+    vertex_coords_1 = openGLCoords(Vec3(-5000, 1000, -3000));
+    vertex_coords_2 = openGLCoords(Vec3(-5000, 1000, 5000));
+    vertex_coords_3 = openGLCoords(Vec3(-5000, 8000, 5000));
+    vertex_coords_4 = openGLCoords(Vec3(-5000, 8000, -3000));
+    GLfloat arr[12];
+    arr[0] = vertex_coords_1.x;
+    arr[1] = vertex_coords_1.y;
+    arr[2] = vertex_coords_1.z;
+    arr[3] = vertex_coords_2.x;
+    arr[4] = vertex_coords_2.y;
+    arr[5] = vertex_coords_2.z;
+    arr[6] = vertex_coords_3.x;
+    arr[7] = vertex_coords_3.y;
+    arr[8] = vertex_coords_3.z;
+    arr[9] = vertex_coords_4.x;
+    arr[10] = vertex_coords_4.y;
+    arr[11] = vertex_coords_4.z;
+
+    glColor3f( 0, 0.75, 1 );
     glEnableClientState(GL_VERTEX_ARRAY);
-    glLineWidth(0.5);
+
     glVertexPointer(3, GL_FLOAT, 0, &arr);
-    glDrawArrays(GL_LINES, 0, 2);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
     glDisableClientState(GL_VERTEX_ARRAY);
+
+    //right
+    vertex_coords_1 = openGLCoords(Vec3(5000, 1000, -3000));
+    vertex_coords_2 = openGLCoords(Vec3(5000, 1000, 5000));
+    vertex_coords_3 = openGLCoords(Vec3(5000, 8000, 5000));
+    vertex_coords_4 = openGLCoords(Vec3(5000, 8000, -3000));
+    arr[0] = vertex_coords_1.x;
+    arr[1] = vertex_coords_1.y;
+    arr[2] = vertex_coords_1.z;
+    arr[3] = vertex_coords_2.x;
+    arr[4] = vertex_coords_2.y;
+    arr[5] = vertex_coords_2.z;
+    arr[6] = vertex_coords_3.x;
+    arr[7] = vertex_coords_3.y;
+    arr[8] = vertex_coords_3.z;
+    arr[9] = vertex_coords_4.x;
+    arr[10] = vertex_coords_4.y;
+    arr[11] = vertex_coords_4.z;
+
+    glColor3f( 0, 0.75, 1 );
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    glVertexPointer(3, GL_FLOAT, 0, &arr);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+
+
+    //top
+    vertex_coords_1 = openGLCoords(Vec3(-5000, 1000, 5000));
+    vertex_coords_2 = openGLCoords(Vec3(-5000, 8000, 5000));
+    vertex_coords_3 = openGLCoords(Vec3(5000, 8000, 5000));
+    vertex_coords_4 = openGLCoords(Vec3(5000, 1000, 5000));
+    arr[0] = vertex_coords_1.x;
+    arr[1] = vertex_coords_1.y;
+    arr[2] = vertex_coords_1.z;
+    arr[3] = vertex_coords_2.x;
+    arr[4] = vertex_coords_2.y;
+    arr[5] = vertex_coords_2.z;
+    arr[6] = vertex_coords_3.x;
+    arr[7] = vertex_coords_3.y;
+    arr[8] = vertex_coords_3.z;
+    arr[9] = vertex_coords_4.x;
+    arr[10] = vertex_coords_4.y;
+    arr[11] = vertex_coords_4.z;
+
+    glColor3f( 0, 0.75, 1 );
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    glVertexPointer(3, GL_FLOAT, 0, &arr);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+
+    //back
+    vertex_coords_1 = openGLCoords(Vec3(-5000, 8000, -3000));
+    vertex_coords_2 = openGLCoords(Vec3(-5000, 8000, 5000));
+    vertex_coords_3 = openGLCoords(Vec3(5000, 8000, 5000));
+    vertex_coords_4 = openGLCoords(Vec3(5000, 8000, -3000));
+    arr[0] = vertex_coords_1.x;
+    arr[1] = vertex_coords_1.y;
+    arr[2] = vertex_coords_1.z;
+    arr[3] = vertex_coords_2.x;
+    arr[4] = vertex_coords_2.y;
+    arr[5] = vertex_coords_2.z;
+    arr[6] = vertex_coords_3.x;
+    arr[7] = vertex_coords_3.y;
+    arr[8] = vertex_coords_3.z;
+    arr[9] = vertex_coords_4.x;
+    arr[10] = vertex_coords_4.y;
+    arr[11] = vertex_coords_4.z;
+
+    glColor3f( 0, 0.75, 1 );
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    glVertexPointer(3, GL_FLOAT, 0, &arr);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void GLWidget::drawTrajectory(Vec3 position, bool is_predicted)
+{
+//    GLfloat arr[6];
+//    Vec3 start_coords = openGLCoords(start_position);
+//    Vec3 end_coords = openGLCoords(end_position);
+//    arr[0] = start_coords.x;
+//    arr[1] = start_coords.y;
+//    arr[2] = start_coords.z;
+//    arr[3] = end_coords.x;
+//    arr[4] = end_coords.y;
+//    arr[5] = end_coords.z;
+//    if (is_from_tracker) {
+//        glColor3f(1, 0, 1);
+//    } else {
+//        glColor3f(0, 0, 1);
+//    }
+//    glEnableClientState(GL_VERTEX_ARRAY);
+//    glLineWidth(1);
+//    glVertexPointer(3, GL_FLOAT, 0, &arr);
+//    glDrawArrays(GL_LINES, 0, 2);
+//    glDisableClientState(GL_VERTEX_ARRAY);
+    drawSquare(position, is_predicted);
+}
+
+void GLWidget::drawRay(Vec3 position, bool is_reflected)
+{
+    drawCircle(position, 4, is_reflected);
+//    Vec3 objectSize_x(10, 0, 0);
+//    Vec3 objectSize_y(0, 10, 0);
+//    Vec3 objectSize_z(0, 0, 10);
+
+//    Vec3 vertex_11 = position - objectSize_x - objectSize_y - objectSize_z;
+//    Vec3 vertex_12 = position - objectSize_x - objectSize_y + objectSize_z;
+//    Vec3 vertex_13 = position + objectSize_x - objectSize_y + objectSize_z;
+//    Vec3 vertex_14 = position + objectSize_x - objectSize_y - objectSize_z;
+//    Vec3 vertex_21 = position - objectSize_x + objectSize_y - objectSize_z;
+//    Vec3 vertex_22 = position - objectSize_x + objectSize_y + objectSize_z;
+//    Vec3 vertex_23 = position + objectSize_x + objectSize_y + objectSize_z;
+//    Vec3 vertex_24 = position + objectSize_x + objectSize_y - objectSize_z;
+
+//    Vec3 vertex_coords_11 = openGLCoords(vertex_11);
+//    Vec3 vertex_coords_12 = openGLCoords(vertex_12);
+//    Vec3 vertex_coords_13 = openGLCoords(vertex_13);
+//    Vec3 vertex_coords_14 = openGLCoords(vertex_14);
+//    Vec3 vertex_coords_21 = openGLCoords(vertex_21);
+//    Vec3 vertex_coords_22 = openGLCoords(vertex_22);
+//    Vec3 vertex_coords_23 = openGLCoords(vertex_23);
+//    Vec3 vertex_coords_24 = openGLCoords(vertex_24);
+
+//    //right
+//    glBegin(GL_POLYGON);
+//    if (!is_reflected) {
+//        glColor3f( 1, 0, 0 );
+//    } else {
+//        glColor3f( 0, 0, 0 );
+//    }
+//    glVertex3f(  vertex_coords_11.x, vertex_coords_11.y, vertex_coords_11.z );
+//    glVertex3f(  vertex_coords_12.x, vertex_coords_12.y, vertex_coords_12.z );
+//    glVertex3f( vertex_coords_13.x, vertex_coords_13.y, vertex_coords_13.z );
+//    glVertex3f( vertex_coords_14.x, vertex_coords_14.y, vertex_coords_14.z );
+//    glEnd();
+
+//    //front
+//    glBegin(GL_POLYGON);
+//    if (!is_reflected) {
+//        glColor3f( 1, 0, 0 );
+//    } else {
+//        glColor3f( 0, 0, 0 );
+//    }
+//    glVertex3f(  vertex_coords_14.x, vertex_coords_14.y, vertex_coords_14.z );
+//    glVertex3f(  vertex_coords_13.x, vertex_coords_13.y, vertex_coords_13.z );
+//    glVertex3f( vertex_coords_23.x, vertex_coords_23.y, vertex_coords_23.z );
+//    glVertex3f( vertex_coords_24.x, vertex_coords_24.y, vertex_coords_24.z );
+//    glEnd();
+
+//    //back
+//    glBegin(GL_POLYGON);
+//    if (!is_reflected) {
+//        glColor3f( 1, 0, 0 );
+//    } else {
+//        glColor3f( 0, 0, 0 );
+//    }
+//    glVertex3f(  vertex_coords_21.x, vertex_coords_21.y, vertex_coords_21.z );
+//    glVertex3f(  vertex_coords_22.x, vertex_coords_22.y, vertex_coords_22.z );
+//    glVertex3f( vertex_coords_12.x, vertex_coords_12.y, vertex_coords_12.z );
+//    glVertex3f( vertex_coords_11.x, vertex_coords_11.y, vertex_coords_11.z );
+//    glEnd();
+
+//    //top
+//    glBegin(GL_POLYGON);
+//    if (!is_reflected) {
+//        glColor3f( 1, 0, 0 );
+//    } else {
+//        glColor3f( 0, 0, 0 );
+//    }
+//    glVertex3f(  vertex_coords_12.x, vertex_coords_12.y, vertex_coords_12.z );
+//    glVertex3f(  vertex_coords_22.x, vertex_coords_22.y, vertex_coords_22.z );
+//    glVertex3f( vertex_coords_23.x, vertex_coords_23.y, vertex_coords_23.z );
+//    glVertex3f( vertex_coords_13.x, vertex_coords_13.y, vertex_coords_13.z );
+//    glEnd();
+
+//    //left
+//    glBegin(GL_POLYGON);
+//    if (!is_reflected) {
+//        glColor3f( 1, 0, 0 );
+//    } else {
+//        glColor3f( 0, 0, 0 );
+//    }
+//    glVertex3f(  vertex_coords_21.x, vertex_coords_21.y, vertex_coords_21.z );
+//    glVertex3f(  vertex_coords_22.x, vertex_coords_22.y, vertex_coords_22.z );
+//    glVertex3f( vertex_coords_23.x, vertex_coords_23.y, vertex_coords_23.z );
+//    glVertex3f( vertex_coords_24.x, vertex_coords_24.y, vertex_coords_24.z );
+//    glEnd();
+
+//    //bot
+//    glBegin(GL_POLYGON);
+//    if (!is_reflected) {
+//        glColor3f( 1, 0, 0 );
+//    } else {
+//        glColor3f( 0, 0, 0 );
+//    }
+//    glVertex3f(  vertex_coords_11.x, vertex_coords_11.y, vertex_coords_11.z );
+//    glVertex3f(  vertex_coords_21.x, vertex_coords_21.y, vertex_coords_21.z );
+//    glVertex3f( vertex_coords_24.x, vertex_coords_24.y, vertex_coords_24.z );
+//    glVertex3f( vertex_coords_14.x, vertex_coords_14.y, vertex_coords_14.z );
+//    glEnd();
+
+//    glFlush();
+//    glutSwapBuffers();
+
+//    GLfloat arr[6];
+//    Vec3 start_coords = openGLCoords(start_position);
+//    Vec3 end_coords = openGLCoords(end_position);
+//    arr[0] = start_coords.x;
+//    arr[1] = start_coords.y;
+//    arr[2] = start_coords.z;
+//    arr[3] = end_coords.x;
+//    arr[4] = end_coords.y;
+//    arr[5] = end_coords.z;
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glEnable(GL_LINE_SMOOTH);
+//    if (is_reflected) {
+//        glColor4d(0, 1, 0, 0.4);
+//    } else {
+//        glColor4d(1, 0, 0, 0.4);
+//    }
+//    glEnableClientState(GL_VERTEX_ARRAY);
+//    glLineWidth(0.5);
+//    glVertexPointer(3, GL_FLOAT, 0, &arr);
+//    glDrawArrays(GL_LINES, 0, 2);
+//    glDisableClientState(GL_VERTEX_ARRAY);
 
 
 //    glColor3f(1, 0, 0);
@@ -354,7 +642,7 @@ void GLWidget::drawRay(Vec3 start_position, Vec3 end_position, bool is_reflected
 void GLWidget::RLStextureInit()
 {
     int width = 0, height = 0, cnt = 0;
-    unsigned char *data = stbi_load("/Users/kirill/Desktop/radar_project/code/gui_rls/rls.jpg", &width, &height, &cnt, 0);
+    unsigned char *data = stbi_load("/Users/kirill/Desktop/radar_project/code/gui_rls/Resources/rls.jpg", &width, &height, &cnt, 0);
     glGenTextures(1, &texture[0]);
     glBindTexture(GL_TEXTURE_2D, texture[0]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -365,7 +653,7 @@ void GLWidget::RLStextureInit()
     glBindTexture(GL_TEXTURE_2D, 0);
     stbi_image_free(data);
 
-    data = stbi_load("/Users/kirill/Desktop/radar_project/code/gui_rls/top_bot.jpg", &width, &height, &cnt, 0);
+    data = stbi_load("/Users/kirill/Desktop/radar_project/code/gui_rls/Resources/top_bot.jpg", &width, &height, &cnt, 0);
     glGenTextures(1, &texture[1]);
     glBindTexture(GL_TEXTURE_2D, texture[1]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -376,7 +664,7 @@ void GLWidget::RLStextureInit()
     glBindTexture(GL_TEXTURE_2D, 0);
     stbi_image_free(data);
 
-    data = stbi_load("/Users/kirill/Desktop/radar_project/code/gui_rls/front_back.jpg", &width, &height, &cnt, 0);
+    data = stbi_load("/Users/kirill/Desktop/radar_project/code/gui_rls/Resources/front_back.jpg", &width, &height, &cnt, 0);
     glGenTextures(1, &texture[2]);
     glBindTexture(GL_TEXTURE_2D, texture[2]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -387,7 +675,7 @@ void GLWidget::RLStextureInit()
     glBindTexture(GL_TEXTURE_2D, 0);
     stbi_image_free(data);
 
-    data = stbi_load("/Users/kirill/Desktop/radar_project/code/gui_rls/right_left.jpg", &width, &height, &cnt, 0);
+    data = stbi_load("/Users/kirill/Desktop/radar_project/code/gui_rls/Resources/right_left.jpg", &width, &height, &cnt, 0);
     glGenTextures(1, &texture[3]);
     glBindTexture(GL_TEXTURE_2D, texture[3]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -397,6 +685,24 @@ void GLWidget::RLStextureInit()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, (cnt == 4) ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
     glBindTexture(GL_TEXTURE_2D, 0);
     stbi_image_free(data);
+
+    data = stbi_load("/Users/kirill/Desktop/radar_project/code/gui_rls/Resources/grass.jpg", &width, &height, &cnt, 0);
+    glGenTextures(1, &texture[4]);
+    glBindTexture(GL_TEXTURE_2D, texture[4]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, (cnt == 4) ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    stbi_image_free(data);
+}
+
+void GLWidget::addObjectsPositions()
+{
+    for (size_t index = 0; index < manager.GetFlyingObjects().size(); ++index) {
+        objects_positions[index].push_back(manager.GetFlyingObjects()[index]->GetPosition());
+    }
 }
 
 Vec3 GLWidget::openGLCoords(Vec3 coords)

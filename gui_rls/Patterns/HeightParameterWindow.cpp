@@ -1,4 +1,4 @@
-#include "change_height_pattern_parameters.h"
+#include "HeightParameterWindow.h"
 #include "ui_change_height_pattern_parameters.h"
 
 change_height_pattern_parameters::change_height_pattern_parameters(QWidget *parent) :

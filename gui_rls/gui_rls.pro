@@ -2,20 +2,21 @@ QT       += core gui openglwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++20
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    change_height_pattern_parameters.cpp \
-    change_speed_pattern_parameters.cpp \
-    rev_pattern_parameters.cpp \
-    glwidget.cpp \
     main.cpp \
+    FlyingObject/FlyingObjectParameters.cpp \
+    Patterns/HeightParameterWindow.cpp \
+    OpenGLWidget/OpenGLWidget.cpp \
+    Patterns/ReverseParameterWindow.cpp \
+    Patterns/SpeedParameterWindow.cpp \
+    RLS/RLS.cpp \
     mainwindow.cpp \
-    object_parameters.cpp \
     ../src/Manager.cpp \
     ../src/air_models/AbstractAirObject.cpp \
     ../src/air_models/Plane.cpp \
@@ -34,17 +35,19 @@ SOURCES += \
     ../src/tracker/Aim.cpp \
     ../src/tracker/Tracker.cpp \
     ../src/utils/Vec3.cpp \
-    ../src/utils/Matrix.cpp \
+    ../src/utils/Matrix.cpp
+
 
 HEADERS += \
-    camera.h \
-    change_height_pattern_parameters.h \
-    change_speed_pattern_parameters.h \
-    rev_pattern_parameters.h \
-    glwidget.h \
+    FlyingObject/FlyingObjectParameters.h \
+    Patterns/HeightParameterWindow.h \
+    OpenGLWidget/OpenGLWidget.h \
+    Patterns/ReverseParameterWindow.h \
+    Patterns/SpeedParameterWindow.h \
+    Camera/Camera.h \
     mainwindow.h \
-    object_parameters.h \
-    stb_image.h \
+    RLS/RLS.h \
+    Library/stb_image.h \
     ../src/Manager.hpp \
     ../src/air_models/AbstractAirObject.hpp \
     ../src/air_models/Plane.hpp \
@@ -65,14 +68,15 @@ HEADERS += \
     ../src/tracker/Aim.hpp \
     ../src/tracker/Tracker.hpp \
     ../src/utils/Vec3.hpp \
-    ../src/utils/Matrix.hpp \
+    ../src/utils/Matrix.hpp
 
 FORMS += \
-    change_height_pattern_parameters.ui \
-    change_speed_pattern_parameters.ui \
+    FlyingObject/FlyingObjectParameters.ui \
+    Patterns/HeightParameterWindow.ui \
+    Patterns/ReverseParameterWindow.ui \
+    Patterns/SpeedParameterWindow.ui \
     mainwindow.ui \
-    object_parameters.ui \
-    rev_pattern_parameters.ui
+    RLS/RLS.ui
 
 
 # Default rules for deployment.
@@ -83,4 +87,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 LIBS += -framework GLUT
 
 RESOURCES += \
-    resource.qrc
+    Resources

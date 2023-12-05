@@ -1,35 +1,32 @@
 #include "Signal.hpp"
 
-Signal::Signal(Vec3 start_position, Vec3 direction, double speed, double duration) : position{start_position}, 
-                                                                                     direction{direction}, 
-                                                                                     duration{duration} {}
+const double MIN_POWER = 0.;
 
-Signal::Signal() : position{Vec3{0., 0., 0.}} , direction{1., 1., 1} {}
+Signal::Signal(Vec3 start_position, Vec3 direction, double power) : position{start_position}, 
+                                                                    direction{direction}, 
+                                                                    power{power} {}
 
-void Signal::Reflection()
+Signal::Signal() : position{Vec3{0., 0., 0.}} , direction{Vec3{1., 1., 1}}, power{30.} {}
+
+void Signal::Reflection(/*double EPR*/)
 {
+    reflected = true;
     direction = -1 * direction;
-    is_reflected = true;
-    collision_position = position;
+    //power *= EPR;
 }
 
 void Signal::Update(double dt)
 {
-    position += direction * SIGNALSPEED;
+    power -= 1;
     lifetime += dt;
-    if (lifetime <= duration) {
-        position += direction;
+    if (power > MIN_POWER) {
+        position += direction * SIGNALSPEED * dt;
     } else {
         alive = false;
     }
 }
 
-Vec3& Signal::GetCollisionPosition()
-{
-    return collision_position;
-}
-
 bool Signal::IsReflected()
 {
-    return is_reflected;
+    return reflected;
 }

@@ -1,13 +1,13 @@
 #include "Manager.hpp"
 
-#include "air_models/Plane.hpp"
 #include "patterns/LinearPattern.hpp"
 #include <vector>
 
-Manager::Manager() : solver{this}, radar{{Vec3(-2200, 1500, -2100)}}
+Manager::Manager() : solver{this}, radar{{Vec3(-220, 150, -210)}, 100000.}
 {
     patterns.push_back(new LinearPattern());
-    signals_vec.push_back(radar.Start());
+//    flying_objs.push_back(new Plane({0, 0, 300}, {50, 50, 0}, {0, 0, 0}));
+    signals_vec.push_back(radar.Start(2000));
 }
 
 Manager::~Manager()
@@ -64,4 +64,19 @@ void Manager::AddNewPattern(AbstractAirObject* obj, AbstractAirModelPattern* new
 {
     air_object_patterns[obj].push(new_pattern);
     patterns.push_back(new_pattern);
+}
+
+void Manager::TakeNewSignals(std::vector<Signal>& signals_v)
+{
+    signals_vec.push_back(signals_v);
+}
+
+std::vector<Vec3> Manager::GetPositionsFromTracker()
+{
+    return radar.GetReciever().GetTracker().GetAimsPositions();
+}
+
+void Manager::SetTimeForRadar(double time)
+{
+    radar.SetDeparturePeriod(time);
 }

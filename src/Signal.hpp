@@ -2,27 +2,27 @@
 
 #include "utils/Vec3.hpp"
 
-const double SIGNALSPEED = 100.;
+const double SIGNALSPEED = 1000.;
 
 class Signal {
 public:
-    Signal(Vec3 start_position, Vec3 direction, double velocity, double duration);
+    Signal(Vec3 start_position, Vec3 direction, double power);
     Signal();
-    void Reflection();
+    
+    void Reflection(/*double EPR*/);
     void Update(double dt);
+
     Vec3& GetPosition();
-    Vec3& GetCollisionPosition();
     Vec3& GetDirection();
     bool IsAlive();
     bool IsReflected();
-    
 
 public:
     bool alive = true;
-    bool is_reflected = false;
-    double lifetime = 0;
     Vec3 position;
     Vec3 direction;
-    Vec3 collision_position;
-    double duration;
+    double velocity = SIGNALSPEED;
+    double lifetime;
+    double power;
+    bool reflected = false;
 };
