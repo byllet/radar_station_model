@@ -2,7 +2,7 @@
 
 #include "utils/Vec3.hpp"
 
-const double SIGNALSPEED = 1100.;
+const double SIGNALSPEED = 25.;
 
 class Signal {
 public:

@@ -24,5 +24,5 @@ protected:
     Vec3 velocity;
     Vec3 acceleration;
     double EPR = 1.;
-    double detection_size = 40.;
+    double detection_size = 5.;
 };

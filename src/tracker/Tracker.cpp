@@ -3,7 +3,7 @@
 
 #include <vector>
 
-double EPSILON = 100;
+double EPSILON = 5;
 const double T0 = 0.33;
 
 Tracker::Tracker() : time{0} {}
@@ -102,14 +102,21 @@ void Tracker::HandleUntrackedAims()
     }
 }
 
+    // if (!aims.empty()) {
+    //     positions.push_back(aims[0].filtered_position);
+    // }
+
+
 std::vector<Vec3> Tracker::GetAimsPositions()
 {
     std::vector<Vec3> positions;
-    // for (auto& aim : aims) {
-    //     positions.push_back(aim.filtered_position);
-    // }
-    if (!aims.empty()) {
-        positions.push_back(aims[0].filtered_position);
+    for (auto& aim : aims) {
+        positions.push_back(aim.filtered_position);
     }
-    return positions;
+
+    if (positions.empty()) {
+        return {Vec3{0, 0, 0}};
+    }
+
+    return {GetAvg(positions)};
 }

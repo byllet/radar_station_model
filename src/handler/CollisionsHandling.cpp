@@ -1,7 +1,7 @@
 #include "CollisionsHandling.hpp"
 #include <vector>
 
-const double EPSILON = 30.;
+const double EPSILON = 10.;
 
 void CollisionSignalsWithPlanes(std::vector<std::vector<Signal>>& signals_vec, 
                                  std::vector<AbstractAirObject*> flying_objects)
