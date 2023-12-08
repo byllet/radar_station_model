@@ -2,7 +2,7 @@
 #include "FlyingObject/FlyingObjectParameters.h"
 #include "ui_mainwindow.h"
 #include "ui_FlyingObjectParameters.h"
-#include "OpenGLWidget.h"
+#include "OpenGLWidget/OpenGLWidget.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -50,8 +50,8 @@ void MainWindow::on_delete_object_clicked()
 
 void MainWindow::on_start_modeling_clicked()
 {
-    glwidget->tmr.start(33);
-    glwidget->log_tmr.start(250);
+    glwidget->tmr.start(66);
+    glwidget->log_tmr.start(750);
 }
 
 
@@ -116,7 +116,7 @@ void MainWindow::add_new_signals_timer(double t)
 
 void MainWindow::on_add_signals_clicked()
 {
-    std::vector<Signal> signals_v = glwidget->manager.GetRadar().Start(1000);
+    std::vector<Signal> signals_v = glwidget->manager.GetRadar().Start(200);
     glwidget->manager.TakeNewSignals(signals_v);
 }
 

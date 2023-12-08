@@ -8,11 +8,11 @@ Signal::Signal(Vec3 start_position, Vec3 direction, double power) : position{sta
 
 Signal::Signal() : position{Vec3{0., 0., 0.}} , direction{Vec3{1., 1., 1}}, power{30.} {}
 
-void Signal::Reflection(/*double EPR*/)
+void Signal::Reflection(double EPR)
 {
     reflected = true;
     direction = -1 * direction;
-    //power *= EPR;
+    power *= EPR;
 }
 
 void Signal::Update(double dt)

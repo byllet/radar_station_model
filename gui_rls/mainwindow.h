@@ -4,11 +4,11 @@
 #include <QMainWindow>
 #include <QPalette>
 #include "FlyingObject/FlyingObjectParameters.h"
-#include "OpenGLWidget.h"
+#include "OpenGLWidget/OpenGLWidget.h"
 #include "Patterns/ReverseParameterWindow.h"
 #include "Patterns/HeightParameterWindow.h"
 #include "Patterns/SpeedParameterWindow.h"
-#include "rls.h"
+#include "RLS/RLS.h"
 #include "../src/Manager.hpp"
 #include "../src/patterns/ReversalPattern.hpp"
 #include "../src/patterns/ChangeHeightPattern.hpp"
@@ -40,8 +40,6 @@ private slots:
     void add_new_change_height_pattern(double);
     void on_RLS_param_clicked();
     void add_new_signals_timer(double);
-
-
     void on_add_signals_clicked();
 
 private:

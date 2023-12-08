@@ -6,12 +6,23 @@
 #include <QOpenGLWidget>
 #include <QtOpenGL>
 #include <vector>
-#include "Camera.h"
+#include "Camera/Camera.h"
 #include "FlyingObject/FlyingObjectParameters.h"
 #include "../src/Manager.hpp"
 #include "../src/air_models/Plane.hpp"
 #include "../src/Signal.hpp"
 #include "../src/utils/Vec3.hpp"
+
+#define pW 40
+#define pH 40
+
+typedef struct {
+    float r,g,b;
+} TColor;
+
+typedef struct {
+    TColor clr;
+} TCell;
 
 class GLWidget : public QOpenGLWidget
 {
@@ -25,15 +36,14 @@ public:
     Manager manager;
 
 private:
-    void drawCircle(Vec3 position, GLfloat radius, bool is_reflected);
-    void drawSquare(Vec3 position, bool is_predicted);
     void drawRLS(Vec3 vertex_1, Vec3 vertex_2, Vec3 vertex_3, Vec3 vertex_4);
+    void drawMap();
     void drawRay(Vec3 position, bool is_reflected);
     void drawObject(Vec3 position, Vec3 velocity);
-    void drawEnvironment();
     void drawTrajectory(Vec3 position, bool is_predicted);
     void RLStextureInit();
-    Vec3 openGLCoords(Vec3 coords);
+    void CameraApply();
+    void MapInit();
 
     void initializeGL();
     void paintGL();

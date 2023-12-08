@@ -1,5 +1,5 @@
 #include "FlyingObjectParameters.h"
-#include "ui_object_parameters.h"
+#include "ui_FlyingObjectParameters.h"
 
 object_parameters::object_parameters(QWidget *parent) :
     QDialog(parent),

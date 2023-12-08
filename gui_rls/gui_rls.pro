@@ -40,6 +40,9 @@ SOURCES += \
 
 HEADERS += \
     FlyingObject/FlyingObjectParameters.h \
+    3DModels/Mesh.h \
+    3DModels/Model.h \
+    3DModels/Shader.h \
     Patterns/HeightParameterWindow.h \
     OpenGLWidget/OpenGLWidget.h \
     Patterns/ReverseParameterWindow.h \
@@ -47,7 +50,7 @@ HEADERS += \
     Camera/Camera.h \
     mainwindow.h \
     RLS/RLS.h \
-    Library/stb_image.h \
+    Libraries/stb_image.h \
     ../src/Manager.hpp \
     ../src/air_models/AbstractAirObject.hpp \
     ../src/air_models/Plane.hpp \
@@ -84,7 +87,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-LIBS += -framework GLUT
+LIBS += -framework GLUT -L"Libraries/assimp/5.3.1/lib" -L"Libraries/assimp/5.3.1/bin" -L"Libraries/glm/0.9.9.8/lib"
 
 RESOURCES += \
     Resources
+
+INCLUDEPATH += "Libraries/assimp/5.3.1/include" "Libraries/glm/0.9.9.8/include"

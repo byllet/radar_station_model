@@ -1,5 +1,5 @@
 #include "ReverseParameterWindow.h"
-#include "ui_rev_pattern_parameters.h"
+#include "ui_ReverseParameterWindow.h"
 
 rev_pattern_parameters::rev_pattern_parameters(QWidget *parent) :
     QDialog(parent),

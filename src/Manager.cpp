@@ -3,11 +3,11 @@
 #include "patterns/LinearPattern.hpp"
 #include <vector>
 
-Manager::Manager() : solver{this}, radar{{Vec3(-220, 150, -210)}, 100000.}
+Manager::Manager() : solver{this}, radar{{Vec3(21, 20, 1)}, 10000.}
 {
     patterns.push_back(new LinearPattern());
-//    flying_objs.push_back(new Plane({0, 0, 300}, {50, 50, 0}, {0, 0, 0}));
-    signals_vec.push_back(radar.Start(2000));
+    //flying_objs.push_back(new Plane({0, 0, 300}, {50, 50, 0}, {0, 0, 0}));
+    signals_vec.push_back(radar.Start(200));
 }
 
 Manager::~Manager()

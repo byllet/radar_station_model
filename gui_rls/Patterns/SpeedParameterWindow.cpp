@@ -1,5 +1,5 @@
 #include "SpeedParameterWindow.h"
-#include "ui_change_speed_pattern_parameters.h"
+#include "ui_SpeedParameterWindow.h"
 
 change_speed_pattern_parameters::change_speed_pattern_parameters(QWidget *parent) :
     QDialog(parent),
