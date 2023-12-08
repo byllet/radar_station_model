@@ -3,3 +3,5 @@
 *.vscode*
 test.txt
 log.txt
+log_predicted.txt
+log_true.txt

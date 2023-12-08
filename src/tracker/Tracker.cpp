@@ -14,7 +14,7 @@ void Tracker::TakeRawData(std::vector<Vec3> positions)
     HandleExpectedPositions(positions);
     HandleRemainsPositions(positions);
     HandleUntrackedAims();
-}
+    }
 
 void Tracker::HandleExpectedPositions(std::vector<Vec3>& positions)
 {
@@ -111,12 +111,16 @@ std::vector<Vec3> Tracker::GetAimsPositions()
 {
     std::vector<Vec3> positions;
     for (auto& aim : aims) {
-        positions.push_back(aim.filtered_position);
+        if (aim.k > 3.) {
+            positions.push_back(aim.filtered_position);
+        } 
+
     }
 
     if (positions.empty()) {
-        return {Vec3{0, 0, 0}};
+        return {};
     }
 
-    return {GetAvg(positions)};
+    //return {GetAvg(positions)};
+    return positions;
 }

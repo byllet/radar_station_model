@@ -12,13 +12,14 @@ int main()
 {
     Manager m;
     Logger l(&m);
-    m.AddNewFlyingObject(new Plane({20, 20, 5}, {0.5, 0.5, 0}, {0, 0, 0}));
+    m.AddNewFlyingObject(new Plane({20, 20, 5}, {0.5, 0, 0}, {0, 0, 0}));
+    m.AddNewFlyingObject(new Plane({50, 10, 10}, {0.5, 0.5, 0}, {0, 0, 0}));
     // m.AddNewPattern(m.GetFlyingObjects()[0], new LinearPattern(1));
     // m.AddNewPattern(m.GetFlyingObjects()[0], new ReversalPattern(50));
     
     for (unsigned int i = 0; i < 600; ++i) {
         m.Update(0.33);
-        l.Update();
+
         // if (i == 25) {
         //     m.AddNewPattern(m.GetFlyingObjects()[0], new ChangeHeightPattern(50));
         //     m.AddNewPattern(m.GetFlyingObjects()[0], new LinearPattern(5));

@@ -1,13 +1,13 @@
 #include "Manager.hpp"
 
 #include "patterns/LinearPattern.hpp"
+
 #include <vector>
 
-Manager::Manager() : solver{this}, radar{{Vec3(0, 0, 1)}, 20000000.}
+Manager::Manager() : logger{this}, solver{this}, radar{{Vec3(0, 0, 1)}, 20000000.}
 {
     patterns.push_back(new LinearPattern());
-    signals_vec.push_back(radar.Start(200));
-}
+    signals_vec.push_back(radar.Start(200));}
 
 Manager::~Manager()
 {
@@ -23,6 +23,7 @@ Manager::~Manager()
 void Manager::Update(double dt)
 {
     solver.Update(dt);
+    logger.Update();
 }
 
 RadioDetectionAndRangingModel& Manager::GetRadar()
