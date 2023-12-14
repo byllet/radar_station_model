@@ -1,4 +1,4 @@
-#include "CollisionsHandling.hpp"
+#include "../src/handler/CollisionsHandling.hpp"
 #include <vector>
 
 const double EPSILON = 1.5;

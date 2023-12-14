@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../tracker/Tracker.hpp"
-#include "../Signal.hpp"
+#include "../src/tracker/Tracker.hpp"
+#include "../src/Signal.hpp"
 #include <vector>
 
 class Reciever {

@@ -2,13 +2,20 @@
 #include "OpenGLWidget.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "Libraries/stb_image.h"
+#include <glm/gtc/type_ptr.hpp>
+
+glm::vec3 Vec3_to_glm_vec(const Vec3 another) {
+    return glm::vec3(another.x, another.y, another.z);
+}
+
+int SCR_WIDTH, SCR_HEIGHT;
 
 float kube[] = {0,0,0, 0,1,0, 1,1,0, 1,0,0, 0,0,1, 0,1,1, 1,1,1, 1,0,1};
 
 GLuint kubeInd[] = {0,1,2, 2,3,0, 4,5,6, 6,7,4, 3,2,5, 6,7,3, 0,1,5, 5,4,0,
                     1,2,6, 6,5,1, 0,3,7, 7,4,0};
 
-TCell map[pW][pH];
+TCell MAP[pW][pH];
 
 GLWidget::GLWidget(QWidget *parent): QOpenGLWidget(parent)
 {
@@ -30,16 +37,17 @@ void GLWidget::paintGL()
 {
     glClearColor(0.6, 0.8, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-
+    Model3D ObjectModel("/Users/kirill/Desktop/radar_project/code/gui_rls/Resources/SmallAirplane/airplane.obj", 0.0012);
+    Model3D RLSModel("/Users/kirill/Desktop/radar_project/code/gui_rls/Resources/dish.obj", 0.3);
     glPushMatrix();
 
         CameraApply();
 
-        drawRLS({20, 20, 0}, {20, 20, 1}, {21, 20, 1}, {21, 20, 0});
-
+        RLSModel.draw({21, 19, 0.45}, {0, 0, 1});
+//        drawRLS({20, 20, 0}, {20, 20, 1}, {21, 20, 1}, {21, 20, 0});
         for (size_t i = 0; i < manager.GetFlyingObjects().size(); ++i) {
             AbstractAirObject* flyingObject = manager.GetFlyingObjects()[i];
-            drawObject(flyingObject->GetPosition(), flyingObject->GetVelocity());
+            ObjectModel.draw(Vec3_to_glm_vec(flyingObject->GetPosition()), Vec3_to_glm_vec(flyingObject->GetVelocity()));
             for (size_t j = 0; j < objects_positions[i].size(); ++j) {
                 Vec3 objectPosition = objects_positions[i][j];
                 drawTrajectory(objectPosition, false);
@@ -57,14 +65,14 @@ void GLWidget::paintGL()
             Vec3 predictedPosition = predicted_objects_positions[i];
             drawTrajectory(predictedPosition, true);
         }
-
         drawMap();
-
     glPopMatrix();
 }
 
 void GLWidget::resizeGL(int w, int h)
 {
+    SCR_WIDTH = w;
+    SCR_HEIGHT = h;
     glViewport(0, 0, w, h);
     float k = w / float(h);
     float sz = 0.1;
@@ -78,9 +86,9 @@ void GLWidget::MapInit()
         for (int j = 0; j < pH; ++j)
         {
             float dc = (arc4random() % 20) * 0.01;
-            map[i][j].clr.r = 0.31 + dc;
-            map[i][j].clr.g = 0.5 + dc;
-            map[i][j].clr.b = 0.13 + dc;
+            MAP[i][j].clr.r = 0.31 + dc;
+            MAP[i][j].clr.g = 0.5 + dc;
+            MAP[i][j].clr.b = 0.13 + dc;
         }
 }
 
@@ -215,7 +223,7 @@ void GLWidget::drawMap()
         {
             glPushMatrix();
             glTranslatef(i,j,0);
-            glColor3f(map[i][j].clr.r, map[i][j].clr.g, map[i][j].clr.b);
+            glColor3f(MAP[i][j].clr.r, MAP[i][j].clr.g, MAP[i][j].clr.b);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, kubeInd);
             glPopMatrix();
         }
@@ -330,9 +338,9 @@ void GLWidget::drawTrajectory(Vec3 position, bool is_predicted)
     //right
     glBegin(GL_POLYGON);
     if (is_predicted)
-        glColor3f( 0, 0, 0 );
+        glColor3f( 0.6, 0, 1 );
     else
-        glColor3f( 1, 0, 1 );
+        glColor3f( 0.8, 0.31, 0 );
     glVertex3f(  vertex_11.x, vertex_11.y, vertex_11.z );
     glVertex3f(  vertex_12.x, vertex_12.y, vertex_12.z );
     glVertex3f( vertex_13.x, vertex_13.y, vertex_13.z );
@@ -342,9 +350,9 @@ void GLWidget::drawTrajectory(Vec3 position, bool is_predicted)
     //front
     glBegin(GL_POLYGON);
     if (is_predicted)
-        glColor3f( 0, 0, 0 );
+        glColor3f( 0.6, 0, 1 );
     else
-        glColor3f( 1, 0, 1 );
+        glColor3f( 0.8, 0.31, 0 );
     glVertex3f(  vertex_14.x, vertex_14.y, vertex_14.z );
     glVertex3f(  vertex_13.x, vertex_13.y, vertex_13.z );
     glVertex3f( vertex_23.x, vertex_23.y, vertex_23.z );
@@ -354,9 +362,9 @@ void GLWidget::drawTrajectory(Vec3 position, bool is_predicted)
     //back
     glBegin(GL_POLYGON);
     if (is_predicted)
-        glColor3f( 0, 0, 0 );
+        glColor3f( 0.6, 0, 1 );
     else
-        glColor3f( 1, 0, 1 );
+        glColor3f( 0.8, 0.31, 0 );
     glVertex3f(  vertex_21.x, vertex_21.y, vertex_21.z );
     glVertex3f(  vertex_22.x, vertex_22.y, vertex_22.z );
     glVertex3f( vertex_12.x, vertex_12.y, vertex_12.z );
@@ -366,9 +374,9 @@ void GLWidget::drawTrajectory(Vec3 position, bool is_predicted)
     //top
     glBegin(GL_POLYGON);
     if (is_predicted)
-        glColor3f( 0, 0, 0 );
+        glColor3f( 0.6, 0, 1 );
     else
-        glColor3f( 1, 0, 1 );
+        glColor3f( 0.8, 0.31, 0 );
     glVertex3f(  vertex_12.x, vertex_12.y, vertex_12.z );
     glVertex3f(  vertex_22.x, vertex_22.y, vertex_22.z );
     glVertex3f( vertex_23.x, vertex_23.y, vertex_23.z );
@@ -378,9 +386,9 @@ void GLWidget::drawTrajectory(Vec3 position, bool is_predicted)
     //left
     glBegin(GL_POLYGON);
     if (is_predicted)
-        glColor3f( 0, 0, 0 );
+        glColor3f( 0.6, 0, 1 );
     else
-        glColor3f( 1, 0, 1 );
+        glColor3f( 0.8, 0.31, 0 );
     glVertex3f(  vertex_21.x, vertex_21.y, vertex_21.z );
     glVertex3f(  vertex_22.x, vertex_22.y, vertex_22.z );
     glVertex3f( vertex_23.x, vertex_23.y, vertex_23.z );
@@ -390,9 +398,9 @@ void GLWidget::drawTrajectory(Vec3 position, bool is_predicted)
     //bot
     glBegin(GL_POLYGON);
     if (is_predicted)
-        glColor3f( 0, 0, 0 );
+        glColor3f( 0.6, 0, 1 );
     else
-        glColor3f( 1, 0, 1 );
+        glColor3f( 0.8, 0.31, 0 );
     glVertex3f(  vertex_11.x, vertex_11.y, vertex_11.z );
     glVertex3f(  vertex_21.x, vertex_21.y, vertex_21.z );
     glVertex3f( vertex_24.x, vertex_24.y, vertex_24.z );

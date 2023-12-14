@@ -1,5 +1,5 @@
-#include "LinearPattern.hpp"
-#include "../math/Calculating.hpp"
+#include "../src/patterns/LinearPattern.hpp"
+#include "../src/math/Calculating.hpp"
 
 #include <cmath>
 

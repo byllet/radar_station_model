@@ -1,5 +1,5 @@
-#include "Emitter.hpp"
-#include "../math/Calculating.hpp"
+#include "../src/rls/Emitter.hpp"
+#include "../src/math/Calculating.hpp"
 
 #include <iostream>
 #include <cmath>

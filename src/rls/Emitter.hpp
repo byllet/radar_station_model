@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "../utils/Vec3.hpp"
-#include "../Signal.hpp"
+#include "../src/utils/Vec3.hpp"
+#include "../src/Signal.hpp"
 
 class Emitter {
 public:

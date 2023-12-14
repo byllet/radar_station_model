@@ -1,4 +1,4 @@
-QT       += core gui openglwidgets
+QT += core gui openglwidgets opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,8 +11,8 @@ CONFIG += c++20
 SOURCES += \
     main.cpp \
     FlyingObject/FlyingObjectParameters.cpp \
-    Patterns/HeightParameterWindow.cpp \
     OpenGLWidget/OpenGLWidget.cpp \
+    Patterns/HeightParameterWindow.cpp \
     Patterns/ReverseParameterWindow.cpp \
     Patterns/SpeedParameterWindow.cpp \
     RLS/RLS.cpp \
@@ -35,14 +35,13 @@ SOURCES += \
     ../src/tracker/Aim.cpp \
     ../src/tracker/Tracker.cpp \
     ../src/utils/Vec3.cpp \
-    ../src/utils/Matrix.cpp
+    ../src/utils/Matrix.cpp \
+    ../src/utils/Logger.cpp
 
 
 HEADERS += \
     FlyingObject/FlyingObjectParameters.h \
-    3DModels/Mesh.h \
     3DModels/Model.h \
-    3DModels/Shader.h \
     Patterns/HeightParameterWindow.h \
     OpenGLWidget/OpenGLWidget.h \
     Patterns/ReverseParameterWindow.h \
@@ -71,7 +70,8 @@ HEADERS += \
     ../src/tracker/Aim.hpp \
     ../src/tracker/Tracker.hpp \
     ../src/utils/Vec3.hpp \
-    ../src/utils/Matrix.hpp
+    ../src/utils/Matrix.hpp \
+    ../src/utils/Logger.hpp
 
 FORMS += \
     FlyingObject/FlyingObjectParameters.ui \
@@ -87,9 +87,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-LIBS += -framework GLUT -L"Libraries/assimp/5.3.1/lib" -L"Libraries/assimp/5.3.1/bin" -L"Libraries/glm/0.9.9.8/lib"
+LIBS += -L"/Users/kirill/Desktop/radar_project/code/gui_rls/Libraries/assimp/5.3.1/lib" -L"/Users/kirill/Desktop/radar_project/code/gui_rls/Libraries/assimp/5.3.1/bin" -L"/Users/kirill/Desktop/radar_project/code/gui_rls/Libraries/glm/0.9.9.8/lib"
+LIBS += -framework GLUT -lassimp
 
 RESOURCES += \
     Resources
 
-INCLUDEPATH += "Libraries/assimp/5.3.1/include" "Libraries/glm/0.9.9.8/include"
+INCLUDEPATH += "/Users/kirill/Desktop/radar_project/code/gui_rls/Libraries/assimp/5.3.1/include" "/Users/kirill/Desktop/radar_project/code/gui_rls/Libraries/glm/0.9.9.8/include"
+

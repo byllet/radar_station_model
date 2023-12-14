@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../utils/Vec3.hpp"
+#include "../src/utils/Vec3.hpp"
 
 class Aim {
 public:

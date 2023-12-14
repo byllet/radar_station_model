@@ -1,6 +1,6 @@
-#include "Solver.hpp"
-#include "../Manager.hpp"
-#include "CollisionsHandling.hpp"
+#include "../src/handler/Solver.hpp"
+#include "../src/Manager.hpp"
+#include "../src/handler/CollisionsHandling.hpp"
 #include <vector>
 
 Solver::Solver(Manager* m) : manager{m} {}

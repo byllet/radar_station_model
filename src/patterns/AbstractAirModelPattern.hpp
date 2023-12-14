@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../utils/Vec3.hpp"
+#include "../src/utils/Vec3.hpp"
 
 const double SHOULD_BE_CALC = 1000031.1;
 

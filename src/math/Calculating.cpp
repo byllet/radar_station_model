@@ -1,5 +1,5 @@
-#include "Calculating.hpp"
-#include "../utils/Matrix.hpp"
+#include "../src/math/Calculating.hpp"
+#include "../src/utils/Matrix.hpp"
 
 Vec3 GetAvg(std::vector<Vec3>& vec)
 {

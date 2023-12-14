@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils/Vec3.hpp"
+#include "../src/utils/Vec3.hpp"
 
 const double SIGNALSPEED = 25.;
 
@@ -19,10 +19,10 @@ public:
 
 public:
     bool alive = true;
-    bool reflected = false;
     Vec3 position;
     Vec3 direction;
     double velocity = SIGNALSPEED;
     double lifetime;
     double power;
+    bool reflected = false;
 };

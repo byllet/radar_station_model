@@ -1,10 +1,10 @@
-#include "Tracker.hpp"
-#include "../math/Calculating.hpp"
+#include "../src/tracker/Tracker.hpp"
+#include "../src/math/Calculating.hpp"
 
 #include <vector>
 
-double EPSILON = 5;
-const double T0 = 0.066;
+double EPSILON = 1.5;
+const double T0 = 0.033;
 
 Tracker::Tracker() : time{0} {}
 
@@ -14,7 +14,7 @@ void Tracker::TakeRawData(std::vector<Vec3> positions)
     HandleExpectedPositions(positions);
     HandleRemainsPositions(positions);
     HandleUntrackedAims();
-}
+    }
 
 void Tracker::HandleExpectedPositions(std::vector<Vec3>& positions)
 {
@@ -102,6 +102,11 @@ void Tracker::HandleUntrackedAims()
     }
 }
 
+    // if (!aims.empty()) {
+    //     positions.push_back(aims[0].filtered_position);
+    // }
+
+
 std::vector<Vec3> Tracker::GetAimsPositions()
 {
     std::vector<Vec3> positions;
@@ -113,5 +118,21 @@ std::vector<Vec3> Tracker::GetAimsPositions()
         return {};
     }
 
-    return {GetAvg(positions)};
+    return positions;
 }
+
+
+//    std::vector<Vec3> positions;
+//    for (auto& aim : aims) {
+//        if (aim.k > 3.) {
+//            positions.push_back(aim.filtered_position);
+//        }
+
+//    }
+
+//    if (positions.empty()) {
+//        return {};
+//    }
+
+//    //return {GetAvg(positions)};
+//    return positions;

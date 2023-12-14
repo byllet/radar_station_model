@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <cstring>
-#include "Vec3.hpp"
+#include "../src/utils/Vec3.hpp"
 
 class Matrix
 {

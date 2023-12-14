@@ -4,10 +4,11 @@
 #include <unordered_map>
 #include <vector>
 
-#include "signal.hpp"
-#include "rls/RadioDetectionAndRangingModel.hpp"
-#include "air_models/AbstractAirObject.hpp"
-#include "handler/Solver.hpp"
+#include "../src/Signal.hpp"
+#include "../src/rls/RadioDetectionAndRangingModel.hpp"
+#include "../src/air_models/AbstractAirObject.hpp"
+#include "../src/handler/Solver.hpp"
+#include "../src/utils/Logger.hpp"
 
 class Manager {
 public:
@@ -34,6 +35,7 @@ public:
 
 private:
     Solver solver;
+    Logger logger;
     RadioDetectionAndRangingModel radar;
     std::vector<AbstractAirObject*> flying_objs;
     std::vector<std::vector<Signal>> signals_vec;

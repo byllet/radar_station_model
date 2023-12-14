@@ -1,4 +1,4 @@
-#include "AbstractAirModelPattern.hpp"
+#include "../src/patterns/AbstractAirModelPattern.hpp"
 
 AbstractAirModelPattern::AbstractAirModelPattern() {}
 

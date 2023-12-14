@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AbstractAirModelPattern.hpp"
+#include "../src/patterns/AbstractAirModelPattern.hpp"
 
 class ReversalPattern: public AbstractAirModelPattern {
 public:

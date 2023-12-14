@@ -1,5 +1,5 @@
-#include "ReversalPattern.hpp"
-#include "../math/Calculating.hpp"
+#include "../src/patterns/ReversalPattern.hpp"
+#include "../src/math/Calculating.hpp"
 
 #include <cmath>
 

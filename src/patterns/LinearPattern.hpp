@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../utils/Vec3.hpp"
-#include "AbstractAirModelPattern.hpp"
+#include "../src/utils/Vec3.hpp"
+#include "../src/patterns/AbstractAirModelPattern.hpp"
 
 class LinearPattern: public AbstractAirModelPattern {
 public:

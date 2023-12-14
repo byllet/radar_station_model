@@ -1,14 +1,13 @@
-#include "Manager.hpp"
+#include "../src/Manager.hpp"
 
-#include "patterns/LinearPattern.hpp"
+#include "../src/patterns/LinearPattern.hpp"
+
 #include <vector>
 
-Manager::Manager() : solver{this}, radar{{Vec3(21, 20, 1)}, 10000.}
+Manager::Manager() : logger{this}, solver{this}, radar{{Vec3(21.3, 18.6, 1.65)}, 10000.}
 {
     patterns.push_back(new LinearPattern());
-    //flying_objs.push_back(new Plane({0, 0, 300}, {50, 50, 0}, {0, 0, 0}));
-    signals_vec.push_back(radar.Start(200));
-}
+    signals_vec.push_back(radar.Start(200));}
 
 Manager::~Manager()
 {
@@ -24,6 +23,7 @@ Manager::~Manager()
 void Manager::Update(double dt)
 {
     solver.Update(dt);
+    logger.Update();
 }
 
 RadioDetectionAndRangingModel& Manager::GetRadar()

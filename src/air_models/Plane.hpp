@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AbstractAirObject.hpp"
+#include "../src/air_models/AbstractAirObject.hpp"
 
 class Plane: public AbstractAirObject {
 public:

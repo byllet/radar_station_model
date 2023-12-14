@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "../utils/Vec3.hpp"
-#include "../patterns/AbstractAirModelPattern.hpp"
+#include "../src/utils/Vec3.hpp"
+#include "../src/patterns/AbstractAirModelPattern.hpp"
 
 class AbstractAirObject {
 public:

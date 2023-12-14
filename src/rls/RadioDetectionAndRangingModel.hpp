@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Emitter.hpp"
-#include "Reciever.hpp"
-#include "../utils/Vec3.hpp"
+#include "../src/rls/Emitter.hpp"
+#include "../src/rls/Reciever.hpp"
+#include "../src/utils/Vec3.hpp"
 
 #include <vector>
 

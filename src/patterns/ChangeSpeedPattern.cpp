@@ -1,5 +1,5 @@
-#include "ChangeSpeedPattern.hpp"
-#include "../math/Calculating.hpp"
+#include "../src/patterns/ChangeSpeedPattern.hpp"
+#include "../src/math/Calculating.hpp"
 
 #include <cmath>
 

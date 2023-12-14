@@ -1,17 +1,15 @@
 #ifndef OPENGLWIDGET_H
 #define OPENGLWIDGET_H
 
-#include <gl.h>
-#include <glu.h>
 #include <QOpenGLWidget>
 #include <QtOpenGL>
-#include <vector>
 #include "Camera/Camera.h"
 #include "FlyingObject/FlyingObjectParameters.h"
 #include "../src/Manager.hpp"
 #include "../src/air_models/Plane.hpp"
 #include "../src/Signal.hpp"
 #include "../src/utils/Vec3.hpp"
+#include "3DModels/Model.h"
 
 #define pW 40
 #define pH 40
