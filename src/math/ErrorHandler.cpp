@@ -5,18 +5,22 @@ ErrorHandler::ErrorHandler() {}
 ErrorHandler::ErrorHandler(double sigma_0)
 {
     this->sigma_0 = sigma_0;
-    sigma_coord_prev = sigma_0;
-    sigma_velocity_prev = (sqrt(2) * sigma_0) / dt;
+    sigma_coord_curr = sigma_0;
+    sigma_velocity_curr = (sqrt(2) * sigma_0) / dt;
 }
 
 void ErrorHandler::CalculateAQE(double alpha, double beta)
 {
-    sigma_exstr_coord = sqrt(pow(sigma_coord_prev, 2) + 2 * K * dt + pow(sigma_velocity_prev, 2) * pow(dt ,2));
+    sigma_coord_prev = sigma_coord_curr;
+    sigma_velocity_prev = sigma_velocity_curr;
+
+    sigma_exstr_coord = sqrt(std::abs(pow(sigma_coord_prev, 2) + 2 * K * dt + pow(sigma_velocity_prev, 2) * pow(dt ,2)));
+
     K_exstr = K + pow(sigma_velocity_prev, 2) * dt;
     K = ((1 - alpha) * beta * pow(sigma_exstr_coord, 2)) / dt + (1 - alpha) * K_exstr;
     sigma_velocity_curr = sqrt(pow(((beta * sigma_exstr_coord) / dt), 2) - (2 * beta * K_exstr) / dt + pow(sigma_velocity_prev, 2));
-    sigma_coord_curr = sqrt(pow((1 - alpha) * sigma_exstr_coord, 2));     
-    
+    sigma_coord_curr = sqrt(std::abs(pow((1 - alpha) * sigma_exstr_coord, 2)));
+
     UpdateAverageSigma(sigma_coord_curr, sigma_velocity_curr);
 }
 

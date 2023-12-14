@@ -13,13 +13,13 @@ public:
     double GetDeltaCoord(Vec3 real_coord, Vec3 estimated_coord);
     double GetDeltaVelocity(Vec3 real_velocity, Vec3 estimated_velocity);
 private:
-    size_t dt = 0;
+    size_t dt = 1;
     double K_exstr = 0;
-    double K;
+    double K = 0;
     double sigma_0;
-    double sigma_coord_prev;
+    double sigma_coord_prev = 0.0001;
     double sigma_coord_curr;
-    double sigma_velocity_prev;
+    double sigma_velocity_prev = 0.0001;
     double sigma_velocity_curr;
     double sigma_exstr_coord;
     double average_sigma_coord;
